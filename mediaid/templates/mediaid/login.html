@@ -31,7 +31,7 @@
         -webkit-transition: all 0.3s;transition: all 0.3s;border: none;"> <span class="fa fa-google-plus"></span> Google </a> 
         <br>
         <div class="text-center fw-bold" style="font-weight:bold; color:black; font-size:20px"><small>New to MediAid? 
-            <a href="#" class="text-danger" style="font-weight:bold;font-size:20px">Create an Account</a> </small></div>
+            <a href="{% url 'registration' %}" class="text-danger" style="font-weight:bold;font-size:20px">Create an Account</a> </small></div>
     
         {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}

@@ -11,6 +11,11 @@ def LandingPage(request):
 def Home(request):
     return render(request, 'mediaid/home.html')
 
+
+def ProfilePage(request):
+    usr = request.user
+    return render(request, 'mediaid/profile.html',{'usr':usr,'active':'btn-info'})
+
 class RegistrationView(View):
     def get(self,request):
         form = RegistrationForm()
@@ -24,3 +29,25 @@ class RegistrationView(View):
             except:
                 messages.success(request, 'Sorry!! Could not be Registered, Try Again')
         return render(request, 'mediaid/register.html' , {'form':form})
+
+
+def doctorsearch_view(request):
+    # search = request.GET['search']
+    # if len(search)>0:
+    #     garages = Doctors.objects.filter(area__icontains=search)
+    #     params = {'garages':garages}
+    #     return render(request,'Homepage/garagelist.html', params)
+    # else:
+    #     return render(request,'Homepage/garagelist.html')
+    return render(request, 'mediaid/doctorslist.html')
+
+
+def patientsearch_view(request):
+    # search = request.GET['search']
+    # if len(search)>0:
+    #     garages = Doctors.objects.filter(area__icontains=search)
+    #     params = {'garages':garages}
+    #     return render(request,'Homepage/garagelist.html', params)
+    # else:
+    #     return render(request,'Homepage/garagelist.html')
+    return render(request, 'mediaid/patientlist.html')
