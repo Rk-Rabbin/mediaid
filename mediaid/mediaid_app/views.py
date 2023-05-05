@@ -11,6 +11,12 @@ def LandingPage(request):
 def Home(request):
     return render(request, 'mediaid/home.html')
 
+def Services(request):
+    return render(request, 'mediaid/services.html')
+
+def contactus(request):
+    return render(request, 'mediaid/contactus.html')
+
 
 def ProfilePage(request):
     usr = request.user
@@ -51,3 +57,22 @@ def patientsearch_view(request):
     # else:
     #     return render(request,'Homepage/garagelist.html')
     return render(request, 'mediaid/patientlist.html')
+
+
+def mydoctors(request):
+    return render(request, 'mediaid/mydoctors.html')
+
+def mypatients(request):
+    return render(request, 'mediaid/mypatients.html')
+
+def healthhistory(request):
+    return render(request, 'mediaid/healthhistory.html')
+
+def prescription(request):
+    return render(request, 'mediaid/prescription.html')
+
+def doctorsprofile(request):
+    return render(request, 'mediaid/doctorsprofile.html')
+
+def patientprofile(request):
+    return render(request, 'mediaid/patientprofile.html')

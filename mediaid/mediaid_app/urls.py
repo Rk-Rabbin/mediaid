@@ -10,11 +10,17 @@ urlpatterns = [
     path('home/', views.Home , name='home'),
     path('profile/', views.ProfilePage , name='profile'),
     path('registration/',views.RegistrationView.as_view(), name='registration'),
+    path('services/', views.Services , name='services'),
+    path('contactus/', views.contactus , name='contactus'),
 
     path('doctor/search/', views.doctorsearch_view , name='docsearch'),
     path('patient/search/', views.patientsearch_view , name='patsearch'),
-
-
+    path('mydoctors/', views.mydoctors , name='mydoctors'),
+    path('mypatients/', views.mypatients , name='mypatients'),
+    path('healthhistory/', views.healthhistory , name='healthhistory'),
+    path('prescription/', views.prescription , name='prescription'),
+    path('doctorsprofile/', views.doctorsprofile , name='doctorsprofile'),
+    path('patientprofile/', views.patientprofile , name='patientprofile'),
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='mediaid/login.html', authentication_form=LoginForm), name='login'),
     path('passwordchange/', auth_views.PasswordChangeView.as_view(template_name='mediaid/changepassword.html',
