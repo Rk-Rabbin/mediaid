@@ -60,7 +60,7 @@
                 <a class="nav-link" style="font-size:20px; font-weight:bold; color:black;" aria-current="page" href="{% url 'home' %}">Home</a>
             </li>&nbsp;&nbsp;&nbsp;&nbsp;
             <li class="nav-item">
-            <a class="nav-link" style="font-size:20px; font-weight:bold; color:black" aria-current="page" href="#">Prescription</a>
+            <a class="nav-link" style="font-size:20px; font-weight:bold; color:black" aria-current="page" href="{% url 'prescription' %}">Prescription</a>
             </li>&nbsp;&nbsp;&nbsp;&nbsp;
             <li class="nav-item">
             <a class="nav-link" style="font-size:20px; font-weight:bold; color:black" aria-current="page" href="#">Appointment</a>
@@ -78,15 +78,14 @@
                     <span class="text-capitalize">{{request.user.username}}</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Consultation</a></li>
-                    <li><a class="dropdown-item" href="#">Prescription</a></li>
+                    <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'prescription' %}">Prescription</a></li>
                     <li><a class="dropdown-item" href="#">Appointment</a></li>
-                    <li><a class="dropdown-item" href="#">History</a></li>
-                    <li><a class="dropdown-item" href="#">Doctor Registration</a></li>
+                    <li><a class="dropdown-item" href="{% url 'healthhistory' %}">History</a></li>
+                    <li><a class="dropdown-item" href="{% url 'doctor-registration' %}">Doctor Registration</a></li>
                     <li><a class="dropdown-item" href="#">Patient Registration</a></li>
-                    <li><a class="dropdown-item" href="#">Change Password</a></li>
-                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                    <li><a class="dropdown-item" href="{% url 'changepassword' %}">Change Password</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                 </ul>
                 </li>
                 {% endif %}

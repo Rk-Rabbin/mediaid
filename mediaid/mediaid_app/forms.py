@@ -5,6 +5,7 @@ from django.utils.translation import gettext, gettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
+from .models import Doctor, Patient, InsuranceProvider, Prescription, Gender
 
 class RegistrationForm(UserCreationForm):
         email = forms.CharField(label="Email", required=True, widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'Email', 'style':'opacity:0.8'}))

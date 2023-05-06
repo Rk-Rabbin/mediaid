@@ -21,6 +21,7 @@ urlpatterns = [
     path('prescription/', views.prescription , name='prescription'),
     path('doctorsprofile/', views.doctorsprofile , name='doctorsprofile'),
     path('patientprofile/', views.patientprofile , name='patientprofile'),
+    path('doctor-registration/',views.DocRegistration.as_view(), name='doctor-registration'),
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='mediaid/login.html', authentication_form=LoginForm), name='login'),
     path('passwordchange/', auth_views.PasswordChangeView.as_view(template_name='mediaid/changepassword.html',

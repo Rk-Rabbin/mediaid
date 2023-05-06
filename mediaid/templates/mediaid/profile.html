@@ -2,19 +2,18 @@
 {% load static %}
 {% block title %}Personal Information{% endblock title %}
 {% block main-content %}
-<div style="padding-top:120px">
+<div style="padding-top:20px">
 <div class="container my-5">
  <div class="row">
  <h3>Welcome <span class="text-capitalize">{{request.user.username}}</span></h3>
   <div class="col-sm-2 border-end">
    <ul class="list-unstyled">
-    <li class="d-grid"><a href="#" class="btn {{active}}">Profile</a></li>
-    <li class="d-grid"><a href="#" class="btn ">Consultation</a></li>
-    <li class="d-grid"><a href="#" class="btn">Prescription</a></li>
+    <li class="d-grid"><a href="{% url 'profile' %}" class="btn {{active}}">Profile</a></li>
+    <li class="d-grid"><a href="{% url 'prescription' %}" class="btn">Prescription</a></li>
     <li class="d-grid"><a href="#" class="btn">Appointment</a></li>
-    <li class="d-grid"><a href="#" class="btn">History</a></li>
-    <li class="d-grid"><a href="#" class="btn">Change Password</a></li>
-    <li class="d-grid"><a href="#" class="btn">Logout</a></li>
+    <li class="d-grid"><a href="{% url 'healthhistory' %}" class="btn">History</a></li>
+    <li class="d-grid"><a href="{% url 'changepassword' %}" class="btn">Change Password</a></li>
+    <li class="d-grid"><a href="{% url 'logout' %}" class="btn">Logout</a></li>
    </ul>
   </div>
   <div class="col-sm-9 offset-sm-1">

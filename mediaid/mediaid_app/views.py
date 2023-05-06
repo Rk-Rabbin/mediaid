@@ -2,12 +2,18 @@ from django.shortcuts import render
 from .forms import RegistrationForm
 from django.views import View
 from django.contrib import messages
-
+from django.views.decorators.cache import cache_control
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from .models import User, Doctor, Patient, Prescription, InsuranceProvider
+from .forms import *
 
 # Create your views here.
 def LandingPage(request):
     return render(request, 'mediaid/LandingPage.html')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def Home(request):
     return render(request, 'mediaid/home.html')
 
@@ -17,7 +23,8 @@ def Services(request):
 def contactus(request):
     return render(request, 'mediaid/contactus.html')
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def ProfilePage(request):
     usr = request.user
     return render(request, 'mediaid/profile.html',{'usr':usr,'active':'btn-info'})
@@ -37,14 +44,35 @@ class RegistrationView(View):
         return render(request, 'mediaid/register.html' , {'form':form})
 
 
+@method_decorator(login_required, name='dispatch')
+class DocRegistration(View):
+    def get(self,request):
+        return render(request, 'mediaid/doctorreg.html')
+    def post(self, request):
+        if request.method == "POST":
+            number = request.POST['num']
+            gender = request.POST['gender']
+            hospital = request.POST['hospital']
+            qualification = request.POST['qualification']
+            speciality = request.POST['speciality']
+            availability = request.POST['availability']
+            start = request.POST['start']
+            end = request.POST['end']
+            reg = Doctor(number=number, gender=gender, hospital=hospital, qualification=qualification, speciality=speciality, availability=availability, start=start, end=end)
+            reg.save()
+            messages.success(request, 'Congratulations!! Successfully registered as a doctor')
+            return render(request, 'mediaid/doctorreg.html', {'message':messages})
+
+
+
 def doctorsearch_view(request):
     # search = request.GET['search']
     # if len(search)>0:
     #     garages = Doctors.objects.filter(area__icontains=search)
     #     params = {'garages':garages}
-    #     return render(request,'Homepage/garagelist.html', params)
+    #     return render(request,'mediaid/garagelist.html', params)
     # else:
-    #     return render(request,'Homepage/garagelist.html')
+    #     return render(request,'mediaid/garagelist.html')
     return render(request, 'mediaid/doctorslist.html')
 
 
@@ -53,9 +81,9 @@ def patientsearch_view(request):
     # if len(search)>0:
     #     garages = Doctors.objects.filter(area__icontains=search)
     #     params = {'garages':garages}
-    #     return render(request,'Homepage/garagelist.html', params)
+    #     return render(request,'mediaid/garagelist.html', params)
     # else:
-    #     return render(request,'Homepage/garagelist.html')
+    #     return render(request,'mediaid/garagelist.html')
     return render(request, 'mediaid/patientlist.html')
 
 
