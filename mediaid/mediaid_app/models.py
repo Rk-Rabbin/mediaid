@@ -16,6 +16,7 @@ class InsuranceProvider(models.Model):
 
 class Doctor(models.Model):
     users = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
     gender = models.CharField(choices=Gender, default='choose one', max_length=10)
     number = models.CharField(max_length=20)
     hospital = models.CharField(max_length=50)
@@ -24,11 +25,14 @@ class Doctor(models.Model):
     availability = models.CharField(max_length=20)
     start = models.CharField(max_length=10)
     end = models.CharField(max_length=10)
+    profilepic = models.FileField()
+
 
 
 class Patient(models.Model):
     users = models.OneToOneField(User, on_delete=models.CASCADE)
     insurance = models.ForeignKey(InsuranceProvider, on_delete=models.CASCADE)
+    name = models.CharField(max_length=40)
     number = models.CharField(max_length=20)
     birthdate = models.DateField()
     blood = models.CharField(max_length=10)
@@ -36,6 +40,8 @@ class Patient(models.Model):
     medications = models.TextField()
     disease = models.TextField()
     allergy = models.TextField()
+    profilepic = models.FileField()
+
 
 
 

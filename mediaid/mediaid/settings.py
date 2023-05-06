@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mediaid_app',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,10 @@ EMAIL_USE_TLS = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend',
+                         'social_core.backends.google.GoogleOAuth2']
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '859073199213-ap1b72d0d92pv58n8dpc4lscnqjm9j20.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'

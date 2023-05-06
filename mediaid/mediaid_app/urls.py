@@ -13,7 +13,7 @@ urlpatterns = [
     path('services/', views.Services , name='services'),
     path('contactus/', views.contactus , name='contactus'),
 
-    path('doctor/search/', views.doctorsearch_view , name='docsearch'),
+    path('search/', views.search_view , name='search'),
     path('patient/search/', views.patientsearch_view , name='patsearch'),
     path('mydoctors/', views.mydoctors , name='mydoctors'),
     path('mypatients/', views.mypatients , name='mypatients'),
@@ -22,6 +22,7 @@ urlpatterns = [
     path('doctorsprofile/', views.doctorsprofile , name='doctorsprofile'),
     path('patientprofile/', views.patientprofile , name='patientprofile'),
     path('doctor-registration/',views.DocRegistration.as_view(), name='doctor-registration'),
+    path('patient-registration/',views.PatRegistration.as_view(), name='patient-registration'),
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='mediaid/login.html', authentication_form=LoginForm), name='login'),
     path('passwordchange/', auth_views.PasswordChangeView.as_view(template_name='mediaid/changepassword.html',
@@ -41,4 +42,4 @@ urlpatterns = [
 
     path('password-reset-confirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='mediaid/password_reset_confirm.html',
     form_class=MySetPasswordForm), name='password_reset_confirm'),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
