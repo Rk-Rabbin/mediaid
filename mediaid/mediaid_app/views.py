@@ -27,7 +27,18 @@ def contactus(request):
 @login_required
 def ProfilePage(request):
     usr = request.user
-    return render(request, 'mediaid/profile.html',{'usr':usr,'active':'btn-info'})
+    uid = usr.id
+    i = 1
+    try:
+        doc = Doctor.objects.get(users_id=uid)
+    except Doctor.DoesNotExist:
+        i = 0
+    
+    if(i==0):
+        return render(request, 'mediaid/profile.html',{'usr':usr,'active':'btn-info'})
+    else:
+        return render(request, 'mediaid/profile.html',{'usr':usr, 'doc':doc ,'active':'btn-info'})
+
 
 class RegistrationView(View):
     def get(self,request):
@@ -50,6 +61,8 @@ class DocRegistration(View):
         return render(request, 'mediaid/doctorreg.html')
     def post(self, request):
         if request.method == "POST":
+            usr = request.user
+            uid = usr.id
             number = request.POST['num']
             gender = request.POST['gender']
             hospital = request.POST['hospital']
@@ -58,7 +71,7 @@ class DocRegistration(View):
             availability = request.POST['availability']
             start = request.POST['start']
             end = request.POST['end']
-            reg = Doctor(number=number, gender=gender, hospital=hospital, qualification=qualification, speciality=speciality, availability=availability, start=start, end=end)
+            reg = Doctor(users_id=uid ,number=number, gender=gender, hospital=hospital, qualification=qualification, speciality=speciality, availability=availability, start=start, end=end)
             reg.save()
             messages.success(request, 'Congratulations!! Successfully registered as a doctor')
             return render(request, 'mediaid/doctorreg.html', {'message':messages})
