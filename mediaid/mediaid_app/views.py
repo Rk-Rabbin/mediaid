@@ -63,6 +63,7 @@ class DocRegistration(View):
         if request.method == "POST":
             usr = request.user
             uid = usr.id
+            name = request.POST['name']
             number = request.POST['num']
             gender = request.POST['gender']
             hospital = request.POST['hospital']
@@ -71,40 +72,99 @@ class DocRegistration(View):
             availability = request.POST['availability']
             start = request.POST['start']
             end = request.POST['end']
-            reg = Doctor(users_id=uid ,number=number, gender=gender, hospital=hospital, qualification=qualification, speciality=speciality, availability=availability, start=start, end=end)
-            reg.save()
-            messages.success(request, 'Congratulations!! Successfully registered as a doctor')
-            return render(request, 'mediaid/doctorreg.html', {'message':messages})
+            profilepic = request.POST['propic']
+            try:
+                inr = Doctor.objects.get(users_id=uid)
+            except Doctor.DoesNotExist:
+                inr = None
+            if(inr!=None):
+                messages.warning(request, 'user id already exists')
+                return render(request, 'mediaid/doctorreg.html', {'message':messages})
+            else:  
+                reg = Doctor(users_id=uid ,name=name, number=number, gender=gender, hospital=hospital, qualification=qualification, 
+                         speciality=speciality, availability=availability, start=start, end=end, profilepic=profilepic)
+                reg.save()
+                messages.success(request, 'Congratulations!! Successfully registered as a doctor')
+                return render(request, 'mediaid/doctorreg.html', {'message':messages})
 
+
+@method_decorator(login_required, name='dispatch')
+class InsuranceProviderReg(View):
+    def get(self,request):
+        form = InsuranceRegForm()
+        return render(request, 'mediaid/insurancereg.html' , {'form':form})
+    def post(self, request):
+        form = InsuranceRegForm(request.POST)
+        if form.is_valid():
+            usr = request.user
+            uid = usr.id
+            number = form.cleaned_data['number']
+            name = form.cleaned_data['name']
+            address = form.cleaned_data['address']
+            policy = form.cleaned_data['policy']
+            try:
+                inr = InsuranceProvider.objects.get(users_id=uid)
+            except InsuranceProvider.DoesNotExist:
+                inr = None
+            if(inr!=None):
+                messages.warning(request, 'User id already exists')
+                return render(request, 'mediaid/insurancereg.html', {'message':messages})       
+            else:         
+                reg = InsuranceProvider(users_id=uid, name=name,number=number, address=address, policy=policy)
+                reg.save()
+                messages.success(request, 'Congratulations!! Successfully Registered')
+                return render(request, 'mediaid/insurancereg.html' , {'form':form})
+        else:
+            messages.warning(request, 'Sorry!! Invalid Form Content')
+            return render(request, 'mediaid/insurancereg.html' , {'form':form})
+        
 
 @method_decorator(login_required, name='dispatch')
 class PatRegistration(View):
     def get(self,request):
-        return render(request, 'mediaid/patientreg.html')
+        ins = InsuranceProvider.objects.all()
+        return render(request, 'mediaid/patientreg.html',{'ins':ins})
     def post(self, request):
         if request.method == "POST":
             usr = request.user
             uid = usr.id
+            name = request.POST['name']
+            insurance = request.POST['insurance']
             number = request.POST['num']
             gender = request.POST['gender']
-            hospital = request.POST['hospital']
-            qualification = request.POST['qualification']
-            speciality = request.POST['speciality']
-            availability = request.POST['availability']
-            start = request.POST['start']
-            end = request.POST['end']
-            reg = Doctor(users_id=uid ,number=number, gender=gender, hospital=hospital, qualification=qualification, speciality=speciality, availability=availability, start=start, end=end)
-            reg.save()
-            messages.success(request, 'Congratulations!! Successfully registered as a patient')
-            return render(request, 'mediaid/patientreg.html', {'message':messages})
-
+            birthdate = request.POST['birthday']
+            blood = request.POST['blood']
+            medication = request.POST['medication']
+            disease = request.POST['disease']
+            allergy = request.POST['allergy']
+            profilepic = request.POST['propic']
+            insp = InsuranceProvider.objects.filter(id__icontains=insurance)
+            ins = InsuranceProvider.objects.all()
+            if(insp):
+                try:
+                    inr = Patient.objects.get(users_id=uid)
+                except Patient.DoesNotExist:
+                    inr = None
+                if(inr!=None):
+                    messages.warning(request, 'user id already exists')
+                    return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
+                else:  
+                    reg = Patient(users_id=uid ,name=name, number=number, gender=gender, insurance=insurance, medication=medication, 
+                            disease=disease, birthdate=birthdate, blood=blood, allergy=allergy, profilepic=profilepic)
+                    reg.save()
+                    messages.success(request, 'Congratulations!! Successfully registered as a doctor')
+                    return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
+            else:
+                messages.warning(request, 'Insurance does not company exist')
+                return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
 
 
 def search_view(request):
     search = request.GET['search']
     if len(search)>0:
-        doc = User.objects.filter(username__icontains=search)
-        params = {'doc':doc}
+        doc = Doctor.objects.filter(name__icontains=search) | Doctor.objects.filter(id__icontains=search)
+        pat = Patient.objects.filter(name__icontains=search) | Patient.objects.filter(id__icontains=search) 
+        params = {'doc':doc, 'pat':pat}
         return render(request,'mediaid/doctorslist.html', params)
     else:
         return render(request,'mediaid/doctorslist.html')

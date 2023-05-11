@@ -9,7 +9,7 @@
 		{% for doc in doc %}
 		<div class="card_item">
 			<div class="card_inner">
-				<img src="{{doc.upload.url}}">
+				<img src="{{doc.profilepic.url}}">
 				<div class="role_name" style="font-weight:800;font-size: 15px;">Doctor Id : {{doc.id}}</div>
 				<div class="role_name" style="font-weight:800;font-size: 15px;">Name : {{request.user.username}}</div>
 				<div class="role_name" style="font-weight:800;font-size: 15px;">Hospital : {{doc.hospital}}</div>
@@ -23,7 +23,28 @@
 	{% else %}
 	<h4 class="text-center alert alert-danger"> No Doctors Found</h4>
 	{% endif %}
+</div>
+<div class="wrapper" style="padding-top:10px">
+	<div class="header">Search results for Patients</div>
+	{% if pat %}
+	<div class="cards_wrap">
+		{% for pat in pat %}
+		<div class="card_item">
+			<div class="card_inner">
+				<img src="{{doc.profilepic.url}}">
+				<div class="role_name" style="font-weight:800;font-size: 15px;">Patient Id : {{doc.id}}</div>
+				<div class="role_name" style="font-weight:800;font-size: 15px;">Name : {{request.user.username}}</div>
+				<div class="role_name" style="font-weight:800;font-size: 15px;">Hospital : {{doc.hospital}}</div>
+				<div class="role_name" style="font-weight:800;font-size: 15px;">Number : {{doc.number}}</div>
+			</div>
+            <a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
+			margin-top:5px" type="submit" href="#">Take Appointment</a>
+		</div>
+		{% endfor %}
+	</div>
+	{% else %}
+	<h4 class="text-center alert alert-danger"> No Patients Found</h4>
+	{% endif %}
 </div>  
 </div>
-
 {% endblock main-content %}

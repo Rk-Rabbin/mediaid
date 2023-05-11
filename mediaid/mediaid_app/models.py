@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 
 Gender = (
     ('Male','Male'),
-    ('Female','Female'),)
+    ('Female','Female'),
+    ('Others','Othes'))
 
 class InsuranceProvider(models.Model):
     users = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=40)
     number = models.CharField(max_length=20)
+    address = models.CharField(max_length=100)
     policy = models.TextField()
 
 
@@ -19,6 +21,7 @@ class Doctor(models.Model):
     name = models.CharField(max_length=40)
     gender = models.CharField(choices=Gender, default='choose one', max_length=10)
     number = models.CharField(max_length=20)
+    licensenum = models.CharField(max_length=30)
     hospital = models.CharField(max_length=50)
     speciality = models.TextField(max_length=100)
     qualification = models.TextField(max_length=100)

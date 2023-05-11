@@ -17,31 +17,36 @@
          {% endfor %}
         {% endif %}
         {% csrf_token %}
-            <label for="num">Number</label>
-            <input type="text" id="num" name="num" placeholder="Number" style="border-radius:10px;height:45px; width:400px">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Name" style="border-radius:10px;height:45px; width:400px" required>
+
+            <br><label for="num">Number</label>
+            <input type="text" id="num" name="num" placeholder="Number" style="border-radius:10px;height:45px; width:400px" required>
             <br><label for="gender">Gender:</label><br>
-            <select name="gender" id="gender" style="font-size:0px">
+            <select name="gender" id="gender" style="font-size:0px" required>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Others">Others</option>
             </select><br>
             <br><label for="hospital">Hospital</label>
-            <input type="text" id="hospital" name="hospital" placeholder="Hospital" style="border-radius:10px;height:45px; width:400px"><br>
+            <input type="text" id="hospital" name="hospital" placeholder="Hospital" style="border-radius:10px;height:45px; width:400px" required><br>
             
             <br><label for="qualification">Qualification</label>
-            <textarea id="qualification" name="qualification" rows="2" cols="50" placeholder="Qualification" style="border-radius:10px; width:400px"></textarea>
+            <textarea id="qualification" name="qualification" rows="2" cols="50" placeholder="Qualification" style="border-radius:10px; width:400px" required></textarea>
 
             <br><label for="speciality">Speciality</label>
-            <textarea id="speciality" name="speciality" rows="2" cols="50" placeholder="Speciality" style="border-radius:10px; width:400px"></textarea>
+            <textarea id="speciality" name="speciality" rows="2" cols="50" placeholder="Speciality" style="border-radius:10px; width:400px" required></textarea>
             
             <br><label for="availability">Availability</label>
-            <input type="text" id="availability" name="availability" placeholder="Sat-Fri" style="border-radius:10px;height:45px; width:400px">
+            <input type="text" id="availability" name="availability" placeholder="Sat-Fri" style="border-radius:10px;height:45px; width:400px" required>
 
             <br><label for="start">Starting Time</label>
-            <input type="text" id="start" name="start" placeholder="opens at" style="border-radius:10px;height:45px; width:400px">
+            <input type="text" id="start" name="start" placeholder="opens at" style="border-radius:10px;height:45px; width:400px" required>
 
             <br><label for="end">Ending Time</label>
-            <input type="text" id="end" name="end" placeholder="closes at" style="border-radius:10px;height:45px; width:400px">
+            <input type="text" id="end" name="end" placeholder="closes at" style="border-radius:10px;height:45px; width:400px" required><br>
+
+            <br><input type="file" id="propic" name="propic" required>
 
          <br><input type="submit" style="display: inline-block;padding: 8px 30px;background-color: #4A8693;color:black;border-radius: 45px;
          -webkit-transition: all 0.3s;transition: all 0.3s;border: none; margin-top:50px; margin-left:150px" value="Register"> <br>

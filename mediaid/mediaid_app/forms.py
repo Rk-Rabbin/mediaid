@@ -5,7 +5,7 @@ from django.utils.translation import gettext, gettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
-from .models import Doctor, Patient, InsuranceProvider, Prescription, Gender
+from .models import Doctor, Patient, InsuranceProvider, Prescription
 
 class RegistrationForm(UserCreationForm):
         email = forms.CharField(label="Email", required=True, widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'Email', 'style':'opacity:0.8'}))
@@ -39,3 +39,15 @@ class MySetPasswordForm(SetPasswordForm):
     'class':'form-control'}),help_text = password_validation.password_validators_help_text_html())
     new_password2 = forms.CharField(label=_("Confirm New Password"), strip=False, widget=forms.PasswordInput(attrs={'autocomplete':'new-password',
     'class':'form-control'}))
+
+
+class InsuranceRegForm(forms.ModelForm):
+    class Meta:
+        model = InsuranceProvider
+        fields = ['name' ,'number' ,'address', 'policy']
+        widgets = {
+                    'name':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Company Name'}),
+                    'number':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Phone Number'}),
+                    'address':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Address'}),
+                    'policy':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Policy Description'})
+                    }
