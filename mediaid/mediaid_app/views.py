@@ -9,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import User, Doctor, Patient, Prescription, InsuranceProvider
 from .forms import *
+import os
+from PIL import Image
+from django.conf import settings
 
 # Create your views here.
 def LandingPage(request):
@@ -64,6 +67,7 @@ class DocRegistration(View):
             availability = request.POST['availability']
             start = request.POST['start']
             end = request.POST['end']
+            fees = request.POST['fees']
             profilepic = request.POST['propic']
             try:
                 inr = Doctor.objects.get(users_id=uid)
@@ -74,7 +78,7 @@ class DocRegistration(View):
                 return render(request, 'mediaid/doctorreg.html', {'message':messages})
             else:  
                 reg = Doctor(users_id=uid ,name=name, number=number, gender=gender, hospital=hospital, qualification=qualification, 
-                         speciality=speciality, availability=availability, start=start, end=end, profilepic=profilepic)
+                         speciality=speciality, availability=availability, start=start, end=end, fees=fees, profilepic=profilepic)
                 reg.save()
                 messages.success(request, 'Congratulations!! Successfully registered as a doctor')
                 return render(request, 'mediaid/doctorreg.html', {'message':messages})
@@ -130,9 +134,28 @@ class PatRegistration(View):
             disease = request.POST['disease']
             allergy = request.POST['allergy']
             profilepic = request.POST['propic']
-            insp = InsuranceProvider.objects.filter(id__icontains=insurance)
             ins = InsuranceProvider.objects.all()
-            if(insp):
+            if len(insurance)>0:
+                insp = InsuranceProvider.objects.filter(id__icontains=insurance)
+                if(insp):
+                    try:
+                        inr = Patient.objects.get(users_id=uid)
+                    except Patient.DoesNotExist:
+                        inr = None
+                    if(inr!=None):
+                        messages.warning(request, 'user id already exists')
+                        return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
+                    else:  
+                        reg = Patient(users_id=uid ,name=name, number=number, gender=gender, insurance_id=insurance, medications=medication, 
+                                disease=disease, birthdate=birthdate, blood=blood, allergy=allergy, profilepic=profilepic)
+                        reg.save()
+                        messages.success(request, 'Congratulations!! Successfully registered as a patient')
+                        return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
+                else:
+                    messages.warning(request, 'Insurance does not company exist')
+                    return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
+            else:
+                insurance = -1
                 try:
                     inr = Patient.objects.get(users_id=uid)
                 except Patient.DoesNotExist:
@@ -141,14 +164,11 @@ class PatRegistration(View):
                     messages.warning(request, 'user id already exists')
                     return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
                 else:  
-                    reg = Patient(users_id=uid ,name=name, number=number, gender=gender, insurance_id=insurance, medications=medication, 
-                            disease=disease, birthdate=birthdate, blood=blood, allergy=allergy, profilepic=profilepic)
+                    reg = Patient(users_id=uid ,name=name, number=number, gender=gender, insurance=insurance, medications=medication, 
+                    disease=disease, birthdate=birthdate, blood=blood, allergy=allergy, profilepic=profilepic)
                     reg.save()
                     messages.success(request, 'Congratulations!! Successfully registered as a patient')
                     return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
-            else:
-                messages.warning(request, 'Insurance does not company exist')
-                return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
 
 
 
@@ -159,9 +179,7 @@ class PrescriptionUp(View):
         ins = Doctor.objects.all()
         return render(request, 'mediaid/prescriptionup.html' , {'ins':ins})
     def post(self, request):
-        # form = PrescriptionUpForm(request.POST)
         ins = Doctor.objects.all()
-        # if form.is_valid():
         if request.method == "POST":
             usr = request.user
             uid = usr.id
@@ -178,26 +196,31 @@ class PrescriptionUp(View):
                 pat = Patient.objects.get(users_id=uid)
             except Patient.DoesNotExist:
                 pat = None
-            try:
-                text = pytesseract.image_to_string(Image.open(upload))
-                text = text.encode("ascii", "ignore")
-                text = text.decode()
-            except:
-                text = None
             if(inr==None):
                 messages.warning(request, 'Doctor does not exists')
                 return render(request, 'mediaid/prescriptionup.html', {'message':messages, 'ins':ins})
-            elif(pat==None):
+            if(pat==None):
                 messages.warning(request, 'First open patient id')
                 return redirect('patient-registration')       
-            elif(text==None):
+            if(text==None):
                 messages.warning(request, 'Could not convert prescription into text')
-                return render(request, 'mediaid/prescriptionup.html', {'message':messages, 'ins':ins})
+                return render(request, 'mediaid/prescriptionup.html', {'message':messages, 'ins':ins, 't':upload})
             else:         
-                reg = Prescription(users_id=uid, doctor=doctor,patient=pat.id, disease=disease, hospital=hospital, upload=upload, presctext=text)
+                reg = Prescription(users_id=uid, doctor_id=doctor,patient_id=pat.id, disease=disease, hospital=hospital, upload=upload, presctext=text)
                 reg.save()
+                p = Prescription.objects.last()
+                img_to_txt(upload, p.id)
                 messages.success(request, 'Congratulations!! Successfully Uploaded')
                 return render(request, 'mediaid/prescriptionup.html' , {'message':messages, 'ins':ins})
+            # image = request.POST['upload']
+            # path = settings.MEDIA_ROOT
+            # path = path,"/",image
+            # image = Image.open(path)
+            # image_text = pytesseract.image_to_string(image)
+            # text = image_text
+            # reg = Prescription(users_id=uid, doctor_id=doctor,patient_id=pat.id, disease=disease, hospital=hospital, upload=upload, presctext=text)
+            # messages.success(request, 'Congratulations!! Successfully Uploaded')
+            # return render(request, 'mediaid/prescriptionup.html' , {'message':messages, 'ins':ins})
         else:
             messages.warning(request, 'Sorry!! Invalid Form Content')
             return render(request, 'mediaid/prescriptionup.html' , {'message':messages, 'ins':ins})
@@ -288,7 +311,7 @@ def updatepat(request, id):
             ins = InsuranceProvider.objects.all()
             if fm.is_valid():
                 insurance = fm.cleaned_data['insurance']
-                insurance = insurance.id
+                # insurance = insurance.id
                 insp = InsuranceProvider.objects.filter(id__icontains=insurance)
                 if(insp):
                     fm.save()
@@ -306,6 +329,35 @@ def updatepat(request, id):
     return render(request, 'mediaid/updatepat.html', {'form':fm, 'ins':ins})
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+def del_patient(request, id):
+    if request.method == 'POST':
+        try:
+            dl = Patient.objects.get(id=id)
+            dl.delete()
+            messages.success(request,"successfully deleted patient profile!!")
+            return render(request, 'mediaid/patprofile.html',{'message':messages})
+        except:
+            messages.warning(request,"could not delete patient profile!!")
+            return render(request, 'mediaid/patprofile.html',{'message':messages, 'pat':dl})
+        
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+def del_doctor(request, id):
+    if request.method == 'POST':
+        try:
+            dl = Doctor.objects.get(id=id)
+            dl.delete()
+            messages.success(request,"successfully deleted doctor profile!!")
+            return render(request, 'mediaid/docprofile.html',{'message':messages})
+        except:
+            messages.warning(request,"could not delete doctor profile!!")
+            return render(request, 'mediaid/docprofile.html',{'message':messages, 'doc':dl})
+
+
 def mydoctors(request):
     return render(request, 'mediaid/mydoctors.html')
 
@@ -319,7 +371,26 @@ def prescription(request):
     return render(request, 'mediaid/prescription.html')
 
 def doctorsprofile(request):
-    return render(request, 'mediaid/doctorsprofile.html')
+    usr = request.user
+    uid = usr.id
+    try:
+        doc = Doctor.objects.get(users_id=uid)
+    except Doctor.DoesNotExist:
+        doc = None
+    if(doc!=None):
+        return render(request, 'mediaid/doctorsprofile.html',{'doc':doc})
+    else:
+        return render(request, 'mediaid/doctorsprofile.html')
 
 def patientprofile(request):
     return render(request, 'mediaid/patientprofile.html')
+
+def img_to_txt(img, id):
+    image_text = pytesseract.image_to_string(Image.open("media/"+img))
+    text = image_text
+    try:
+        pr = Prescription.objects.get(id=id)
+        pr.presctext = text
+        pr.save()
+    except Prescription.DoesNotExist:
+        print("Could Not save")

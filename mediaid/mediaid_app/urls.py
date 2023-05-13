@@ -30,6 +30,8 @@ urlpatterns = [
     path('prescription-upload/',views.PrescriptionUp.as_view(), name='prescription-upload'),
     path('updatedoctor/<id>', views.updatedoc , name='updatedoc'),
     path('updatepatient/<id>', views.updatepat , name='updatepat'),
+    path('del_patient/<id>', views.del_patient , name='del_patient'),
+    path('del_doctor/<id>', views.del_doctor , name='del_doctor'),
 
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='mediaid/login.html', authentication_form=LoginForm), name='login'),

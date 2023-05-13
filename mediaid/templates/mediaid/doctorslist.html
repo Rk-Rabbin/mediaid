@@ -11,12 +11,14 @@
 			<div class="card_inner">
 				<img src="{{doc.profilepic.url}}">
 				<div class="role_name" style="font-weight:800;font-size: 15px;">Doctor Id : {{doc.id}}</div>
-				<div class="role_name" style="font-weight:800;font-size: 15px;">Name : {{request.user.username}}</div>
+				<div class="role_name" style="font-weight:800;font-size: 15px;">Name : {{doc.name}}</div>
 				<div class="role_name" style="font-weight:800;font-size: 15px;">Hospital : {{doc.hospital}}</div>
 				<div class="role_name" style="font-weight:800;font-size: 15px;">Number : {{doc.number}}</div>
+				<a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
+				margin-top:5px" type="submit" href="{% url 'doctorsprofile' %}">Take Appointment</a>
 			</div>
-            <a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
-			margin-top:5px" type="submit" href="#">Take Appointment</a>
+            {% comment %} <a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
+			margin-top:5px" type="submit" href="{% url 'doctorsprofile' %}">Take Appointment</a> {% endcomment %}
 		</div>
 		{% endfor %}
 	</div>
@@ -31,14 +33,15 @@
 		{% for pat in pat %}
 		<div class="card_item">
 			<div class="card_inner">
-				<img src="{{doc.profilepic.url}}">
-				<div class="role_name" style="font-weight:800;font-size: 15px;">Patient Id : {{doc.id}}</div>
-				<div class="role_name" style="font-weight:800;font-size: 15px;">Name : {{request.user.username}}</div>
-				<div class="role_name" style="font-weight:800;font-size: 15px;">Hospital : {{doc.hospital}}</div>
-				<div class="role_name" style="font-weight:800;font-size: 15px;">Number : {{doc.number}}</div>
+				<img src="{{pat.profilepic.url}}">
+				<div class="role_name" style="font-weight:800;font-size: 15px;">Patient Id : {{pat.id}}</div>
+				<div class="role_name" style="font-weight:800;font-size: 15px;">Name : {{pat.ame}}</div>
+				<div class="role_name" style="font-weight:800;font-size: 15px;">Number : {{pat.number}}</div>
+				<a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
+				margin-top:5px" type="submit" href="#">View</a>
 			</div>
-            <a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
-			margin-top:5px" type="submit" href="#">Take Appointment</a>
+            {% comment %} <a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
+			margin-top:5px" type="submit" href="#">View</a> {% endcomment %}
 		</div>
 		{% endfor %}
 	</div>

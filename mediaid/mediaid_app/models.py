@@ -35,7 +35,7 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
     users = models.OneToOneField(User, on_delete=models.CASCADE)
-    insurance = models.ForeignKey(InsuranceProvider, on_delete=models.CASCADE)
+    insurance = models.CharField(max_length=10, default=-1)
     name = models.CharField(max_length=40)
     number = models.CharField(max_length=20)
     birthdate = models.DateField()

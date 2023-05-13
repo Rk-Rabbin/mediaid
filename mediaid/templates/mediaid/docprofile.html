@@ -7,6 +7,11 @@
     <div class="container my-5">
      <div class="row">
       <div class="col-sm-6 text-center align-self-center">
+        {% if messages %}
+        {% for message in messages %}
+              <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+        {% endfor %}
+     {% endif %}
        <img src="{{doc.profilepic.url}}" alt="" class="img-fluid img-thumbnail">
         <h4>Name : {{doc.name}}</h4>
         <hr>
@@ -32,9 +37,18 @@
         <h4>Fees: {{doc.fees}}</h4> <br>
         {% comment %} <a href="{% url 'updategarage' mg.garage_id %}" class="btn btn-info btn-sm" style="height:37px">Edit</a> {% endcomment %}
         <a href="{% url 'updatedoc' doc.id %}" class="btn btn-info shadow px-5 py-2 ms-4">Edit</a>
+        <form action="{% url 'del_doctor' doc.id %}" method="post" class="d-inline">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-danger shadow px-5 py-2 ms-4" value="Delete">
+      </form>
         </div>
       {% else %}
         <h1 class="text-center alert alert-danger">You are not registered as a Doctor</h1>
+        {% if messages %}
+        {% for message in messages %}
+              <p {% if message.tags %}class="text-center alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+        {% endfor %}
+     {% endif %}
     </div>
     {% endif %}
 </div>

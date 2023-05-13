@@ -7,6 +7,11 @@
     <div class="container my-5">
      <div class="row">
       <div class="col-sm-6 text-center align-self-center">
+        {% if messages %}
+        {% for message in messages %}
+              <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+        {% endfor %}
+     {% endif %}
        <img src="{{pat.profilepic.url}}" alt="" class="img-fluid img-thumbnail">
         <h4>Name : {{pat.name}}</h4>
         <hr>
@@ -28,11 +33,20 @@
         <p>Gender: {{pat.gender}}</p> <br>
         <p>Blood type: {{pat.blood}}</p> <br>
         <p>Allergies : {{pat.allergy}}</p><br>
-        <p>Insurance Id : {{pat.insurance_id}}</p><br>
+        <p>Insurance Id : {% if pat.insurance == "-1" %}No Insurance Taken{% else %}{{pat.insurance}}{% endif %}</p><br>
         <a href="{% url 'updatepat' pat.id %}" class="btn btn-info shadow px-5 py-2 ms-4">Edit</a>
+        <form action="{% url 'del_patient' pat.id %}" method="post" class="d-inline">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-danger shadow px-5 py-2 ms-4" value="Delete">
+      </form>
         </div>
       {% else %}
         <h1 class="text-center alert alert-danger">You are not registered as a patient</h1>
+        {% if messages %}
+        {% for message in messages %}
+              <p {% if message.tags %}class="text-center alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+        {% endfor %}
+     {% endif %}
     </div>
     {% endif %}
 </div>

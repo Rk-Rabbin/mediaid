@@ -17,7 +17,12 @@ class InsuranceProviderAdmin(admin.ModelAdmin):
     list_filter = ('id','number')
     search_fields = ('id','name', 'number')
 
+class PrescriptionAdmin(admin.ModelAdmin):
+    list_display = ('id','users', 'doctor', 'patient', 'disease', 'date', 'hospital', 'upload', 'presctext')
+    list_filter = ('id','users', 'doctor', 'patient')
+    search_fields = ('id','users', 'doctor', 'patient')    
+
 admin.site.register(Doctor, DoctorAdmin)
 admin.site.register(Patient,PatientAdmin)
 admin.site.register(InsuranceProvider, InsuranceProviderAdmin)
-admin.site.register(Prescription)
+admin.site.register(Prescription,PrescriptionAdmin)
