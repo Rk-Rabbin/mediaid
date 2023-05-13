@@ -28,6 +28,7 @@ class Doctor(models.Model):
     availability = models.CharField(max_length=20)
     start = models.CharField(max_length=10)
     end = models.CharField(max_length=10)
+    fees = models.CharField(max_length=5)
     profilepic = models.FileField()
 
 
@@ -49,12 +50,14 @@ class Patient(models.Model):
 
 
 class Prescription(models.Model):
+    users = models.ForeignKey(User, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     disease = models.TextField()
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     hospital = models.CharField(max_length=50)
     upload = models.FileField()
+    presctext = models.TextField()
 
 
 

@@ -51,3 +51,36 @@ class InsuranceRegForm(forms.ModelForm):
                     'address':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Address'}),
                     'policy':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Policy Description'})
                     }
+        
+
+class DoctorUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Doctor
+        fields = ['name' ,'number' ,'hospital', 'speciality', 'qualification', 'availability', 'start', 'end', 'fees', 'profilepic']
+        widgets = {
+                    'name':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Name'}),
+                    'number':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Number'}),
+                    'hospital':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Hospital'}),
+                    'speciality':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Speciality'}),
+                    'qualification':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Qualification'}),
+                    'availability':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Availability'}),
+                    'start':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Start'}),
+                    'end':forms.TextInput(attrs={'class':'form-control', 'placeholder':'End'}),
+                    'fees':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Fees'}),
+                    'profilepic':forms.FileInput(attrs={'class':'form-control'}),
+                    }
+        
+
+class PatientUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Patient
+        fields = ['name' ,'number' ,'medications', 'disease', 'allergy', 'insurance', 'profilepic']
+        widgets = {
+                    'name':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Name'}),
+                    'number':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Number'}),
+                    'insurance':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Insurance company id'}),
+                    'medications':forms.Textarea(attrs={'class':'form-control', 'placeholder':'medications'}),
+                    'disease':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Disease'}),
+                    'allergy':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Allergy'}),
+                    'profilepic':forms.FileInput(attrs={'class':'form-control'}),
+                    }

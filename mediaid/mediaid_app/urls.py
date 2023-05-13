@@ -21,9 +21,15 @@ urlpatterns = [
     path('prescription/', views.prescription , name='prescription'),
     path('doctorsprofile/', views.doctorsprofile , name='doctorsprofile'),
     path('patientprofile/', views.patientprofile , name='patientprofile'),
+     path('docprofile/', views.docprofile , name='docprofile'),
+     path('patprofile/', views.patprofile , name='patprofile'),
+
     path('doctor-registration/',views.DocRegistration.as_view(), name='doctor-registration'),
     path('patient-registration/',views.PatRegistration.as_view(), name='patient-registration'),
     path('insurance-registration/',views.InsuranceProviderReg.as_view(), name='insurance-registration'),
+    path('prescription-upload/',views.PrescriptionUp.as_view(), name='prescription-upload'),
+    path('updatedoctor/<id>', views.updatedoc , name='updatedoc'),
+    path('updatepatient/<id>', views.updatepat , name='updatepat'),
 
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='mediaid/login.html', authentication_form=LoginForm), name='login'),

@@ -9,8 +9,9 @@
   <div class="col-sm-2 border-end">
    <ul class="list-unstyled">
     <li class="d-grid"><a href="{% url 'profile' %}" class="btn {{active}}">Profile</a></li>
-    <li class="d-grid"><a href="{% url 'prescription' %}" class="btn">Prescription</a></li>
-    <li class="d-grid"><a href="#" class="btn">Appointment</a></li>
+    <li class="d-grid"><a href="{% url 'docprofile' %}" class="btn">Doctor Profile</a></li>
+    <li class="d-grid"><a href="{% url 'patprofile' %}" class="btn">Patient Profile</a></li>
+    <li class="d-grid"><a href="{% url 'prescription-upload' %}"class="btn">Add Prescription</a></li>
     <li class="d-grid"><a href="{% url 'healthhistory' %}" class="btn">History</a></li>
     <li class="d-grid"><a href="{% url 'changepassword' %}" class="btn">Change Password</a></li>
     <li class="d-grid"><a href="{% url 'logout' %}" class="btn">Logout</a></li>
@@ -25,8 +26,6 @@
        <p>User Id: {{usr.id}}</p>
        <p>Name: {{usr.username}}</p>
        <p>Email: {{usr.email}}</p>
-       <p>Doctors Id: {{doc.id}}</p>
-       <p>Patient Id: </p>
       </div>
      </div>
     </div>
