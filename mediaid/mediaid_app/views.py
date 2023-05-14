@@ -242,13 +242,6 @@ def search_view(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def patientsearch_view(request):
-    # search = request.GET['search']
-    # if len(search)>0:
-    #     garages = Doctors.objects.filter(area__icontains=search)
-    #     params = {'garages':garages}
-    #     return render(request,'mediaid/garagelist.html', params)
-    # else:
-    #     return render(request,'mediaid/garagelist.html')
     return render(request, 'mediaid/patientlist.html')
 
 
