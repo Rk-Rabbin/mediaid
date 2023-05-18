@@ -11,7 +11,7 @@ urlpatterns = [
     path('profile/', views.ProfilePage , name='profile'),
     path('registration/',views.RegistrationView.as_view(), name='registration'),
     path('services/', views.Services , name='services'),
-    path('contactus/', views.contactus , name='contactus'),
+    path('contactus/', views.ContactUs.as_view() , name='contactus'),
 
     path('search/', views.search_view , name='search'),
     path('patient/search/', views.patientsearch_view , name='patsearch'),
@@ -19,10 +19,14 @@ urlpatterns = [
     path('mypatients/', views.mypatients , name='mypatients'),
     path('healthhistory/', views.healthhistory , name='healthhistory'),
     path('prescription/', views.prescription , name='prescription'),
-    path('doctorsprofile/', views.doctorsprofile , name='doctorsprofile'),
+    path('doctorsprofile/<id>', views.doctorsprofile , name='doctorsprofile'),
     path('patientprofile/', views.patientprofile , name='patientprofile'),
-     path('docprofile/', views.docprofile , name='docprofile'),
-     path('patprofile/', views.patprofile , name='patprofile'),
+    path('docprofile/', views.docprofile , name='docprofile'),
+    path('patprofile/', views.patprofile , name='patprofile'),
+    path('appointment/',views.AppointmentView.as_view(), name='appointment'),
+    path('manageappointment/',views.ManageAppointment.as_view(), name='manageappointment'), 
+    path('appointment/<id>',views.Appointment_View, name='appointment_id'),    
+    
 
     path('doctor-registration/',views.DocRegistration.as_view(), name='doctor-registration'),
     path('patient-registration/',views.PatRegistration.as_view(), name='patient-registration'),
@@ -31,6 +35,8 @@ urlpatterns = [
     path('updatedoctor/<id>', views.updatedoc , name='updatedoc'),
     path('updatepatient/<id>', views.updatepat , name='updatepat'),
     path('del_patient/<id>', views.del_patient , name='del_patient'),
+    path('confirm_pat_del/<id>', views.confirm_pat_del , name='confirm_pat_del'),
+    path('confirm_doc_del/<id>', views.confirm_doc_del , name='confirm_doc_del'),
     path('del_doctor/<id>', views.del_doctor , name='del_doctor'),
 
 

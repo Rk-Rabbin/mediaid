@@ -35,10 +35,7 @@
         <p>Allergies : {{pat.allergy}}</p><br>
         <p>Insurance Id : {% if pat.insurance == "-1" %}No Insurance Taken{% else %}{{pat.insurance}}{% endif %}</p><br>
         <a href="{% url 'updatepat' pat.id %}" class="btn btn-info shadow px-5 py-2 ms-4">Edit</a>
-        <form action="{% url 'del_patient' pat.id %}" method="post" class="d-inline">
-          {% csrf_token %}
-          <input type="submit" class="btn btn-danger shadow px-5 py-2 ms-4" value="Delete">
-      </form>
+        <a href="{% url 'confirm_pat_del' pat.id %}" class="btn btn-danger shadow px-5 py-2 ms-4">Delete</a>
         </div>
       {% else %}
         <h1 class="text-center alert alert-danger">You are not registered as a patient</h1>

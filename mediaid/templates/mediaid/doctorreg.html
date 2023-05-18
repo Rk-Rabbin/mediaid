@@ -10,7 +10,7 @@
          Doctors Regitration Form
       </div>
       <hr>
-      <form action="" method="post" novalidate class="shadow p-5"  style="color: black; font-family:'Copperplate'; font-size:20px; margin-top:0px">
+      <form action="" method="post" enctype="multipart/form-data" novalidate class="shadow p-5"  style="color: black; font-family:'Copperplate'; font-size:20px; margin-top:0px">
         {% if messages %}
          {% for message in messages %}
                <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
@@ -41,15 +41,20 @@
             <input type="text" id="availability" name="availability" placeholder="Sat-Fri" style="border-radius:10px;height:45px; width:400px" required>
 
             <br><label for="start">Starting Time</label>
-            <input type="text" id="start" name="start" placeholder="opens at" style="border-radius:10px;height:45px; width:400px" required>
+            <input type="time" id="start" name="start" placeholder="opens at" style="border-radius:10px;height:45px; width:400px" required>
 
             <br><label for="end">Ending Time</label>
-            <input type="text" id="end" name="end" placeholder="closes at" style="border-radius:10px;height:45px; width:400px" required><br>
+            <input type="time" id="end" name="end" placeholder="closes at" style="border-radius:10px;height:45px; width:400px" required><br>
 
             <br><label for="fees">Fees</label>
             <input type="text" id="fees" name="fees" placeholder="Fees" style="border-radius:10px;height:45px; width:400px" required><br>
 
             <br><input type="file" id="propic" name="propic" required>
+            {% comment %} {% for fm in form %}
+            <div class="form-group">
+            {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small><br>
+            </div>
+            {% endfor %} {% endcomment %}
 
          <br><input type="submit" style="display: inline-block;padding: 8px 30px;background-color: #4A8693;color:black;border-radius: 45px;
          -webkit-transition: all 0.3s;transition: all 0.3s;border: none; margin-top:50px; margin-left:150px" value="Register"> <br>

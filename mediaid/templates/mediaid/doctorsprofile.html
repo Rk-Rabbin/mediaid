@@ -31,7 +31,7 @@
         <p>Closes : @{{doc.end}}</p><br>
         <h4>Fees: {{doc.fees}}</h4> <br>
         {% comment %} <a href="{% url 'updategarage' mg.garage_id %}" class="btn btn-info btn-sm" style="height:37px">Edit</a> {% endcomment %}
-        <a href="#" class="btn btn-info shadow px-5 py-2 ms-4">Take Appointment</a>
+        <a href="{% url 'appointment_id' doc.id %}" class="btn btn-info shadow px-5 py-2 ms-4">Take Appointment</a>
         </div>
       {% else %}
         <h1 class="text-center alert alert-danger">Doctor not found</h1>

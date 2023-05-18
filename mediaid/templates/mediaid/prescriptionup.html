@@ -7,7 +7,6 @@
  <div class="row">
     <div class="col">
     <h2 class="text-center alert alert-warning">Doctor's List</h2>
-    {{t}}
     {% if ins %} 
     <table class="table table-hover">
         <thead>
@@ -37,7 +36,7 @@
                 Prescription Form
              </div>
              <hr>
-             <form action="" method="post" novalidate class="shadow p-5"  style="color: black; font-family:'Copperplate'; font-size:20px; margin-top:0px">
+             <form action="" method="post" enctype="multipart/form-data" novalidate class="shadow p-5"  style="color: black; font-family:'Copperplate'; font-size:20px; margin-top:0px">
                {% if messages %}
                 {% for m in messages %}
                       <p {% if m.tags %}class="alert alert-{{m.tags}} mb-5"{% endif %}>{{m}}</p>

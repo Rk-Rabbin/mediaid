@@ -37,10 +37,11 @@
         <h4>Fees: {{doc.fees}}</h4> <br>
         {% comment %} <a href="{% url 'updategarage' mg.garage_id %}" class="btn btn-info btn-sm" style="height:37px">Edit</a> {% endcomment %}
         <a href="{% url 'updatedoc' doc.id %}" class="btn btn-info shadow px-5 py-2 ms-4">Edit</a>
-        <form action="{% url 'del_doctor' doc.id %}" method="post" class="d-inline">
+        <a href="{% url 'confirm_doc_del' doc.id %}" class="btn btn-danger shadow px-5 py-2 ms-4">Delete</a>
+        {% comment %} <form action="{% url 'del_doctor' doc.id %}" method="post" class="d-inline">
           {% csrf_token %}
           <input type="submit" class="btn btn-danger shadow px-5 py-2 ms-4" value="Delete">
-      </form>
+      </form> {% endcomment %}
         </div>
       {% else %}
         <h1 class="text-center alert alert-danger">You are not registered as a Doctor</h1>

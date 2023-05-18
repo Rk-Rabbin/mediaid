@@ -39,7 +39,7 @@
                 Patient Update Form
              </div>
              <hr>
-             <form action="" method="post" novalidate class="shadow p-5"  style="color: black; font-family:'Copperplate'; font-size:20px; margin-top:0px">
+             <form action="" method="post" enctype="multipart/form-data" novalidate class="shadow p-5"  style="color: black; font-family:'Copperplate'; font-size:20px; margin-top:0px">
                {% if messages %}
                 {% for message in messages %}
                       <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>

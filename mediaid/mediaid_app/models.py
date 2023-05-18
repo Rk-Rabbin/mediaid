@@ -26,8 +26,8 @@ class Doctor(models.Model):
     speciality = models.TextField(max_length=100)
     qualification = models.TextField(max_length=100)
     availability = models.CharField(max_length=20)
-    start = models.CharField(max_length=10)
-    end = models.CharField(max_length=10)
+    start = models.TimeField()
+    end = models.TimeField()
     fees = models.CharField(max_length=5)
     profilepic = models.FileField()
 
@@ -58,6 +58,21 @@ class Prescription(models.Model):
     hospital = models.CharField(max_length=50)
     upload = models.FileField()
     presctext = models.TextField()
+
+
+class Appointment(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    doctor_name = models.CharField(max_length=30)
+    patient_name = models.CharField(max_length=30)
+    email = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+    disease = models.TextField(blank=True)
+    expected_date = models.DateField()
+    expected_time = models.TimeField()
+    requested_at = models.DateField(auto_now_add=True)
+    accepted = models.BooleanField(default=False)
+
 
 
 

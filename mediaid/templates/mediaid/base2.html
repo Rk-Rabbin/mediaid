@@ -42,6 +42,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'mediaid/css/bootstrap.css' %}" />
     <!--b2 end-->
   </head>
+  <style>
+    {% block style %}{% endblock style %}
+  </style>
   <body>
     <div class="hero_area">
     <header class="header_section">
@@ -63,7 +66,7 @@
             <a class="nav-link" style="font-size:20px; font-weight:bold; color:black" aria-current="page" href="{% url 'prescription' %}">Prescription</a>
             </li>&nbsp;&nbsp;&nbsp;&nbsp;
             <li class="nav-item">
-            <a class="nav-link" style="font-size:20px; font-weight:bold; color:black" aria-current="page" href="#">Appointment</a>
+            <a class="nav-link" style="font-size:20px; font-weight:bold; color:black" aria-current="page" href="{% url 'appointment' %}">Appointment</a>
             </li>&nbsp;&nbsp;&nbsp;&nbsp;
             </ul>
             <form method="get" action="/search" class="d-flex">
@@ -80,7 +83,7 @@
                 <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                     <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                     <li><a class="dropdown-item" href="{% url 'prescription' %}">Prescription</a></li>
-                    <li><a class="dropdown-item" href="#">Appointment</a></li>
+                    <li><a class="dropdown-item" href="{% url 'appointment' %}">Appointment</a></li>
                     <li><a class="dropdown-item" href="{% url 'healthhistory' %}">History</a></li>
                     <li><a class="dropdown-item" href="{% url 'doctor-registration' %}">Doctor Registration</a></li>
                     <li><a class="dropdown-item" href="{% url 'patient-registration' %}">Patient Registration</a></li>

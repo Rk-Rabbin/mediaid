@@ -84,3 +84,12 @@ class PatientUpdateForm(forms.ModelForm):
                     'allergy':forms.Textarea(attrs={'class':'form-control', 'placeholder':'Allergy'}),
                     'profilepic':forms.FileInput(attrs={'class':'form-control'}),
                     }
+
+
+class DoctorForm(forms.ModelForm):
+    class Meta:
+        model = Doctor
+        fields = ['profilepic']
+        widgets = {
+                'profilepic':forms.FileInput(attrs={'class':'form-control'}),
+        }

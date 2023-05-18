@@ -12,6 +12,7 @@
     <li class="d-grid"><a href="{% url 'docprofile' %}" class="btn">Doctor Profile</a></li>
     <li class="d-grid"><a href="{% url 'patprofile' %}" class="btn">Patient Profile</a></li>
     <li class="d-grid"><a href="{% url 'prescription-upload' %}"class="btn">Add Prescription</a></li>
+    {% if doc %} <li class="d-grid"><a href="{% url 'manageappointment' %}" class="btn">Manage Appointments</a></li>{% endif %}
     <li class="d-grid"><a href="{% url 'healthhistory' %}" class="btn">History</a></li>
     <li class="d-grid"><a href="{% url 'changepassword' %}" class="btn">Change Password</a></li>
     <li class="d-grid"><a href="{% url 'logout' %}" class="btn">Logout</a></li>

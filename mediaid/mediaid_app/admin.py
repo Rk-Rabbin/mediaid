@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Doctor, Patient, InsuranceProvider, Prescription
+from .models import Doctor, Patient, InsuranceProvider, Prescription, Appointment
 # Register your models here.
 
 class DoctorAdmin(admin.ModelAdmin):
@@ -20,9 +20,17 @@ class InsuranceProviderAdmin(admin.ModelAdmin):
 class PrescriptionAdmin(admin.ModelAdmin):
     list_display = ('id','users', 'doctor', 'patient', 'disease', 'date', 'hospital', 'upload', 'presctext')
     list_filter = ('id','users', 'doctor', 'patient')
-    search_fields = ('id','users', 'doctor', 'patient')    
+    search_fields = ('id','users', 'doctor', 'patient')
+
+
+class AppointmentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'doctor', 'patient', 'doctor_name', 'patient_name', 'disease', 'email', 'phone', 'expected_date', 'expected_time', 'expected_date', 'accepted')
+    list_filter = ('id', 'doctor', 'patient', 'expected_date', 'expected_time', 'accepted')
+    search_fields = ('id', 'doctor', 'patient', 'doctor_name', 'patient_name', 'expected_date', 'expected_time', 'accepted')        
+
 
 admin.site.register(Doctor, DoctorAdmin)
 admin.site.register(Patient,PatientAdmin)
 admin.site.register(InsuranceProvider, InsuranceProviderAdmin)
 admin.site.register(Prescription,PrescriptionAdmin)
+admin.site.register(Appointment,AppointmentAdmin)
