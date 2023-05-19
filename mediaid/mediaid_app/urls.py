@@ -20,13 +20,15 @@ urlpatterns = [
     path('healthhistory/', views.healthhistory , name='healthhistory'),
     path('prescription/', views.prescription , name='prescription'),
     path('doctorsprofile/<id>', views.doctorsprofile , name='doctorsprofile'),
-    path('patientprofile/<id>', views.patientprofile , name='patientprofile'),
+    path('patientprofile/<id>', views.patientprofile , name='patientprofile'), 
+    path('patprescription/<id>', views.patprescription , name='patprescription'),
     path('docprofile/', views.docprofile , name='docprofile'),
     path('patprofile/', views.patprofile , name='patprofile'),
     path('appointment/',views.AppointmentView.as_view(), name='appointment'),
     path('manageappointment/',views.ManageAppointment.as_view(), name='manageappointment'), 
     path('appointment/<id>',views.Appointment_View, name='appointment_id'),    
     path('appointmentlist/',views.Appointment_List, name='appointmentlist'),    
+    path('chatbot/',views.chatbot, name='chatbot'),    
     
 
     path('doctor-registration/',views.DocRegistration.as_view(), name='doctor-registration'),

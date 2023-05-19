@@ -19,6 +19,7 @@
           </tr>
         </thead>
         <tbody>
+          {% for doc in doc %}
             <tr>
               <th scope="row"><a href="{% url 'doctorsprofile' doc.id %}">{{doc.id}}</a></th>
               <td>{{doc.name}}</td>
@@ -26,6 +27,7 @@
                 <td>{{doc.hospital}}</td>
                 <td>{{doc.speciality}}</td>
             </tr>
+          {% endfor %}
         </tbody>
       </table>
       {% else %}
@@ -51,14 +53,14 @@
                    <label for="pmail">Email</label>
                    <input type="text" id="pmail" name="pmail" placeholder="Email" style="border-radius:10px;height:45px; width:400px" required>
 
-                   <label for="pmail">Phone Number</label>
-                   <input type="text" id="pmail" name="pmail" placeholder="Phone Number" style="border-radius:10px;height:45px; width:400px" required>
+                   <label for="pnum">Phone Number</label>
+                   <input type="text" id="pnum" name="pnum" placeholder="Phone Number" style="border-radius:10px;height:45px; width:400px" required>
 
                    <label for="dname">Doctors Name</label>
-                   <input type="text" id="dname" name="dname" placeholder="Doctors Name" value="{{doc.name}}" style="border-radius:10px;height:45px; width:400px" required>
+                   <input type="text" id="dname" name="dname" placeholder="Doctors Name" value="{{d.name}}" style="border-radius:10px;height:45px; width:400px" required>
 
                    <label for="did">Doctors Id</label>
-                   <input type="text" id="did" name="did" placeholder="Doctors Id" value="{{doc.id}}" style="border-radius:10px;height:45px; width:400px" required>
+                   <input type="text" id="did" name="did" placeholder="Doctors Id" value="{{d.id}}" style="border-radius:10px;height:45px; width:400px" required>
 
                    {% comment %} <br><label for="gender">Gender:</label><br>
                    <select name="gender" id="gender" style="font-size:0px">
@@ -67,7 +69,7 @@
                        <option value="Others">Others</option>
                    </select><br> {% endcomment %}
 
-                   <br><label for="date">Date:</label>
+                   <br><label for="date">Appointment Date:</label>
                    <input type="date" id="date" name="date" style="border-radius:10px;height:45px; width:400px" required><br>
 
                    <br><label for="time">Time:</label>

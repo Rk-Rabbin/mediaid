@@ -20,7 +20,7 @@
             <tbody>
                 {% for appd in appd %}
                 <tr>
-                    <th scope="row">{{appd.id}}</th>
+                    <th scope="row"><a href="{% url 'patprescription' appd.id %}">{{appd.id}}</a></th>
                     <td>{{appd.patient.name}}</td>
                     <td>{{appd.doctor.name}}</td>
                     <td>{{appd.disease}}</td>
@@ -47,7 +47,7 @@
             <tbody>
                 {% for appp in appp %}
                 <tr>
-                  <th scope="row">{{appp.id}}</th>
+                  <th scope="row"><a href="{% url 'patprescription' appp.id %}">{{appp.id}}</a></th>
                   <td>{{appp.patient.name}}</td>
                   <td>{{appp.doctor.name}}</td>
                   <td>{{appp.disease}}</td>

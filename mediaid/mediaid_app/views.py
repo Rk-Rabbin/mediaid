@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import User, Doctor, Patient, Prescription, InsuranceProvider, Appointment
 from .forms import *
-import os
+import os, openai
 from PIL import Image
 from django.conf import settings
 from django.core.mail import EmailMessage
@@ -17,8 +17,11 @@ from datetime import datetime
 from django.views.generic import ListView
 from django.template import context
 from django.template.loader import render_to_string, get_template
+from dotenv import load_dotenv
+load_dotenv()
 
-
+api_key = os.getenv("OPENAI_KEY", None)
+openai.api_key = api_key
 
 
 # Create your views here.
@@ -223,7 +226,7 @@ class PatRegistration(View):
             medication = request.POST['medication']
             disease = request.POST['disease']
             allergy = request.POST['allergy']
-            profilepic = request.POST['propic']
+            profilepic = request.FILES['propic']
             ins = InsuranceProvider.objects.all()
             if len(insurance)>0:
                 insp = InsuranceProvider.objects.filter(id__icontains=insurance)
@@ -333,11 +336,69 @@ class AppointmentView(View):
 
 
 
+
+
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def Appointment_View(request, id):
-    doc = Doctor.objects.get(id=id)
-    return render(request, 'mediaid/appointment2.html',{'doc':doc})
+    if request.method == 'POST':
+        d = Doctor.objects.get(id=id)
+        name = request.POST.get('pname')
+        email = request.POST.get('pmail')
+        pnum= request.POST.get('pnum')
+        dname = request.POST.get('dname')
+        did = request.POST.get('did')
+        disease = request.POST.get('disease')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        time = datetime.strptime(time, '%H:%M').time()
+        doc = Doctor.objects.all()
+        # try:
+        #     d = Doctor.objects.get(id=did)
+        #     if(d.name==name):
+        #         d = d
+        #     else:
+        #         d = None
+        # except Doctor.DoesNotExist:
+        #     messages.warning(request, "Doctor not found")
+        #     return render(request, 'mediaid/appointment1.html',{'doc':doc})
+        try:
+            usr = request.user
+            uid = usr.id
+            p = Patient.objects.get(users_id=uid)
+        except Patient.DoesNotExist:
+            messages.warning(request, "Patient not found!! First register as a patient")
+            return render(request, 'mediaid/appointment1.html',{'doc':doc, 'd':d})
+        if(d!=None):
+            if((time>d.start and time<d.end) or time==d.start):
+                appointment = Appointment.objects.create(
+                    doctor = d,
+                    patient = p,
+                    doctor_name = dname,
+                    patient_name = name,
+                    email = email,
+                    phone = pnum,
+                    disease = disease,
+                    expected_date = date,
+                    expected_time = time 
+                )
+                appointment.save()
+                messages.success(request, "Appointment request submitted")
+                return render(request, 'mediaid/appointment1.html',{'doc':doc, 'd':d})
+            else:
+                messages.warning(request, "Choose an appropriate time")
+                return render(request, 'mediaid/appointment1.html',{'doc':doc, 'pat':p, 'd':d})
+        else:
+            messages.warning(request, "Fill the form carefully with appropriate informations")
+            return render(request, 'mediaid/appointment1.html',{'doc':doc, 'pat':p, 'd':d})
+    else:
+        doc = Doctor.objects.all()
+        d = Doctor.objects.get(id=id)
+        return render(request, 'mediaid/appointment2.html',{'doc':doc, 'd':d})    
+
+
+
 
 
 
@@ -382,9 +443,6 @@ def Appointment_List(request):
 
 
            
-
-    doc = Doctor.objects.get(id=id)
-    return render(request, 'mediaid/appointment2.html',{'doc':doc})
 
 
 
@@ -462,7 +520,7 @@ class PrescriptionUp(View):
             doctor = request.POST['doctor']
             disease = request.POST['disease']
             hospital = request.POST['hospital']
-            upload = request.POST['upload']
+            upload = request.FILES['upload']
             text = ""
             try:
                 inr = Doctor.objects.get(id=doctor)
@@ -478,25 +536,28 @@ class PrescriptionUp(View):
             if(pat==None):
                 messages.warning(request, 'First open patient id')
                 return redirect('patient-registration')       
-            if(text==None):
-                messages.warning(request, 'Could not convert prescription into text')
-                return render(request, 'mediaid/prescriptionup.html', {'message':messages, 'ins':ins, 't':upload})
+            # if(text==None):
+            #     messages.warning(request, 'Could not convert prescription into text')
+            #     return render(request, 'mediaid/prescriptionup.html', {'message':messages, 'ins':ins, 't':upload})
             else:         
                 reg = Prescription(users_id=uid, doctor_id=doctor,patient_id=pat.id, disease=disease, hospital=hospital, upload=upload, presctext=text)
                 reg.save()
                 p = Prescription.objects.last()
-                img_to_txt(upload, p.id)
-                messages.success(request, 'Congratulations!! Successfully Uploaded')
-                return render(request, 'mediaid/prescriptionup.html' , {'message':messages, 'ins':ins})
-            # image = request.POST['upload']
-            # path = settings.MEDIA_ROOT
-            # path = path,"/",image
-            # image = Image.open(path)
-            # image_text = pytesseract.image_to_string(image)
-            # text = image_text
-            # reg = Prescription(users_id=uid, doctor_id=doctor,patient_id=pat.id, disease=disease, hospital=hospital, upload=upload, presctext=text)
-            # messages.success(request, 'Congratulations!! Successfully Uploaded')
-            # return render(request, 'mediaid/prescriptionup.html' , {'message':messages, 'ins':ins})
+                image_text = pytesseract.image_to_string(Image.open("media/"+p.upload.name))
+                text = image_text
+                try:
+                    pr = Prescription.objects.get(id=p.id)
+                    pr.presctext = text
+                    pr.save()
+                except Prescription.DoesNotExist:
+                    pr = None
+                # img_to_txt(p.upload, p.id)
+                if(pr!=None):
+                    messages.success(request, 'Congratulations!! Successfully Uploaded')
+                    return render(request, 'mediaid/prescriptionup.html' , {'message':messages, 'ins':ins})
+                else:
+                    messages.warning(request, 'Sorry could not save the text')
+                    return render(request, 'mediaid/prescriptionup.html' , {'message':messages, 'ins':ins})
         else:
             messages.warning(request, 'Sorry!! Invalid Form Content')
             return render(request, 'mediaid/prescriptionup.html' , {'message':messages, 'ins':ins})
@@ -790,6 +851,25 @@ def healthhistory(request):
 
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+def chatbot(request):
+    usr = request.user
+    if api_key is not None and request.method == 'POST':
+        user_input = request.POST.get('userMessage')
+        prompt = user_input
+        response = openai.Completion.create(
+            engine = 'text-davinci-003',
+            prompt = prompt,
+            max_tokens = 256,
+            temperature = 0.5,
+        )
+        print(response)
+        chatbot_response = response["choices"][0]["text"]
+        return render(request, 'mediaid/chat.html',{'usr':usr,'response':chatbot_response, 'user_input':user_input,'active':'btn-info'})
+    else:
+        return render(request, 'mediaid/chat.html',{'usr':usr,'active':'btn-info'})
+
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -831,6 +911,18 @@ def prescription(request):
 
 
 
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+def patprescription(request,id):
+    try:
+        pres = Prescription.objects.get(id=id)
+    except Prescription.DoesNotExist:
+        pres = None
+    if(pres!=None):
+        return render(request, 'mediaid/patprescription.html',{'pres':pres})
+    else:
+        return render(request, 'mediaid/patprescription.html',{'pres':pres})
 
 
 

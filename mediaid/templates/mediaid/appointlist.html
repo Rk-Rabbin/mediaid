@@ -27,8 +27,7 @@
                     <td>{{appd.phone}}</td>
                     <td>{{appd.expected_date}}</td>
                     <td>{{appd.expected_time}}</td>
-                    <td>{% if appd.accepted == True %}<i class="fa fa-check" style="font-size:20px"></i>{% else %}<i class="fa fa-close" style="font-size:20px"></i>
-                        {% endif %}</td>
+                    <td>{% if appd.accepted == True %}<i class="fa fa-check" style="font-size:20px"></i>{% elif appd.accepted == False %}Pending{% endif %}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -57,8 +56,7 @@
                     <td>{{appp.phone}}</td>
                     <td>{{appp.expected_date}}</td>
                     <td>{{appp.expected_time}}</td>
-                    <td>{% if appp.accepted == True %}<i class="fa fa-check" style="font-size:20px"></i>{% else %}<i class="fa fa-close" style="font-size:20px"></i>
-                        {% endif %}</td>
+                    <td>{% if appp.accepted == True %}<i class="fa fa-check" style="font-size:20px"></i>{% elif appp.accepted == False %}Pending{% endif %}</td>
                 </tr>
                 {% endfor %}
             </tbody>
