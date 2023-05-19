@@ -82,16 +82,22 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                     <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
-                    <li><a class="dropdown-item" href="{% url 'prescription' %}">Prescription</a></li>
-                    <li><a class="dropdown-item" href="{% url 'appointment' %}">Appointment</a></li>
-                    <li><a class="dropdown-item" href="{% url 'healthhistory' %}">History</a></li>
+                    <li><a class="dropdown-item" href="{% url 'mydoctors' %}">My Doctors</a></li>
+                    <li><a class="dropdown-item" href="{% url 'mypatients' %}">My Patients</a></li>
                     <li><a class="dropdown-item" href="{% url 'doctor-registration' %}">Doctor Registration</a></li>
                     <li><a class="dropdown-item" href="{% url 'patient-registration' %}">Patient Registration</a></li>
                     <li><a class="dropdown-item" href="{% url 'insurance-registration' %}">Insurance Registration</a></li>
                     <li><a class="dropdown-item" href="{% url 'changepassword' %}">Change Password</a></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                 </ul>
-                </li>
+              </li>
+
+                {% comment %} <li class="nav-item">
+                  <a class="nav-link" style="font-weight:bold; color:black; width:60px; margin-top:6px" aria-current="page" href="{% url 'manageappointment' %}">
+                    <i class="far fa-bell" style="font-size: 20px; float: left; color: black"></i>
+                    <span class="badge badge-danger">{% if count > "0" %}{{count}}{% endif %}</span>
+                  </a>
+                </li> {% endcomment %}
                 {% endif %}
             </ul>
             </div>

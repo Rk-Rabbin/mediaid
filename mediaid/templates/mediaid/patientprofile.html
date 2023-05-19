@@ -6,19 +6,26 @@
     <div class="container my-5">
      <div class="row">
       <div class="col-sm-6 text-center align-self-center">
-       <img src="{{garage.upload.url}}" alt="" class="img-fluid img-thumbnail">
+        <img src="{{pat.profilepic.url}}" alt="" class="img-fluid img-thumbnail">
+        <h4>Name : {{pat.name}}</h4>
+        <hr>
+          <div class="card mb-2">
+            <div class="card-body">
+              <h5 class="text-center">Medication : {{pat.medications}}</h5>
+              <h5 class="text-center">Disease : {{pat.disease}}</h5>
+            </div>
       </div>
+    </div>
       {% comment %} </div> {% endcomment %}
       <div class="col-sm-5 offset-sm-1">
-        <h2>Patient Id: {{garage.garage_owner_id}} &nbsp;&nbsp;&nbsp;&nbsp; User Id: {{garage.garage_owner_id}}</h2>
+        <h2>Patient Id: {{pat.id}} &nbsp;&nbsp;&nbsp;&nbsp; User Id: {{pat.users_id}}</h2>
         <hr>
-        <p>Disease: {{garage.description}}</p> <br>
-        <p>Age: {{garage.space}}</p> <br>
-        <p>Blood Group: {{garage.space}}</p> <br>
-        <p>Allergy: {{garage.space}}</p> <br>
-        <p>Email: {{garage.address}}</p> <br>
-        <p>Phone: {{garage.area}}</p> <br>
-        <p>Insurance: {{owner.number}}</p> <br>
+        <p>Disease: {{pat.disease}}</p> <br>
+        <p>Birthdate: {{pat.birthdate}}</p> <br>
+        <p>Blood Group: {{pat.blood}}</p> <br>
+        <p>Allergy: {{pat.allergy}}</p> <br>
+        <p>Phone: {{pat.number}}</p> <br>
+        <p>Insurance Id : {% if pat.insurance == "-1" %}No Insurance Taken{% else %}{{pat.insurance}}{% endif %}</p><br>
         <a href="#" class="btn btn-info shadow px-5 py-2 ms-4">Prescription</a>
         </div>
     </div>

@@ -4,30 +4,28 @@
 {% block main-content %}
 <div class="container mt-6" style="padding-top:30px">
     <h2 class="text-center alert alert-warning">My Patients List</h2>
-    {% if mg %} 
+    {% if pat %} 
     <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">Patient Id</th>
             <th scope="col">Name</th>
             <th scope="col">Disease</th>
-            <th scope="col">Hospital</th>
+            <th scope="col">Medication</th>
+            <th scope="col">Allergy</th>
             <th scope="col">Prescription</th>
           </tr>
         </thead>
         <tbody>
-            {% for mg in mg %}
+            {% for pat in pat %}
             <tr>
-                <th scope="row">{{mg.garage_id}}</th>
-                <td>{{mg.garage_owner_id}}</td>
-                <td>{{mg.area}}</td>
-                <td>{{mg.hourlyprice}}</td>
+                <th scope="row"><a href="{% url 'patientprofile' pat.id %}">{{pat.id}}</a></th>
+                <td>{{pat.name}}</td>
+                <td>{{pat.disease}}</td>
+                <td>{{pat.medications}}</td>
+                <td>{{pat.allergy}}</td>
                 <td>
-                <a href="{% url 'updategarage' mg.garage_id %}" class="btn btn-warning btn-sm" style="height:37px">Prescription</a>
-                <form action="{% url 'del_garage' mg.garage_id %}" method="post" class="d-inline">
-                    {% csrf_token %}
-                    <input type="submit" class="btn btn-danger" value="Delete">
-                </form>
+                <a href="#" class="btn btn-info btn-sm" style="height:37px">Prescription</a>
                 </td>
               </tr>
             {% endfor %}

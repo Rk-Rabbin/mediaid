@@ -355,7 +355,7 @@
             <div class="col-sm-2 border-end">
                 <ul class="list-unstyled">
                  <li class="d-grid"><a href="{% url 'manageappointment' %}" class="btn {{active}}">Manage Appointments</a></li>
-                 <li class="d-grid"><a href="#" class="btn">Appointment List</a></li>
+                 <li class="d-grid"><a href="{% url 'appointmentlist' %}" class="btn">Appointment List</a></li>
                 </ul>
             </div>
         {% for app in app %}
@@ -430,7 +430,7 @@
               <div class="col-sm-2 border-end">
                   <ul class="list-unstyled">
                    <li class="d-grid"><a href="{% url 'manageappointment' %}" class="btn {{active}}">Manage Appointments</a></li></br>
-                   <li class="d-grid"><a href="#" class="btn">Appointment List</a></li>
+                   <li class="d-grid"><a href="{% url 'appointmentlist' %}" class="btn">Appointment List</a></li>
                   </ul>
               </div>
         </div>

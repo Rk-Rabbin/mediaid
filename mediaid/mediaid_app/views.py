@@ -85,7 +85,7 @@ def ProfilePage(request):
     except:
         doc = None
     if(doc!=None):
-            return render(request, 'mediaid/profile.html',{'usr':usr,'doc':doc ,'active':'btn-info'})
+        return render(request, 'mediaid/profile.html',{'usr':usr,'doc':doc ,'active':'btn-info'})
     else:        
         return render(request, 'mediaid/profile.html',{'usr':usr,'active':'btn-info'})
 
@@ -342,6 +342,52 @@ def Appointment_View(request, id):
 
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+def Appointment_List(request):
+    usr = request.user
+    try:
+        doc = Doctor.objects.get(users_id=usr.id)
+    except:
+        doc = None
+    try:
+        pat = Patient.objects.get(users_id=usr.id)
+    except:
+        pat = None
+    if(doc!=None):
+        try:
+            appd = Appointment.objects.filter(doctor= doc)
+        except:
+            appd = None
+    else:
+        appd = None
+    if(pat!=None):
+        try:
+            appp = Appointment.objects.filter(patient= pat)
+        except:
+            appp = None
+    else:
+        appp = None
+    if(appd!=None):
+        if(appp!=None):
+            return render(request, 'mediaid/appointlist.html',{'appd':appd,'appp':appp})
+        else:
+            return render(request, 'mediaid/appointlist.html',{'appd':appd})
+    else:
+        if(appp!=None):
+            return render(request, 'mediaid/appointlist.html',{'appp':appp})
+        else:
+            return render(request, 'mediaid/appointlist.html')
+
+
+
+           
+
+    doc = Doctor.objects.get(id=id)
+    return render(request, 'mediaid/appointment2.html',{'doc':doc})
+
+
+
 
 @method_decorator(login_required, name='dispatch')
 class ManageAppointment(View):
@@ -395,6 +441,7 @@ class ManageAppointment(View):
             return render(request, 'mediaid/manage_appointment.html',{'app':appo, 'active':'btn-info'})
         else:
             return render(request, 'mediaid/manage_appointment.html',{'app':appo, 'active':'btn-info'})
+
 
 
 
@@ -682,18 +729,105 @@ def del_doctor(request, id):
 
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def mydoctors(request):
-    return render(request, 'mediaid/mydoctors.html')
+    usr = request.user
+    try:
+        pat = Patient.objects.get(users_id=usr.id)
+    except:
+        messages.warning(request,"First register as a patient")
+        return render(request, 'mediaid/mydoctors.html')
+    try:
+        app = Appointment.objects.filter(patient=pat)
+    except:
+        app = None
+    if(app!=None):
+        doc = []
+        try:
+            for a in app:
+                doc = Doctor.objects.filter(id= a.doctor.id)
+        except:
+            doc = None
+    if(doc!=None):
+        return render(request, 'mediaid/mydoctors.html',{'doc':doc})
+    else:
+        return render(request, 'mediaid/mydoctors.html')
+       
 
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def mypatients(request):
-    return render(request, 'mediaid/mypatients.html')
+    usr = request.user
+    try:
+        doc = Doctor.objects.get(users_id=usr.id)
+    except:
+        messages.warning(request,"First register as a doctor")
+        return render(request, 'mediaid/mypatients.html')
+    try:
+        app = Appointment.objects.filter(doctor=doc)
+    except:
+        app = None
+    if(app!=None):
+        pat = []
+        try:
+            for a in app:
+                pat = Patient.objects.filter(id= a.patient.id)
+        except:
+            pat = None
+    if(pat!=None):
+        return render(request, 'mediaid/mypatients.html',{'pat':pat})
+    else:
+        return render(request, 'mediaid/mypatients.html')
+
+
+
 
 def healthhistory(request):
     return render(request, 'mediaid/healthhistory.html')
 
+
+
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def prescription(request):
-    return render(request, 'mediaid/prescription.html')
+    usr = request.user
+    try:
+        doc = Doctor.objects.get(users_id=usr.id)
+    except:
+        doc = None
+    try:
+        pat = Patient.objects.get(users_id=usr.id)
+    except:
+        pat = None
+    if(doc!=None):
+        try:
+            appd = Prescription.objects.filter(doctor= doc)
+        except:
+            appd = None
+    else:
+        appd = None
+    if(pat!=None):
+        try:
+            appp = Prescription.objects.filter(patient= pat)
+        except:
+            appp = None
+    else:
+        appp = None
+    if(appd!=None):
+        if(appp!=None):
+            return render(request, 'mediaid/prescription.html',{'appd':appd,'appp':appp})
+        else:
+            return render(request, 'mediaid/prescription.html',{'appd':appd})
+    else:
+        if(appp!=None):
+            return render(request, 'mediaid/prescription.html',{'appp':appp})
+        else:
+            return render(request, 'mediaid/prescription.html')
 
 
 
@@ -703,7 +837,8 @@ def prescription(request):
 
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def doctorsprofile(request, id):
     try:
         doc = Doctor.objects.get(id=id)
@@ -721,10 +856,17 @@ def doctorsprofile(request, id):
 
 
 
-
-def patientprofile(request):
-    return render(request, 'mediaid/patientprofile.html')
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+def patientprofile(request, id):
+    try:
+        pat = Patient.objects.get(id=id)
+    except Patient.DoesNotExist:
+        doc = None
+    if(pat!=None):
+        return render(request, 'mediaid/patientprofile.html',{'pat':pat})
+    else:
+        return render(request, 'mediaid/patientprofile.html',{'pat':pat})
 
 
 
