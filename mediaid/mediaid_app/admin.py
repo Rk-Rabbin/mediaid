@@ -26,7 +26,8 @@ class PrescriptionAdmin(admin.ModelAdmin):
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ('id', 'doctor', 'patient', 'doctor_name', 'patient_name', 'disease', 'email', 'phone', 'expected_date', 'expected_time', 'expected_date', 'accepted')
     list_filter = ('id', 'doctor', 'patient', 'expected_date', 'expected_time', 'accepted')
-    search_fields = ('id', 'doctor', 'patient', 'doctor_name', 'patient_name', 'expected_date', 'expected_time', 'accepted')        
+    search_fields = ('id', 'doctor', 'patient', 'doctor_name', 'patient_name', 'expected_date', 'expected_time', 'accepted')    
+
 
 
 admin.site.register(Doctor, DoctorAdmin)

@@ -29,13 +29,13 @@ class Doctor(models.Model):
     start = models.TimeField()
     end = models.TimeField()
     fees = models.CharField(max_length=5)
-    profilepic = models.FileField()
+    profilepic = models.FileField(blank=True, null=True)
 
 
 
 class Patient(models.Model):
     users = models.OneToOneField(User, on_delete=models.CASCADE)
-    insurance = models.CharField(max_length=10, default=-1)
+    insurance = models.CharField(max_length=10, default=-1, blank=True, null=True)
     name = models.CharField(max_length=40)
     number = models.CharField(max_length=20)
     birthdate = models.DateField()
@@ -44,8 +44,7 @@ class Patient(models.Model):
     medications = models.TextField()
     disease = models.TextField()
     allergy = models.TextField()
-    profilepic = models.FileField()
-
+    profilepic = models.FileField(blank=True, null=True)
 
 
 
@@ -72,7 +71,6 @@ class Appointment(models.Model):
     expected_time = models.TimeField()
     requested_at = models.DateField(auto_now_add=True)
     accepted = models.BooleanField(default=False)
-
 
 
 

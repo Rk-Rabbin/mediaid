@@ -17,6 +17,8 @@ from datetime import datetime
 from django.views.generic import ListView
 from django.template import context
 from django.template.loader import render_to_string, get_template
+from django.http import JsonResponse
+import json
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -112,6 +114,8 @@ class RegistrationView(View):
             except:
                 messages.success(request, 'Sorry!! Could not be Registered, Try Again')
         return render(request, 'mediaid/register.html' , {'form':form})
+    
+
 
 
 
@@ -845,9 +849,55 @@ def mypatients(request):
 
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def healthhistory(request):
     return render(request, 'mediaid/healthhistory.html')
+
+
+
+
+
+
+
+
+
+def receivedMessages(request, id):
+    user = request.user
+    try:
+        dfrnd = Friend.objects.get(doctor_id = id)
+    except:
+        dfrnd = None
+    try:
+        pfrnd = Friend.objects.get(patient_id = id)
+    except:
+        pfrnd = None
+    arr = []
+    if(dfrnd!=None):
+        chats = ChatMessage.objects.filter(msg_sender=user.username, msg_receiver=dfrnd.doctor.name)
+        for chat in chats:
+            arr.append(chat.body)
+        return JsonResponse(arr, safe=False)
+    elif(pfrnd!=None):
+        chats = ChatMessage.objects.filter(msg_sender=user.username, msg_receiver=pfrnd.patient.name)
+        for chat in chats:
+            arr.append(chat.body)
+        return JsonResponse(arr, safe=False)
+
+
+
+
+# def chatNotification(request):
+#     user = request.user.profile
+#     friends = user.friends.all()
+#     arr = []
+#     for friend in friends:
+#         chats = ChatMessage.objects.filter(msg_sender__id=friend.profile.id, msg_receiver=user, seen=False)
+#         arr.append(chats.count())
+#     return JsonResponse(arr, safe=False)
+    
+
+
 
 
 

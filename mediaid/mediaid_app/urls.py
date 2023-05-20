@@ -32,7 +32,7 @@ urlpatterns = [
     
 
     path('doctor-registration/',views.DocRegistration.as_view(), name='doctor-registration'),
-    path('patient-registration/',views.PatRegistration.as_view(), name='patient-registration'),
+    path('patient-registration/',views.PatRegistration.as_view(), name='patient-registration'), 
     path('insurance-registration/',views.InsuranceProviderReg.as_view(), name='insurance-registration'),
     path('prescription-upload/',views.PrescriptionUp.as_view(), name='prescription-upload'),
     path('updatedoctor/<id>', views.updatedoc , name='updatedoc'),
