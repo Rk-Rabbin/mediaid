@@ -91,7 +91,7 @@
                     <li><a class="dropdown-item" href="{% url 'doctor-registration' %}">Doctor Registration</a></li>
                     <li><a class="dropdown-item" href="{% url 'patient-registration' %}">Patient Registration</a></li>
                     <li><a class="dropdown-item" href="{% url 'insurance-registration' %}">Insurance Registration</a></li>
-                    <li><a class="dropdown-item" href="{% url 'profile-registration' %}">Profile Registration</a></li> 
+                    {% comment %} <li><a class="dropdown-item" href="{% url 'profile-registration' %}">Profile Registration</a></li>  {% endcomment %}
                     <li><a class="dropdown-item" href="{% url 'changepassword' %}">Change Password</a></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                 </ul>

@@ -14,7 +14,7 @@
     <li class="d-grid"><a href="{% url 'prescription-upload' %}"class="btn">Add Prescription</a></li>
     {% if doc %} <li class="d-grid"><a href="{% url 'manageappointment' %}" class="btn">Manage Appointments</a></li>{% endif %}
     <li class="d-grid"><a href="{% url 'appointmentlist' %}" class="btn">Appointments List</a></li>
-    <li class="d-grid"><a href="{% url 'message' %}" class="btn">Messages</a></li>
+    {% comment %} <li class="d-grid"><a href="{% url 'message' %}" class="btn">Messages</a></li> {% endcomment %}
     <li class="d-grid"><a href="{% url 'changepassword' %}" class="btn">Change Password</a></li>
     <li class="d-grid"><a href="{% url 'logout' %}" class="btn">Logout</a></li>
    </ul>

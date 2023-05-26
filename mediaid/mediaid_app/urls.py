@@ -28,7 +28,9 @@ urlpatterns = [
     path('manageappointment/',views.ManageAppointment.as_view(), name='manageappointment'), 
     path('appointment/<id>',views.Appointment_View, name='appointment_id'),    
     path('appointmentlist/',views.Appointment_List, name='appointmentlist'),    
-    path('chatbot/',views.chatbot, name='chatbot'),    
+    path('chatbot/',views.chatbot, name='chatbot'), 
+    path('idivpres/<id>',views.indivprescription, name='idivpres'),    
+   
     
 
     path('doctor-registration/',views.DocRegistration.as_view(), name='doctor-registration'),
@@ -40,7 +42,7 @@ urlpatterns = [
     path('del_patient/<id>', views.del_patient , name='del_patient'),
     path('confirm_pat_del/<id>', views.confirm_pat_del , name='confirm_pat_del'),
     path('confirm_doc_del/<id>', views.confirm_doc_del , name='confirm_doc_del'),
-    path('del_doctor/<id>', views.del_doctor , name='del_doctor'),
+    path('del_doctor/<id>', views.del_doctor , name='del_doctor'), 
 
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='mediaid/login.html', authentication_form=LoginForm), name='login'),

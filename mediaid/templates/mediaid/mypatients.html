@@ -4,6 +4,11 @@
 {% block main-content %}
 <div class="container mt-6" style="padding-top:30px">
     <h2 class="text-center alert alert-warning">My Patients List</h2>
+    {% if messages %}
+         {% for message in messages %}
+               <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+         {% endfor %}
+        {% endif %}
     {% if pat %} 
     <table class="table table-hover">
         <thead>
@@ -25,7 +30,7 @@
                 <td>{{pat.medications}}</td>
                 <td>{{pat.allergy}}</td>
                 <td>
-                <a href="#" class="btn btn-info btn-sm" style="height:37px">Prescription</a>
+                <a href="{% url 'idivpres' pat.id %}" class="btn btn-info btn-sm" style="height:37px">Prescription</a>
                 </td>
               </tr>
             {% endfor %}

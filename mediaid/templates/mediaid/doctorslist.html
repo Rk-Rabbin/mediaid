@@ -38,7 +38,7 @@
 				<div class="role_name" style="font-weight:800;font-size: 15px;">Name : {{pat.ame}}</div>
 				<div class="role_name" style="font-weight:800;font-size: 15px;">Number : {{pat.number}}</div>
 				<a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
-				margin-top:5px" type="submit" href="#">View</a>
+				margin-top:5px" type="submit" href="{% url 'patientprofile' pat.id %}">View</a>
 			</div>
             {% comment %} <a class="btn" style="color:#4A8693;width:100%; background-color:black; font-size:18px; border-radius:25px; 
 			margin-top:5px" type="submit" href="#">View</a> {% endcomment %}

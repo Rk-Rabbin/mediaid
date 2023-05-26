@@ -243,7 +243,7 @@ class PatRegistration(View):
                         messages.warning(request, 'user id already exists')
                         return render(request, 'mediaid/patientreg.html', {'message':messages, 'ins':ins})
                     else:  
-                        reg = Patient(users_id=uid ,name=name, number=number, gender=gender, insurance_id=insurance, medications=medication, 
+                        reg = Patient(users_id=uid ,name=name, number=number, gender=gender, insurance=insurance, medications=medication, 
                                 disease=disease, birthdate=birthdate, blood=blood, allergy=allergy, profilepic=profilepic)
                         reg.save()
                         messages.success(request, 'Congratulations!! Successfully registered as a patient')
@@ -1025,3 +1025,30 @@ def img_to_txt(img, id):
         pr.save()
     except Prescription.DoesNotExist:
         print("Could Not save")
+
+
+
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+def indivprescription(request, id):
+    usr = request.user
+    try:
+        pat = Patient.objects.get(id=id)
+    except:
+        pat = None
+    if(pat!=None):
+        try:
+            appd = Prescription.objects.filter(patient= pat)
+        except:
+            appd = None
+    else:
+        appd = None
+    if(pat!=None):
+        if(appd!=None):
+            return render(request, 'mediaid/indivpres.html',{'appd':appd})
+        else:
+            return render(request, 'mediaid/indivpres.html')
+    else:
+        return render(request, 'mediaid/idivpres.html')
