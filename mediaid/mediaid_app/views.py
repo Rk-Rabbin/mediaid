@@ -862,27 +862,27 @@ def healthhistory(request):
 
 
 
-def receivedMessages(request, id):
-    user = request.user
-    try:
-        dfrnd = Friend.objects.get(doctor_id = id)
-    except:
-        dfrnd = None
-    try:
-        pfrnd = Friend.objects.get(patient_id = id)
-    except:
-        pfrnd = None
-    arr = []
-    if(dfrnd!=None):
-        chats = ChatMessage.objects.filter(msg_sender=user.username, msg_receiver=dfrnd.doctor.name)
-        for chat in chats:
-            arr.append(chat.body)
-        return JsonResponse(arr, safe=False)
-    elif(pfrnd!=None):
-        chats = ChatMessage.objects.filter(msg_sender=user.username, msg_receiver=pfrnd.patient.name)
-        for chat in chats:
-            arr.append(chat.body)
-        return JsonResponse(arr, safe=False)
+# def receivedMessages(request, id):
+#     user = request.user
+#     try:
+#         dfrnd = Friend.objects.get(doctor_id = id)
+#     except:
+#         dfrnd = None
+#     try:
+#         pfrnd = Friend.objects.get(patient_id = id)
+#     except:
+#         pfrnd = None
+#     arr = []
+#     if(dfrnd!=None):
+#         chats = ChatMessage.objects.filter(msg_sender=user.username, msg_receiver=dfrnd.doctor.name)
+#         for chat in chats:
+#             arr.append(chat.body)
+#         return JsonResponse(arr, safe=False)
+#     elif(pfrnd!=None):
+#         chats = ChatMessage.objects.filter(msg_sender=user.username, msg_receiver=pfrnd.patient.name)
+#         for chat in chats:
+#             arr.append(chat.body)
+#         return JsonResponse(arr, safe=False)
 
 
 
