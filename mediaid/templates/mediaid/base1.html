@@ -3,7 +3,7 @@
 <html>
 
 <head>
-  <meta name="referrer" content="no-referrer-when-downgrade"
+  {% comment %} <meta name="referrer" content="no-referrer-when-downgrade"/> {% endcomment %}
   <!-- Basic -->
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -172,7 +172,7 @@
   </script>
   <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
   <!-- End Google Map -->
-<!--Start of Tawk.to Script-->
+{% comment %} <!--Start of Tawk.to Script-->
 <script type="text/javascript">
   var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
   (function () {
@@ -184,7 +184,7 @@
     s0.parentNode.insertBefore(s1, s0);
   })();
 </script>
-<!--End of Tawk.to Script-->
+<!--End of Tawk.to Script--> {% endcomment %}
 </body>
 
 </html>

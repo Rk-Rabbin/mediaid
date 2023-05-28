@@ -41,6 +41,8 @@
     <link href="{% static 'my2.css' %}" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{% static 'mediaid/css/bootstrap.css' %}" />
     <!--b2 end-->
+    <meta name="referrer" content="no-referrer-when-downgrade"/>
+
   </head>
   <style>
     {% block style %}{% endblock style %}
@@ -202,5 +204,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
   <!-- custom js -->
   <script src="{% static 'mediaid/js/custom.js' %}"></script>
+
+  <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+  var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+  (function () {
+    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/646f69ca74285f0ec46d9c83/1h19jaglp';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    s0.parentNode.insertBefore(s1, s0);
+  })();
+</script>
+<!--End of Tawk.to Script-->
   </body>
 </html>
