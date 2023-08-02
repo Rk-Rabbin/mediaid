@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mediaid_app',
     'social_django',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -148,6 +149,10 @@ EMAIL_USE_TLS = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES':('rest_framework.renderers.JSONRenderer',)
+}
 
 AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend',
                          'social_core.backends.google.GoogleOAuth2']

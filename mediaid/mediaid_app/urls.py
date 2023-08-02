@@ -45,6 +45,14 @@ urlpatterns = [
     path('del_doctor/<id>', views.del_doctor , name='del_doctor'), 
 
 
+    path('insuranceAPI/',views.InsuranceList.as_view()),
+    path('doctorAPI/',views.DoctorList.as_view()),
+    path('patientAPI/',views.PatientList.as_view()),
+    path('prescriptionAPI/',views.PrescriptionList.as_view()),
+    path('appointmentAPI/',views.AppointmentList.as_view()),
+    path('userAPI/',views.UsersList.as_view()),
+
+
     path('accounts/login/', auth_views.LoginView.as_view(template_name='mediaid/login.html', authentication_form=LoginForm), name='login'),
     path('passwordchange/', auth_views.PasswordChangeView.as_view(template_name='mediaid/changepassword.html',
     form_class=MyPasswordChangeForm, success_url='/passwordchangedone/'), name='changepassword'),

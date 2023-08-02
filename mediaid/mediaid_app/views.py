@@ -19,6 +19,8 @@ from django.template import context
 from django.template.loader import render_to_string, get_template
 from django.http import JsonResponse
 import json
+from .serializers import InsuranceProviderSerializer, DoctorSerializer, PatientSerializer, PrescriptionSerializer, AppointmentSerializer, UserSerializer
+from rest_framework.generics import ListAPIView
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -1052,3 +1054,29 @@ def indivprescription(request, id):
             return render(request, 'mediaid/indivpres.html')
     else:
         return render(request, 'mediaid/idivpres.html')
+
+
+class InsuranceList(ListAPIView):
+    queryset = InsuranceProvider.objects.all()
+    serializer_class = InsuranceProviderSerializer
+
+
+class DoctorList(ListAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+class PatientList(ListAPIView):
+    queryset = Patient.objects.all()
+    serializer_class = PatientSerializer
+
+class PrescriptionList(ListAPIView):
+    queryset = Prescription.objects.all()
+    serializer_class = PrescriptionSerializer
+
+class AppointmentList(ListAPIView):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializer
+
+class UsersList(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
