@@ -42,7 +42,21 @@ INSTALLED_APPS = [
     'mediaid_app',
     'social_django',
     'rest_framework',
+
+    #Rest Auth
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'dj_rest_auth.registration',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+SITE_ID = 1
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -150,13 +164,30 @@ EMAIL_USE_TLS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES':('rest_framework.renderers.JSONRenderer',)
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES':('rest_framework.renderers.JSONRenderer',)
+# }
 
 AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend',
-                         'social_core.backends.google.GoogleOAuth2']
+                         'social_core.backends.google.GoogleOAuth2',
+                         'allauth.account.auth_backends.AuthenticationBackend']
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+REST_AUTH_SERIALIZERS={
+   "LOGIN_SERIALIZER":"mediaid_app.serializers.NewLoginSerializer",
+   "USER_DETAILS_SERIALIZER":"mediaid_app.serializers.NewUserDetailsSerializer"
+   
+}
+
+REST_AUTH_REGISTER_SERIALIZERS={
+    "REGISTER_SERIALIZER":"mediaid_app.serializers.NewRegisterSerializer"
+}
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '859073199213-ap1b72d0d92pv58n8dpc4lscnqjm9j20.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'

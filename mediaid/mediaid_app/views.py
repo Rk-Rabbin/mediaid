@@ -19,8 +19,11 @@ from django.template import context
 from django.template.loader import render_to_string, get_template
 from django.http import JsonResponse
 import json
-from .serializers import InsuranceProviderSerializer, DoctorSerializer, PatientSerializer, PrescriptionSerializer, AppointmentSerializer, UserSerializer
+from .serializers import InsuranceProviderSerializer, DoctorSerializer, PatientSerializer, PrescriptionSerializer, AppointmentSerializer
 from rest_framework.generics import ListAPIView
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import SocialLoginView
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -1077,6 +1080,6 @@ class AppointmentList(ListAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
 
-class UsersList(ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+
+class GoogleLogin(SocialLoginView): # if you want to use Implicit Grant, use this
+    adapter_class = GoogleOAuth2Adapter

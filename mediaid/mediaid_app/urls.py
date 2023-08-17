@@ -50,7 +50,11 @@ urlpatterns = [
     path('patientAPI/',views.PatientList.as_view()),
     path('prescriptionAPI/',views.PrescriptionList.as_view()),
     path('appointmentAPI/',views.AppointmentList.as_view()),
-    path('userAPI/',views.UsersList.as_view()),
+
+    path('auth/', include('dj_rest_auth.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('dj-rest-auth/google/', views.GoogleLogin.as_view(), name='google_login'),
+
 
 
     path('accounts/login/', auth_views.LoginView.as_view(template_name='mediaid/login.html', authentication_form=LoginForm), name='login'),

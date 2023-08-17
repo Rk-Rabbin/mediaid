@@ -1,12 +1,29 @@
 from rest_framework import serializers
 from .models import InsuranceProvider, Doctor, Patient, Prescription, Appointment, User
 # from django.contrib.auth.models import User
+from dj_rest_auth.serializers import LoginSerializer
+from dj_rest_auth.registration.serializers import RegisterSerializer
+from dj_rest_auth.serializers import UserDetailsSerializer
+from django.contrib.auth import authenticate, get_user_model
+
+UserModel = User()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class NewUserDetailsSerializer(UserDetailsSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password']
+        fields=["email","id","username"]
+
+class NewRegisterSerializer(RegisterSerializer):
+    pass
+
+class NewLoginSerializer(LoginSerializer):
+    pass
+
+# class UserSerializer(UserDetailsSerializer):
+#     class Meta:
+#         model = User
+#         fields = ['id', 'username', 'email']
 
 class InsuranceProviderSerializer(serializers.ModelSerializer):
     class Meta:
