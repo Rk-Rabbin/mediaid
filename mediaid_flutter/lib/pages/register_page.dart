@@ -35,7 +35,6 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: const backbutton(),
         centerTitle: true,
         title: Text(
           'Sign Up',
@@ -176,6 +175,32 @@ class _SignUpPageState extends State<SignUpPage> {
                 );
               }
             },
+          ),
+          Container(
+            margin: EdgeInsets.only(
+              top: 40,
+              bottom: 74,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInPage()),
+                    );
+                  },
+                  child: Text(
+                    "Have an account? Login",
+                      style: blackTextStyle.copyWith(
+                      fontSize: 16,
+                      fontWeight: semiBold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
 
 

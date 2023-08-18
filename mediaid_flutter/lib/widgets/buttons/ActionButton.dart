@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 class ActionButton extends StatelessWidget {
   final title;
   final String route;
+  VoidCallback? onTap;
+
   // final height;
   // final width;
-  const ActionButton({Key? key, this.title, required this.route})
+  ActionButton({Key? key, this.title, required this.route})
       : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

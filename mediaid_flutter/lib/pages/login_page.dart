@@ -4,6 +4,10 @@ import 'package:mediaid_flutter/main.dart';
 import 'package:mediaid_flutter/models/user_models.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mediaid_flutter/Widgets/buttons/ActionButton.dart';
+
+import '../Widgets/buttons/backbutton.dart';
+import '../Widgets/formFields.dart';
 
 import '../api/auth/auth_api.dart';
 import '../models/user_cubit.dart';
@@ -39,34 +43,48 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: defaultMargin,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+       leading: const backbutton(),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Login',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 23,
+          ),
         ),
-        children: [
-          // Container(
-          //   margin: EdgeInsets.only(top: 50),
-          //   child: Image.asset(
-          //     'assets/img_login.png',
-          //   ),
-          // ),
-          SizedBox(
-            height: 155,
-          ),
-          CustomField(
-            controller: emailController,
-            icon: CupertinoIcons.person,
-            hint: 'Username',
-          ),
-          CustomField(
-            controller: passwordController,
-            icon: CupertinoIcons.lock,
-            hint: 'Password',
-            obsecure: true,
-          ),
-          Align(
-            alignment: Alignment.centerRight,
+      ),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 80,
+            ),
+            formFields(
+              title: "Enter your username",
+              logo: CupertinoIcons.person,
+              controller: emailController,
+
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            formFields(
+              title: "Enter your password", 
+              logo: CupertinoIcons.lock,
+              controller: passwordController,
+              obsecure: true,),
+            const SizedBox(
+              height: 20,
+            ),
+
+            Align(
+            alignment: Alignment.center,
             child: Container(
               child: TextButton(
                 onPressed: () {
@@ -77,7 +95,7 @@ class _SignInPageState extends State<SignInPage> {
                 },
                 child: Text(
                   "Forgot Password?",
-                  style: whiteTextStyle.copyWith(
+                    style: blackTextStyle.copyWith(
                     fontSize: 16,
                     fontWeight: semiBold,
                   ),
@@ -85,8 +103,12 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
           ),
-          // Login
-          CustomTextButton(
+
+          const SizedBox(
+              height: 30,
+            ),
+
+            CustomTextButton(
             onTap: () async {
               var authRes =
                   await userAuth(emailController.text, passwordController.text);
@@ -115,12 +137,11 @@ class _SignInPageState extends State<SignInPage> {
               }
             },
             title: 'Login',
-            margin: EdgeInsets.only(top: 50),
           ),
-          //
+
           Container(
             margin: EdgeInsets.only(
-              top: 30,
+              top: 10,
               bottom: 74,
             ),
             child: Row(
@@ -135,7 +156,7 @@ class _SignInPageState extends State<SignInPage> {
                   },
                   child: Text(
                     "Don't have an account? Register now.",
-                    style: whiteTextStyle.copyWith(
+                    style: blackTextStyle.copyWith(
                       fontSize: 16,
                       fontWeight: semiBold,
                     ),
@@ -144,8 +165,10 @@ class _SignInPageState extends State<SignInPage> {
               ],
             ),
           ),
-        ],
-      ),
+
+          ],
+        ),
+      ),      
     );
   }
 }
