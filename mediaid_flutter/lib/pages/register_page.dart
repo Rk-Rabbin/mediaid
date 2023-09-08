@@ -116,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 context.read<UserCubit>().emit(user);
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) {
-                    return HomePage();
+                    return Home();
                   },
                 ));
               }

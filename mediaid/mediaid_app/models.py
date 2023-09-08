@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 Gender = (
     ('Male','Male'),
     ('Female','Female'),
+    ('male','male'),
+    ('female','female'),
     ('Others','Othes'))
 
 class InsuranceProvider(models.Model):

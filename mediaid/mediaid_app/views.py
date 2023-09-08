@@ -3,6 +3,7 @@ from .forms import RegistrationForm
 from django.views import View
 import pytesseract
 from PIL import Image
+from django.http import HttpResponse
 from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.contrib.auth.decorators import login_required
@@ -18,13 +19,22 @@ from django.views.generic import ListView
 from django.template import context
 from django.template.loader import render_to_string, get_template
 from django.http import JsonResponse
+from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
 import json
+import io
 from .serializers import InsuranceProviderSerializer, DoctorSerializer, PatientSerializer, PrescriptionSerializer, AppointmentSerializer
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
 from dotenv import load_dotenv
+from django.views.decorators.csrf  import csrf_exempt
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+# from rest_framework import views, response, status, viewset, permissions, authentication
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
 load_dotenv()
 
 api_key = os.getenv("OPENAI_KEY", None)
@@ -1067,6 +1077,71 @@ class InsuranceList(ListAPIView):
 class DoctorList(ListAPIView):
     queryset = Doctor.objects.all()
     serializer_class = DoctorSerializer
+
+# @api_view(["POST"])
+# def createDoctor(request):
+#     data = request.data
+#     serializer = DoctorSerializer(data=data)
+#     if serializer.is_valid(raise_exception=True):
+#         serializer.save()
+#         return Response(status=200)
+#     return Response({})
+
+# @method_decorator(login_required, name='dispatch')
+class CreateDoctorAPI(CreateAPIView):
+    serializer_class = DoctorSerializer
+
+class DoctorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+
+def updateDoctor(request):
+    pass
+
+def deleteDoctor(request):
+    pass
+
+def getDoctor(request):
+    pass
+
+
+
+# @csrf_exempt
+# def doctor_api(request):
+#     if request.method == 'GET':
+#         json_data = request.body
+#         stram = io.BytesIO(json_data)
+#         pythondata = JSONParser().parse(stream)
+#         id = pythondata.get('id', None)
+#         if id is not None:
+#             doc = Doctor.objects.get(id=id)
+#             serializer = DoctorSerializer(doc)
+#             json_data = JSONRenderer().render(serializer.data)
+#             return HttpResponse(json_data, content_type='application/json')
+#         doc = Doctor.objects.all()
+#         serializer = DoctorSerializer(doc, many=Teue)
+#         json_data = JSONRenderer().render(serializer.data)
+#         return HttpResponse(json_data, content_type='application/json')
+    
+#     if request.method == 'POST':
+#         json_data = request.body
+#         stram = io.BytesIO(json_data)
+#         pythondata = JSONParser().parse(stream)
+#         serializer = DoctorSerializer(data = pythondata)
+#         if serializer.is_valid():
+#             serializer.save()
+#             res = {'msg':'data created'}
+#             json_data = JSONRenderer().render(res)
+#             return HttpResponse(json_data, content_type='application/json')
+#         json_data = JSONRenderer().render(serializer.errors)
+#         return HttpResponse(json_data, content_type='application/json')
+        
+
+
+
+
+
 
 class PatientList(ListAPIView):
     queryset = Patient.objects.all()

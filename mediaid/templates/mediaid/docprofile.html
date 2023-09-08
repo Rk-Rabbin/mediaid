@@ -12,7 +12,11 @@
               <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
         {% endfor %}
      {% endif %}
-       <img src="{{doc.profilepic.url}}" alt="" class="img-fluid img-thumbnail">
+     {% if doc.profilepic %}
+      <img src="{{doc.profilepic.url}}" alt="" class="img-fluid img-thumbnail">
+      {% else %}
+      <img src="{% static 'mediaid/images/head_sun_flower.png' %}" alt="" class="img-fluid img-thumbnail">
+     {% endif %}
         <h4>Name : {{doc.name}}</h4>
         <hr>
           <div class="card mb-2">

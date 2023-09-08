@@ -12,7 +12,7 @@ class ForgotPassPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
+      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.only(left: 30.0, right: 30.0),
         child: Column(
@@ -20,7 +20,7 @@ class ForgotPassPage extends StatelessWidget {
           children: [
             Text(
               "Reset Password",
-              style: whiteTextStyle.copyWith(
+              style: blackTextStyle.copyWith(
                 fontSize: 30,
                 fontWeight: semiBold,
               ),

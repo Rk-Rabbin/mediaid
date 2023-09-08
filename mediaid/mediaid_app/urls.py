@@ -4,6 +4,12 @@ from .forms import LoginForm, MyPasswordChangeForm, MyPasswordResetForm, MySetPa
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
+from rest_framework import routers
+
+# router = routers.DefaultRouter()
+
+# router.register('DocFlutter', views.DoctorRegistrationAPIView, basename='DocFlutter')
+
 
 urlpatterns = [
     path('', views.LandingPage , name='LandingPage'),
@@ -44,12 +50,17 @@ urlpatterns = [
     path('confirm_doc_del/<id>', views.confirm_doc_del , name='confirm_doc_del'),
     path('del_doctor/<id>', views.del_doctor , name='del_doctor'), 
 
+    # API
+    path('insurancesAPI/',views.InsuranceList.as_view()),
+    path('patientsAPI/',views.PatientList.as_view()),
+    path('prescriptionsAPI/',views.PrescriptionList.as_view()),
+    path('appointmentsAPI/',views.AppointmentList.as_view()),
 
-    path('insuranceAPI/',views.InsuranceList.as_view()),
-    path('doctorAPI/',views.DoctorList.as_view()),
-    path('patientAPI/',views.PatientList.as_view()),
-    path('prescriptionAPI/',views.PrescriptionList.as_view()),
-    path('appointmentAPI/',views.AppointmentList.as_view()),
+    path('doctorsListAPI/',views.DoctorList.as_view()),
+    path('register/doctor/', views.CreateDoctorAPI.as_view()),
+    path('deleteUpdate/doctor/<pk>/', views.DoctorRetrieveUpdateDestroyAPIView.as_view()),
+
+
 
     path('auth/', include('dj_rest_auth.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),

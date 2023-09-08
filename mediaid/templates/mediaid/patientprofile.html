@@ -6,7 +6,11 @@
     <div class="container my-5">
      <div class="row">
       <div class="col-sm-6 text-center align-self-center">
+        {% if pat.profilepic %}
         <img src="{{pat.profilepic.url}}" alt="" class="img-fluid img-thumbnail">
+        {% else %}
+        <img src="{% static 'mediaid/images/head_sun_flower.png' %}" alt="" class="img-fluid img-thumbnail">
+       {% endif %}
         <h4>Name : {{pat.name}}</h4>
         <hr>
           <div class="card mb-2">

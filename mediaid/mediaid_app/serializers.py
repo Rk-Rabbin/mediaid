@@ -33,7 +33,15 @@ class InsuranceProviderSerializer(serializers.ModelSerializer):
 class DoctorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
-        fields = ['users', 'name', 'gender', 'number', 'licensenum', 'hospital', 'speciality', 'qualification', 'availability', 'start', 'end', 'fees', 'profilepic']
+        fields = '__all__'   
+    # def create(self, validate_data):
+    #     user = validated_data.get('users')
+    #     user_obj = User.objects.create(**user)
+    #     doc = None
+    #     if user_obj:
+    #         doc = Doctor.objects.create(users=user_obj, **validate_data)
+    #     return doc
+
 
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:

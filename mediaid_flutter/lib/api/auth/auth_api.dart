@@ -6,6 +6,7 @@ import 'package:mediaid_flutter/models/user_models.dart';
 
 import '../../constants.dart';
 
+
 Future<dynamic> userAuth(String email, String password) async {
   Map body = {
     "username": email,
@@ -114,6 +115,35 @@ Future<dynamic> registerUser(
 }
 
 
+
+// Future<void> registerDoctor() async {
+//   final response = await http.post(
+//     Uri.parse('$baseUrl/register/doctor/'),
+//     headers: {'Content-Type': 'application/json'},
+//     body: json.encode({
+//       'username': 'doctor_username',
+//       'password': 'doctor_password',
+//       'email': 'doctor_email@example.com',
+//       'name' : 'smith',
+//       'gender' : 'Male',
+//       'number' : 'hjbdhjbjc',
+//       'licensenum' : 'hbchj',
+//       'hospital' : 'bdhjcbd',
+//       'speciality' : 'hvhjd',
+//       'qualification' : "vvhvd",
+//       'availability' : 'Friday-Monday',
+//       'start' : "6:00 PM",
+//       'end' : "12:00 PM",
+//       'fees': 'fees'
+//     }),
+//   );
+
+//   if (response.statusCode == 201) {
+//     print('Doctor registered successfully');
+//   } else {
+//     print('Error registering doctor');
+//   }
+// }
 
 
 // example1gmail.com

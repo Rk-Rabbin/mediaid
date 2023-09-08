@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/pages/register_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,7 +34,46 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const SignUpPage(),
+        home: FutureBuilder<Box>(
+          future: Hive.openBox(tokenBox),
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              var box = snapshot.data;
+              var token = box!.get("token");
+              if(token!=null){
+                return FutureBuilder<User?>(
+                  future: getUser(token),
+                  builder: (context, snapshot){
+                    if(snapshot.hasData){
+                      if(snapshot.data!=null){
+                        User user = snapshot.data!;
+                        user.token = token;
+                        context.read<UserCubit>().emit(user);
+                        return const Home();
+                      }else{
+                        return const SignInPage();
+                      }
+                    }else{
+                      return const SignInPage();                     
+                      // return Center(
+                      // child: CircularProgressIndicator(),
+                      // );
+                    }
+                });
+              }else{
+                return const SignInPage();
+              }
+            } else if(snapshot.hasError){
+              return const SignInPage();                     
+            } else{
+              // return Center(
+              //   child: CircularProgressIndicator(),
+              // );
+              return const SignInPage();                     
+
+            }
+          }
+        ),
       ),
     );
   }
