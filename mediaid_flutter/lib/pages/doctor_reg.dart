@@ -8,6 +8,7 @@ import 'package:mediaid_flutter/functions/doctor.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
 import 'package:mediaid_flutter/widgets/text_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../Widgets/formFields.dart';
 import '../Widgets/regForms.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,7 +40,17 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
   TextEditingController _endController = TextEditingController();
   TextEditingController _feesController = TextEditingController();
   late User user;
+  File? _imageFile;
 
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedImage = await ImagePicker().pickImage(source: source);
+
+    if (pickedImage != null) {
+      setState(() {
+        _imageFile = File(pickedImage.path);
+      });
+    }
+  }
 
    @override
   void initState() {
@@ -153,13 +164,19 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
             title: "Fees",
             logo: CupertinoIcons.money_dollar_circle_fill,
           ),
-          // SizedBox(
-          //     height: 15,
-          //   ),
-          //   TextButton(onPressed: (){}, child: Text('Upload ProfilePic'),),
+
             SizedBox(
               height: 15,
             ),
+            _imageFile == null
+                ? Text('No image selected')
+                : Image.file(_imageFile!),
+
+            ElevatedButton(
+              onPressed: () => _pickImage(ImageSource.gallery),
+              child: Text('Pick from Gallery'),
+            ),
+
           // Other text form fields for password, email, name, number, gender
           CustomTextButton(
               onTap: () async {
@@ -173,7 +190,7 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
                   _genderController.text, _licenseController.text, _hospitalController.text,
                   _specialityController.text,_qualificationController.text,
                   _availabilityController.text, _startController.text, _endController.text,
-                  _feesController.text);
+                  _feesController.text, _imageFile!);
 
                   if(a){
                     showDialog(
@@ -209,6 +226,7 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
                       ),
                     )
                     );
+                    await Future.delayed(Duration(seconds: 2));
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Home()), (route) => false);
                   }
                   else{
@@ -282,9 +300,6 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
                     )
                     );
                 }
-                // if (widget.userId != null) {
-                //   registerDoctor(widget.userId!);
-                // }
               },
               title: 'Register as Doctor',
             ),
@@ -293,91 +308,4 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
       ),
     );
   }
-
-  // Future<void> registerDoctor(int userId) async {
-  //   final response = await http.post(
-  //     Uri.parse('YOUR_DJANGO_API_URL/register/doctor/'),
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: json.encode({
-  //       'user_id': userId,
-  //       'name': 'Doctor Name',
-  //       'number': 'Doctor Phone Number',
-  //       'gender': 'Doctor Gender',
-  //     }),
-  //   );
-
-  //   if (response.statusCode == 201) {
-  //     // Handle successful doctor registration
-  //     print('Doctor registered successfully');
-  //   } else {
-  //     // Handle doctor registration error
-  //     print('Could not registered successfully');
-  //   }
-  // }
-
-  
-  // void registerDoctor(int userId) async {
-  //   final response = await http.post(
-  //     Uri.parse('$baseUrl/register/doctor/'),
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: json.encode({
-  //       'user': userId.toInt(),
-  //       // 'password': _passwordController.text,
-  //       // 'email': _emailController.text,
-  //       'name': _nameController.text,
-  //       'number': _numberController.text,
-  //       'gender': _genderController.text,
-  //       'licensenum' : _licenseController.text,
-  //       'hospital' : _hospitalController.text,
-  //       'speciality' : _specialityController.text,
-  //       'qualification' : _qualificationController.text,
-  //       'availability' : _availabilityController.text,
-  //       'start' : _startController.text,
-  //       'end' : _endController.text,
-  //       'fees': _feesController.text
-  //     }),
-  //   );
-  //   print('Response Status Code: ${response.statusCode}');
-  //   print('Response Body: ${response.body}');
-  //   if (response.statusCode == 201) {
-  //     print('Doctor registered successfully');
-  //   } else {
-  //     print('Error registering doctor');
-  //   }
-  // }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(title: Text('Doctor Registration')),
-  //     body: SingleChildScrollView(
-  //       child: Form(
-  //         key: _formKey,
-  //         child: Column(
-  //           children: [
-  //             regForms(
-  //               controller: _usernameController,
-  //               decoration: InputDecoration(labelText: 'Username'),
-  //               validator: (value) {
-  //                 if (value.isEmpty) {
-  //                   return 'Please enter a username';
-  //                 }
-  //                 return null;
-  //               },
-  //             ),
-  //             // Other text form fields for password, email, name, number, gender
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 if (_formKey.currentState.validate()) {
-  //                   _registerDoctor();
-  //                 }
-  //               },
-  //               child: Text('Register'),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

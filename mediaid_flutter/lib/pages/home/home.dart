@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mediaid_flutter/api/auth/auth_api.dart';
+import 'package:mediaid_flutter/functions/doctor.dart';
+import 'package:mediaid_flutter/models/doctor_model.dart';
 import 'package:mediaid_flutter/models/user_models.dart';
 import 'package:mediaid_flutter/pages/doctor_reg.dart';
 import 'package:mediaid_flutter/pages/doctor_list.dart';
@@ -10,50 +12,6 @@ import 'package:mediaid_flutter/pages/login_page.dart';
 import 'package:mediaid_flutter/theme.dart';
 import '../../models/user_cubit.dart';
 
-
-// class HomePage extends StatelessWidget {
-//   const HomePage({ Key? key }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     User user = context.read<UserCubit>().state;
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//             "Home"),
-//         actions: [
-//           OutlinedButton(
-//               onPressed: () async {
-//                 await logOut(user.token!);
-//                 Navigator.of(context).pushAndRemoveUntil(
-//                     MaterialPageRoute(builder: (context) => SignInPage()),
-//                     (route) => false);
-//               },
-//               child: Text(
-//                 "Logout",
-//                 style: TextStyle(color: Colors.white),
-//               ))
-//         ],
-//       ),
-
-//       body: Padding(
-//         padding: EdgeInsets.only(left: 70.0, right: 20.0, bottom: 100),
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text(
-//               "User Id: ${user.id} \nEmail: ${user.email} \nUsername: ${user.username}",
-//               style: blackTextStyle.copyWith(
-//                 fontSize: 20,
-//                 fontWeight: semiBold,
-//               ),
-//             ),
-//             ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,11 +25,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Doctor doctorService = Doctor();
+
   @override
   Widget build(BuildContext context) {
     User user = context.read<UserCubit>().state;
     // final int userId = user.id?.toInt();
-
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: Drawer(
@@ -94,6 +53,15 @@ class _HomeState extends State<Home> {
               ),),
             ),
             ListTile(
+              onTap: (){
+                Navigator.pushNamed(context, '/profile');
+              },
+              leading:Icon(CupertinoIcons.person),
+              title: Text('Profile',style: TextStyle(
+                  fontSize: 18
+              ),),
+            ),
+            ListTile(
               onTap: () {
                     Navigator.push(
                       context,
@@ -105,6 +73,7 @@ class _HomeState extends State<Home> {
                 fontSize: 18
               ),),
             ),
+
             ListTile(
               onTap: () {
                     Navigator.push(
@@ -128,14 +97,6 @@ class _HomeState extends State<Home> {
               },
               leading:Icon(Icons.history),
               title: Text('History',style: TextStyle(
-                  fontSize: 18
-              ),),
-            ),ListTile(
-              onTap: (){
-                Navigator.pushNamed(context, '/profile');
-              },
-              leading:Icon(CupertinoIcons.person),
-              title: Text('Profile',style: TextStyle(
                   fontSize: 18
               ),),
             ),ListTile(
@@ -182,9 +143,6 @@ class _HomeState extends State<Home> {
         elevation: 0,
         toolbarHeight: 120,
         backgroundColor: Colors.white,
-        // leading: const Icon(CupertinoIcons.bars,
-        // size: 40,
-        // color: Colors.black,),
         title: Row(
           children: const [
             Expanded(
@@ -201,11 +159,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            Expanded(
-              child: Icon(Icons.notifications_none_rounded,
-              color: Colors.black38,
-              size: 35,),
-            )
           ],
         ),
       ),
@@ -231,7 +184,7 @@ class _HomeState extends State<Home> {
                 decoration: InputDecoration(
                   icon: Icon(CupertinoIcons.search,
                   color: Colors.grey,),
-                  hintText: 'Search doctors, drugs, articles...',
+                  hintText: 'Search doctors...',
                   hintStyle: TextStyle(
                     fontSize: 18,
                     color: Colors.grey,
@@ -250,9 +203,9 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                homebuttons(title: 'Doctors', image: 'assets/steth.png', route: '/finddoctors',),
-                homebuttons(title: 'Hospital', image: 'assets/hospital.png', route: '/doctors',),
-                homebuttons(title: 'Health', image: 'assets/care.png', route: '/doctors',),
+                homebuttons(title: 'Doctors', image: 'assets/steth.png', route:'/doctor_list'),
+                homebuttons(title: 'Insurance', image: 'assets/hospital.png', route: '/doctors',),
+                homebuttons(title: 'Patients', image: 'assets/care.png', route: '/doctors',),
                 homebuttons(title: 'Prescription', image: 'assets/pill.png', route: '/doctors',),
 
               ],
@@ -332,7 +285,7 @@ class _HomeState extends State<Home> {
                   ),),
                   GestureDetector(
                     onTap: (){
-                      Navigator.pushNamed(context,'/doctors');
+                      Navigator.pushNamed(context,'/doctor_list');
                     },
                     child: Text('See all',
                     style: TextStyle(
@@ -350,13 +303,39 @@ class _HomeState extends State<Home> {
                 height: 200,
                 child: ListView(
                     scrollDirection: Axis.horizontal,
-                    children:
-                [
-                  docHomeCard(image: 'assets/doc2.png',title: 'Dr. Marcus Horiz',subtitle: 'Chardiologist',rating: '4.7',distance: '800m away'),
-                  docHomeCard(image: 'assets/doc3.png',title: 'Dr. Maria ELena',subtitle: 'Psychologist',rating: '4.4',distance: '1.2km away'),
-                  docHomeCard(image: 'assets/doc4.png',title: 'Dr. Marcus Horiz',subtitle: 'Chardiologist',rating: '4.7',distance: '800m away'),
-                  docHomeCard(image: 'assets/doc1.png',title: 'Dr. Marcus Horiz',subtitle: 'Chardiologist',rating: '4.7',distance: '800m away'),
-                  docHomeCard(image: 'assets/doc2.png',title: 'Dr. Marcus Horiz',subtitle: 'Chardiologist',rating: '4.7',distance: '800m away'),
+                    children:[
+                      FutureBuilder<List>(
+      future: doctorService.getAllDoctor(user),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Show a loading indicator.
+        } else if (snapshot.hasError) {
+          print('Error: ${snapshot.error}');
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          final doctorList = snapshot.data;
+          return Row(
+            children: [
+              if (doctorList != null) // Check if doctorList is not null.
+                for (int i = 0; i < doctorList.length; i++)
+                  docHomeCard(
+                    image: doctorList[i]['profilepic'] != null
+                           ? doctorList[i]['profilepic'] // Pass the image URL as a String
+                           : 'assets/head_sun_flower.png',
+                    title: doctorList[i]['name'],
+                    subtitle: doctorList[i]['speciality'],
+                    rating: doctorList[i]['number'],
+                    distance: doctorList[i]['hospital'],
+                  ),
+            ],
+          );
+        } else {
+          return const Center(
+            child: Text('No data found!!'),
+          );
+        }
+      },
+    ),
                 ]
                 ),
               ),

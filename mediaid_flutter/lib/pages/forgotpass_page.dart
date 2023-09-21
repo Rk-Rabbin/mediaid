@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mediaid_flutter/widgets/field.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../Widgets/buttons/backbutton.dart';
 import '../theme.dart';
 import '../widgets/text_button.dart';
 import 'login_page.dart';
@@ -13,6 +14,20 @@ class ForgotPassPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+       leading: const backbutton(),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          'Reset Password',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 23,
+          ),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.only(left: 30.0, right: 30.0),
         child: Column(

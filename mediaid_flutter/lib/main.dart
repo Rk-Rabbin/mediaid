@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
+import 'package:mediaid_flutter/Screens/Profile.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
+import 'package:mediaid_flutter/pages/doctor_list.dart';
 import 'package:mediaid_flutter/pages/register_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mediaid_flutter/api/auth/auth_api.dart';
@@ -34,6 +36,14 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        initialRoute: '/',
+        routes: {
+              // '/': (context) => const Home(), // Define the home route
+              '/login': (context) => const SignInPage(), // Define the login route
+              '/register': (context) => const SignUpPage(),
+              '/doctor_list': (context) => DoctorPage(),
+              '/profile': (context) => Profile(),
+        },
         home: FutureBuilder<Box>(
           future: Hive.openBox(tokenBox),
           builder: (context, snapshot){

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 class homebuttons extends StatelessWidget {
   final title;
   final String image;
-  final String route;
+  final route;
 
   const homebuttons({Key? key, this.title, required this.image, required this.route}) : super(key: key);
 
@@ -13,9 +13,10 @@ class homebuttons extends StatelessWidget {
       child: Column(
         children: [
           GestureDetector(
-            onTap: (){
-              Navigator.pushNamed(context, route);
-            },
+        onTap: () {
+        Navigator.pushNamed(context, route);
+
+      },
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.white,

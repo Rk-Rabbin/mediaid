@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 class docHomeCard extends StatelessWidget {
-  final String image;
+  final image;
   final title;
   final subtitle;
   final distance;
@@ -14,8 +14,8 @@ class docHomeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 170,
-        width: 130,
+        height: 220,
+        width: 150,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(6),
@@ -37,10 +37,14 @@ class docHomeCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: AssetImage(
-                            image,
-                          ),
-                          scale: 15,
+                          image: image is String && image.startsWith('http') // Check if the image is a network URL
+                                 ? NetworkImage(image)       // Use NetworkImage if it's a URL
+                                 : AssetImage(image)
+                                 as ImageProvider<Object>,
+                          // image: NetworkImage(
+                          //   image,
+                          // ),
+                          scale: 20,
                           fit: BoxFit.fill
                       )
                   ),
@@ -62,7 +66,7 @@ class docHomeCard extends StatelessWidget {
                 textAlign: TextAlign.start,
                 style: TextStyle(
                     color: Colors.black38,
-                    fontSize: 10
+                    fontSize: 12
                 ),),
             ),
             Padding(
@@ -93,18 +97,30 @@ class docHomeCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Icon(CupertinoIcons.location_solid,size: 12,color: Colors.black26,),
-                      Text(distance,
-                        style: TextStyle(
+                ],
+              ),
+            ),
+            SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+              child: Row(
+                children: [
+                    Icon(CupertinoIcons.location_solid,size: 12,color: Colors.black26,),
+                    Flexible(
+                      flex: 2,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal, // Make the text scroll horizontally
+                        child: Text(
+                          distance,
+                          style: TextStyle(
                             color: Colors.black26,
                             fontWeight: FontWeight.w400,
-                            fontSize: 10
-                        ),)
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
                     ],
-                  )
-                ],
               ),
             ),
           ],
