@@ -46,17 +46,6 @@ String start, String end, String fees, File imagefile) async {
 
 
 
-// updateDoctor(User user,int id, String name, String number, String start, String end, String fees, String licensenum, String hospital, String speciality,
-// String qualification, String availability) async {
-//   var uri = Uri.parse("$baseUrl/deleteUpdate/doctor/$id/");
-//   Map data = {
-//      "name":name, "number":number, "start":start, "end":end, "fees":fees, "licensenum":licensenum,
-//      "hospital":hospital, "speciality":speciality, "qualification":qualification, "availability":availability
-//     };
-//   var res = await http.put(uri, body:data, headers: {'Authorization':'Token ${user.token}'});
-// }
-
-
 
 
 Future<bool> deleteDoctor(User user, int id) async {
@@ -64,9 +53,12 @@ Future<bool> deleteDoctor(User user, int id) async {
   var response = await http.delete(uri, headers: {'Authorization':'Token ${user.token}'});
   if (response.statusCode == 200 || response.statusCode==204) {
     print(response.statusCode);
+    print(uri);
     return true;
   } else {
    print(response.statusCode);
+       print(uri);
+
     return false;
   }
 }
@@ -74,13 +66,17 @@ Future<bool> deleteDoctor(User user, int id) async {
 
 
 Future <DoctorModel?> getDoctor(User user, int id) async {
-  var uri = Uri.parse("$baseUrl/deleteUpdate/doctor/$id/");
+  var uri = Uri.parse("$baseUrl/deleteUpdate/doctor/${id}/");
   var res = await http.get(uri, headers: {'Authorization':'Token ${user.token}'});
   if(res.statusCode == 200){
     var json = jsonDecode(res.body);
     var doctor = DoctorModel.fromJson(json);
+    print(doctor);
     return doctor;
   } else {
+    print(uri);
+    print(res.statusCode);
+    print(res.body);
     throw Exception('Server Error'); // Throw an exception instead of returning a string
   }
 }

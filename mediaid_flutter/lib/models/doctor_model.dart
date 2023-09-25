@@ -14,6 +14,7 @@ class DoctorModel {
   String end; 
   String fees; 
   String profilepic;
+
   DoctorModel(
     this.id,
     this.name,
@@ -29,10 +30,10 @@ class DoctorModel {
     this.fees,
     this.profilepic,
   );
+
   factory DoctorModel.fromJson(Map json) {
     return DoctorModel(
       json["id"],
-      // Author.fromJson(json["author"]),
       json["name"],
       json["number"],
       json["gender"],
@@ -47,6 +48,7 @@ class DoctorModel {
       json["profilepic"],
     );
   }
+  
   Map<String, String> toJson() {
     return {
       "id": "$id",

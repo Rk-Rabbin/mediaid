@@ -1103,12 +1103,13 @@ class PatientList(ListAPIView):
     serializer_class = PatientSerializer
 
 class CreatePatientAPI(CreateAPIView):
-    serializer_class = DoctorSerializer
+    serializer_class = PatientSerializer
 
 class PatientRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     lookup_field = 'pk'
+
 
 #Prescription API
 class PrescriptionList(ListAPIView):
@@ -1118,7 +1119,7 @@ class PrescriptionList(ListAPIView):
 class CreatePrescriptionAPI(CreateAPIView):
     serializer_class = PrescriptionSerializer
 
-class DoctorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+class PrescriptionRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Prescription.objects.all()
     serializer_class = PrescriptionSerializer
     lookup_field = 'pk'
@@ -1130,7 +1131,7 @@ class AppointmentList(ListAPIView):
     serializer_class = AppointmentSerializer
 
 class CreateAppointmentAPI(CreateAPIView):
-    serializer_class = DoctorSerializer
+    serializer_class = AppointmentSerializer
 
 class AppointmentRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Appointment.objects.all()

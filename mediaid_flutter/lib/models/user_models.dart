@@ -19,4 +19,21 @@ class User {
       username: json["username"],
     );
   }
+
+  //   Map<String, dynamic> toJson() {
+  //   return {
+  //     "email": email,
+  //     "pk": id,
+  //     "username": username,
+  //     // Add other properties here if needed
+  //   };
+  // }
+
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     "id": id,
+  //     "email": email,
+  //     "username": username,
+  //   };
+  // }
 }

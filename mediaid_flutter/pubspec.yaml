@@ -41,6 +41,9 @@ dependencies:
   flutter_bloc: ^8.1.3
   image_picker: ^0.8.0
   permission_handler: ^10.4.5
+  url_launcher: ^6.0.9
+  intl: ^0.18.1
+
   # flutter_bloc: ˆ8.1.3
 
 

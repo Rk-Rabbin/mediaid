@@ -5,6 +5,7 @@ import 'package:mediaid_flutter/models/user_models.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mediaid_flutter/Widgets/buttons/ActionButton.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../Widgets/buttons/backbutton.dart';
 import '../Widgets/formFields.dart';
@@ -16,6 +17,8 @@ import '../widgets/field.dart';
 import '../widgets/text_button.dart';
 import 'forgotpass_page.dart';
 import 'register_page.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -83,26 +86,55 @@ class _SignInPageState extends State<SignInPage> {
               height: 20,
             ),
 
-            Align(
-            alignment: Alignment.center,
-            child: Container(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ForgotPassPage()),
-                  );
-                },
-                child: Text(
-                  "Forgot Password?",
-                    style: blackTextStyle.copyWith(
-                    fontSize: 16,
-                    fontWeight: semiBold,
-                  ),
-                ),
-              ),
-            ),
-          ),
+Align(
+  alignment: Alignment.center,
+  child: GestureDetector(
+    onTap: () async {
+      const url = 'http://127.0.0.1:8000/password-reset/';
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    },
+    child: Container(
+      child: Text(
+        "Forgot Password?",
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.blue, // You can customize the text color
+        ),
+      ),
+    ),
+  ),
+),
+
+
+
+
+
+
+          //   Align(
+          //   alignment: Alignment.center,
+          //   child: Container(
+          //     child: TextButton(
+          //       onPressed: () {
+          //         Navigator.push(
+          //           context,
+          //           MaterialPageRoute(builder: (context) => ForgotPassPage()),
+          //         );
+          //       },
+          //       child: Text(
+          //         "Forgot Password?",
+          //           style: blackTextStyle.copyWith(
+          //           fontSize: 16,
+          //           fontWeight: semiBold,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
           const SizedBox(
               height: 30,

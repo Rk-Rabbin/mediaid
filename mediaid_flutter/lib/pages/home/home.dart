@@ -9,6 +9,7 @@ import 'package:mediaid_flutter/models/user_models.dart';
 import 'package:mediaid_flutter/pages/doctor_reg.dart';
 import 'package:mediaid_flutter/pages/doctor_list.dart';
 import 'package:mediaid_flutter/pages/login_page.dart';
+import 'package:mediaid_flutter/pages/patient_reg.dart';
 import 'package:mediaid_flutter/theme.dart';
 import '../../models/user_cubit.dart';
 
@@ -78,14 +79,15 @@ class _HomeState extends State<Home> {
               onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DoctorPage() ),
+                      MaterialPageRoute(builder: (context) => PatientRegistrationForm() ),
                     );
                   },
               leading:Icon(Icons.app_registration),
-              title: Text("Doctor's List",style: TextStyle(
+              title: Text("Patient Registration",style: TextStyle(
                 fontSize: 18
               ),),
             ),
+
             ListTile(
               leading:Icon( Icons.contact_page_outlined),
               title: Text('Medical Records',style: TextStyle(
@@ -150,7 +152,7 @@ class _HomeState extends State<Home> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 0 , 20,  0),
                 child: Text(
-                  'Fine your desired \nhealth solution'  ,
+                  'Find your desired \nhealth solution'  ,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 25,
@@ -205,7 +207,7 @@ class _HomeState extends State<Home> {
               children: [
                 homebuttons(title: 'Doctors', image: 'assets/steth.png', route:'/doctor_list'),
                 homebuttons(title: 'Insurance', image: 'assets/hospital.png', route: '/doctors',),
-                homebuttons(title: 'Patients', image: 'assets/care.png', route: '/doctors',),
+                homebuttons(title: 'Patients', image: 'assets/care.png', route: '/patient_list',),
                 homebuttons(title: 'Prescription', image: 'assets/pill.png', route: '/doctors',),
 
               ],

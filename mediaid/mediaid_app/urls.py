@@ -52,13 +52,17 @@ urlpatterns = [
 
     # API
     path('insurancesAPI/',views.InsuranceList.as_view()),
-    path('patientsAPI/',views.PatientList.as_view()),
     path('prescriptionsAPI/',views.PrescriptionList.as_view()),
     path('appointmentsAPI/',views.AppointmentList.as_view()),
 
     path('doctorsListAPI/',views.DoctorList.as_view()),
     path('register/doctor/', views.CreateDoctorAPI.as_view()),
     path('deleteUpdate/doctor/<pk>/', views.DoctorRetrieveUpdateDestroyAPIView.as_view()),
+
+    path('patientsListAPI/',views.PatientList.as_view()),
+    path('register/patient/', views.CreatePatientAPI.as_view()),
+    path('deleteUpdate/patient/<pk>/', views.PatientRetrieveUpdateDestroyAPIView.as_view()),
+
 
 
 
