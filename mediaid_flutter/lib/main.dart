@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
+import 'package:mediaid_flutter/Screens/Prescription.dart';
 import 'package:mediaid_flutter/Screens/Profile.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/pages/doctor_list.dart';
 import 'package:mediaid_flutter/pages/patient_list.dart';
+import 'package:mediaid_flutter/pages/prescription_list.dart';
 import 'package:mediaid_flutter/pages/register_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mediaid_flutter/api/auth/auth_api.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
 
+import 'Screens/Doctors.dart';
+import 'Screens/Insurance.dart';
+// import 'Screens/Home.dart';
 import 'constants.dart';
 import 'models/user_models.dart';
 import 'pages/login_page.dart';
@@ -42,9 +47,11 @@ class MyApp extends StatelessWidget {
               // '/': (context) => const Home(), // Define the home route
               '/login': (context) => const SignInPage(), // Define the login route
               '/register': (context) => const SignUpPage(),
-              '/doctor_list': (context) => DoctorPage(),
+              '/prescription_list': (context) => PrescriptionPage(),
               '/patient_list': (context) => PatientPage(),
               '/profile': (context) => Profile(),
+              '/insurance':(context) => InsurancePage(),
+              '/doctor_list':(context) => Doctors(),
         },
         home: FutureBuilder<Box>(
           future: Hive.openBox(tokenBox),

@@ -8,8 +8,10 @@ import 'package:mediaid_flutter/models/doctor_model.dart';
 import 'package:mediaid_flutter/models/user_models.dart';
 import 'package:mediaid_flutter/pages/doctor_reg.dart';
 import 'package:mediaid_flutter/pages/doctor_list.dart';
+import 'package:mediaid_flutter/pages/insurance_reg.dart';
 import 'package:mediaid_flutter/pages/login_page.dart';
 import 'package:mediaid_flutter/pages/patient_reg.dart';
+import 'package:mediaid_flutter/pages/search_result.dart';
 import 'package:mediaid_flutter/theme.dart';
 import '../../models/user_cubit.dart';
 
@@ -27,6 +29,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Doctor doctorService = Doctor();
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +65,7 @@ class _HomeState extends State<Home> {
                   fontSize: 18
               ),),
             ),
+
             ListTile(
               onTap: () {
                     Navigator.push(
@@ -69,7 +73,7 @@ class _HomeState extends State<Home> {
                       MaterialPageRoute(builder: (context) => DoctorRegistrationForm() ),
                     );
                   },
-              leading:Icon(Icons.app_registration),
+              leading: Icon(CupertinoIcons.person_badge_plus),
               title: Text('Doctor Registration',style: TextStyle(
                 fontSize: 18
               ),),
@@ -82,8 +86,21 @@ class _HomeState extends State<Home> {
                       MaterialPageRoute(builder: (context) => PatientRegistrationForm() ),
                     );
                   },
-              leading:Icon(Icons.app_registration),
+              leading: Icon(CupertinoIcons.person_badge_plus),
               title: Text("Patient Registration",style: TextStyle(
+                fontSize: 18
+              ),),
+            ),
+
+            ListTile(
+              onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => InsuranceRegistrationForm() ),
+                    );
+                  },
+              leading: Icon(CupertinoIcons.person_badge_plus),
+              title: Text("Insurance Registration",style: TextStyle(
                 fontSize: 18
               ),),
             ),
@@ -182,33 +199,58 @@ class _HomeState extends State<Home> {
             ),
             child:   Padding(
               padding: const EdgeInsets.fromLTRB(19, 8, 10, 12),
-              child: TextField(
-                decoration: InputDecoration(
-                  icon: Icon(CupertinoIcons.search,
-                  color: Colors.grey,),
-                  hintText: 'Search doctors...',
-                  hintStyle: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
-                  ),
-                  focusColor: Colors.transparent,
-                  focusedBorder: InputBorder.none,
-                  border: InputBorder.none,
-                ),
-                cursorColor: Colors.black45,
-                cursorHeight: 25,
-                cursorWidth: 1,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchController, // Assign the controller here
+                      decoration: InputDecoration(
+                        hintText: 'Search doctors...',
+                        hintStyle: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                        focusColor: Colors.transparent,
+                        focusedBorder: InputBorder.none,
+                        border: InputBorder.none,
+                      ),
+                      cursorColor: Colors.black45,
+                      cursorHeight: 25,
+                      cursorWidth: 1, 
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        CupertinoIcons.search,
+                        color: Colors.blue, // Customize the color of the search button
+                        size: 28, // Customize the size of the search button
+                      ),
+                      onPressed: () {
+                        String searchText = searchController.text; // Get the text from the controller
+
+                        // Navigate to the search result page with the search text as a parameter.
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Search(
+                              searchText: searchText,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                ],
               ),
-            ),
+          ),
         ),
           ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 homebuttons(title: 'Doctors', image: 'assets/steth.png', route:'/doctor_list'),
-                homebuttons(title: 'Insurance', image: 'assets/hospital.png', route: '/doctors',),
+                homebuttons(title: 'Insurance', image: 'assets/hospital.png', route: '/insurance',),
                 homebuttons(title: 'Patients', image: 'assets/care.png', route: '/patient_list',),
-                homebuttons(title: 'Prescription', image: 'assets/pill.png', route: '/doctors',),
+                homebuttons(title: 'Prescription', image: 'assets/pill.png', route: '/prescription_list',),
 
               ],
             ),

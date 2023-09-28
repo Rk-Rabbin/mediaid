@@ -51,14 +51,25 @@ urlpatterns = [
     path('del_doctor/<id>', views.del_doctor , name='del_doctor'), 
 
     # API
+    # Insurance
     path('insurancesAPI/',views.InsuranceList.as_view()),
+    path('register/insurance/', views.CreateInsuranceAPI.as_view()),
+    path('deleteUpdate/insurance/<pk>/', views.InsuranceRetrieveUpdateDestroyAPIView.as_view()),
+
+    # Prescription
     path('prescriptionsAPI/',views.PrescriptionList.as_view()),
+    path('register/prescription/', views.CreatePrescriptionAPI.as_view()),
+    path('deleteUpdate/prescription/<pk>/', views.PrescriptionRetrieveUpdateDestroyAPIView.as_view()),
+
+    # Appointment
     path('appointmentsAPI/',views.AppointmentList.as_view()),
 
+    # Doctor
     path('doctorsListAPI/',views.DoctorList.as_view()),
     path('register/doctor/', views.CreateDoctorAPI.as_view()),
     path('deleteUpdate/doctor/<pk>/', views.DoctorRetrieveUpdateDestroyAPIView.as_view()),
 
+    # Patient
     path('patientsListAPI/',views.PatientList.as_view()),
     path('register/patient/', views.CreatePatientAPI.as_view()),
     path('deleteUpdate/patient/<pk>/', views.PatientRetrieveUpdateDestroyAPIView.as_view()),

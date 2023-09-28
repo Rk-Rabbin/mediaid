@@ -82,14 +82,17 @@ class _PatientUpdateFormState extends State<PatientUpdateForm> {
   }
   }
 
-    Future<void> _setImage() async {
-    if (_imageFile == null) {
-    // Set _imageFile to doctor.profilepic if it's still null
-    setState(() async {
-    _imageFile = await downloadNetworkImage(patient.profilepic);
+  Future<void> _setImage() async {
+  if (_imageFile == null) {
+    // Perform asynchronous work here
+    final File imageFile = await downloadNetworkImage(patient.profilepic);
+
+    // Once the asynchronous work is complete, update the state using setState
+    setState(() {
+      _imageFile = imageFile;
     });
   }
-  }
+}
 
    @override
   void initState() {

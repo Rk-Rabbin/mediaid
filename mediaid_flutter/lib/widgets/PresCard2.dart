@@ -10,7 +10,8 @@ class PresCard2 extends StatelessWidget {
   final category;
   final route;
   final details;
-  const PresCard2({Key? key, required this.image, this.title, this.category, this.route, this.details}) : super(key: key);
+  final doctor;
+  const PresCard2({Key? key, required this.image, this.title, this.category, this.route, this.details, required this.doctor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class PresCard2 extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image(
-                    image: AssetImage(
+                    image: NetworkImage(
                       image,
                     ),
                     height: 115,
@@ -63,7 +64,7 @@ class PresCard2 extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         fontSize: 14
                     ),),
-                  SizedBox(height: 15,),
+                  SizedBox(height: 10,),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
@@ -78,7 +79,7 @@ class PresCard2 extends StatelessWidget {
                             size: 18,
                           ),
                           SizedBox(width: 5,),
-                          Text('4.7',
+                          Text('Doctor Id: ${doctor}',
                             style: TextStyle(
                                 color: Color(0xff38CC86),
                                 fontWeight: FontWeight.w600,
@@ -88,20 +89,30 @@ class PresCard2 extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10,),
                   Row(
                     children: [
-                      Icon(Icons.medical_information_rounded,size: 18,color: Colors.black26,),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                        child: Text(details,
-                          style: TextStyle(
+                      Icon(
+                        CupertinoIcons.building_2_fill,
+                        size: 18,
+                        color: Colors.black26,
+                      ),
+                      Container(
+                        width: 150, // Set a maximum width or adjust this value as needed
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            details,
+                            style: TextStyle(
                               color: Colors.black26,
                               fontWeight: FontWeight.w400,
-                              fontSize: 14
-                          ),),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       )
                     ],
-                  )
+                  ),
                 ],
               )
             ],
@@ -123,37 +134,10 @@ class PresCard2 extends StatelessWidget {
                 ),
                 height: 500,width: 600,
               ),
-              // SizedBox(height: 16),
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     await _checkAndRequestPermission(context,image);
-              //   },
-              //   child: Text("Download"),
-              // ),
             ],
           ),
         );
       },
     );
   }
-  // Future<void> _downloadImage( String imageAssetPath) async {
-  //   final ByteData data = await rootBundle.load(imageAssetPath);
-  //   final List<int> bytes = data.buffer.asUint8List();
-
-  //   final String dir = (await getApplicationDocumentsDirectory()).path;
-  //   final String imageName = '$dir/${imageAssetPath.split('/').last}';
-  //   final String imagePath = '$dir/$imageName';
-
-  //   File(imagePath).writeAsBytes(bytes);
-  // }
-  // Future<void> _checkAndRequestPermission(BuildContext context, String image) async {
-  //   PermissionStatus status = await Permission.storage.request();
-  //   if (status.isGranted) {
-  //     _downloadImage(  image);
-  //     final snackBar = SnackBar(content: Text('Image downloaded'));
-  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //   } else {
-  //     print("Permission denied for file storage.");
-  //   }
-  // }
 }

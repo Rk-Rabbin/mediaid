@@ -101,18 +101,18 @@ class docCard2 extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5,),
-                    Row(
-                      children: [
-                        Icon(CupertinoIcons.location_solid,size: 18,color: Colors.black26,),
-                        Text('800m away',
-                          style: TextStyle(
-                              color: Colors.black26,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14
-                          ),)
-                      ],
-                    )
+                    // SizedBox(height: 5,),
+                    // Row(
+                    //   children: [
+                    //     Icon(CupertinoIcons.location_solid,size: 18,color: Colors.black26,),
+                    //     Text('800m away',
+                    //       style: TextStyle(
+                    //           color: Colors.black26,
+                    //           fontWeight: FontWeight.w400,
+                    //           fontSize: 14
+                    //       ),)
+                    //   ],
+                    // )
                   ],
                 ),
               )

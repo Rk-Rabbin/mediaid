@@ -8,17 +8,17 @@ import '../Widgets/DatePick.dart';
 import '../Widgets/buttons/backbutton.dart';
 import 'package:flutter/physics.dart';
 
-class DocProfile extends StatefulWidget {
+class PatProfile extends StatefulWidget {
   final name;
   final String image;
   final spec;
-  const DocProfile({Key? key, this.name, required this.image, this.spec}) : super(key: key);
+  const PatProfile({Key? key, this.name, required this.image, this.spec}) : super(key: key);
 
   @override
-  State<DocProfile> createState() => _DocProfileState();
+  State<PatProfile> createState() => _PatProfileeState();
 }
 
-class _DocProfileState extends State<DocProfile> {
+class _PatProfileeState extends State<PatProfile> {
   String selectedDate = '';
   String selectedTime = '';
   void _handleDateSelected(String date) {

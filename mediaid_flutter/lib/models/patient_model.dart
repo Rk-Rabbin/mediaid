@@ -13,7 +13,7 @@ class PatientModel {
   String disease;
   String allergy;
   String profilepic;
-  // User users; // Assuming you have a UserModel
+  int users; // Assuming you have a UserModel
 
   PatientModel(
     this.id,
@@ -27,7 +27,7 @@ class PatientModel {
     this.disease,
     this.allergy,
     this.profilepic,
-    // this.users, // Include UserModel
+    this.users, // Include UserModel
 );
 
 factory PatientModel.fromJson(Map<String, dynamic> json) {
@@ -43,7 +43,7 @@ factory PatientModel.fromJson(Map<String, dynamic> json) {
     json["disease"],
     json["allergy"],
     json["profilepic"],
-    // User.fromJson(json["users"])
+    json["users"]
   );
 }
 
@@ -51,7 +51,6 @@ factory PatientModel.fromJson(Map<String, dynamic> json) {
 Map<String, dynamic> toJson() {
   return {
     "id": id,
-    // "users": users.toJson(),
     "name": name,
     "number": number,
     "gender": gender,
@@ -62,6 +61,7 @@ Map<String, dynamic> toJson() {
     "disease": disease,
     "allergy": allergy,
     "profilepic": profilepic,
+    "users": users
   };
 }
 
@@ -79,6 +79,7 @@ Map<String, dynamic> toJson() {
       "disease": disease,
       "allergy": allergy,
       "profilepic": profilepic,
+      "users": users
     };
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mediaid_flutter/Widgets/ScheduleCard.dart';
 
-import '../models/appointment_models.dart';
+import '../models/appointment_model.dart';
 class Schedules extends StatefulWidget {
 
   const Schedules({Key? key}) : super(key: key);

@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mediaid_flutter/functions/doctor.dart';
 import 'package:mediaid_flutter/models/patient_model.dart';
 import 'package:mediaid_flutter/pages/patient_update.dart';
+import 'package:mediaid_flutter/widgets/docHCard.dart';
+import 'package:mediaid_flutter/widgets/patHcard.dart';
 import '../functions/patient.dart';
 import '../models/user_cubit.dart';
 import '../models/user_models.dart';
@@ -31,7 +33,7 @@ class _PatientPageState extends State<PatientPage>{
 
     return Scaffold(
       appBar: AppBar(title: Text("Patient's List"),
-      backgroundColor:Color(0xff82bcc4),
+      backgroundColor:Color(0xFF82BCC4),
             leading: IconButton(
     icon: Icon(Icons.home),
     onPressed: () {
@@ -51,36 +53,24 @@ class _PatientPageState extends State<PatientPage>{
                     return Card(
                       child:
                       Column( children:[
-                      if (snapshot.data![i]['profilepic'] != null)
-                        Image.network(
-                          snapshot.data![i]['profilepic'],
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        )
-                      else
-                        Image.asset("assets/head_sun_flower.png",
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                            ),
-                        // Text('No profile picture available'),
-                      ListTile(
-                        title: Text('Name: '+snapshot.data![i]['name'], style: TextStyle(fontSize: 20.0, color: Colors.black,),
-                        ),
-                        subtitle: Text('Number: '+snapshot.data![i]['number'], style: TextStyle(fontSize: 15.0, color: Colors.black,),
-                        ),  
-                      ),
-                      Text('Gender: '+snapshot.data![i]['gender'], style: TextStyle(fontSize: 15.0, color: Colors.black,),),
-                      Text('Blood: '+snapshot.data![i]['blood'], style: TextStyle(fontSize: 15.0, color: Colors.black,),),
-                      Text('Birthdate: '+snapshot.data![i]['birthdate'], style: TextStyle(fontSize: 15.0, color: Colors.black,),),
-                      Text('Disease: '+snapshot.data![i]['disease'], style: TextStyle(fontSize: 15.0, color: Colors.black,),),
-                      Text('Allergy: '+snapshot.data![i]['allergy'], style: TextStyle(fontSize: 15.0, color: Colors.black,),),
-                      Text('Medications: '+snapshot.data![i]['medications'], style: TextStyle(fontSize: 15.0, color: Colors.black,),),
-                      if(snapshot.data![i]['insurance'] == "-1")
-                        Text('Insurance: No Insurance Available', style: TextStyle(fontSize: 15.0, color: Colors.black,),)
-                        else
-                        Text('Insurance: '+snapshot.data![i]['insurance'], style: TextStyle(fontSize: 15.0, color: Colors.black,),),
+                      patHCard(
+                            image: snapshot.data![i]['profilepic'] != null
+                                ? snapshot.data![i]['profilepic'] // Pass the image URL as a String
+                                : 'assets/head_sun_flower.png',
+                            title: snapshot.data![i]['name'],
+                            subtitle: snapshot.data![i]['blood'],
+                            hospital: snapshot.data![i]['birthdate'],
+                            number: snapshot.data![i]['number'],
+                            // fees: snapshot.data![i]['insurance'],
+                            fees: snapshot.data![i]['insurance'] == "-1"
+                                ? "No Insurance available" // Pass the image URL as a String
+                                : snapshot.data![i]['insurance'], 
+                            id: snapshot.data![i]['id']     // Add number parameter
+                          ),
+                      // if(snapshot.data![i]['insurance'] == "-1")
+                      //   Text('Insurance: No Insurance Available', style: TextStyle(fontSize: 15.0, color: Colors.black,),)
+                      //   else
+                      //   Text('Insurance: '+snapshot.data![i]['insurance'], style: TextStyle(fontSize: 15.0, color: Colors.black,),),
                       if(snapshot.data![i]['users'].toString() == user.id.toString())
                         Center(
                           child: Row(
@@ -174,52 +164,7 @@ class _PatientPageState extends State<PatientPage>{
                           ),
                         ),
 
-                      //   ElevatedButton(
-                      //     onPressed: () async {
-                      //       DoctorModel? doctor_ = await getDoctor(user, snapshot.data![i]['id']);
-                      //       if(doctor_ == null){
-                      //         showDialog(
-                      //           context: context,
-                      //           builder: (context) {
-                      //             return Dialog(
-                      //               child: Container(
-                      //                   alignment: Alignment.center,
-                      //                   height: 200,
-                      //                   width: 250,
-                      //                   decoration: BoxDecoration(),
-                      //                   child: Text("facing Difficulty to fetch information\nTry Again Later")),
-                      //             );
-                      //           },
-                      //         );
-                      //       }else{
-                      //         Navigator.of(context).push(MaterialPageRoute(builder: (context) => DoctorUpdateForm(doctor: doctor_)));
-                      //       }
-                      //     },
-                      //     child: Text("Update"),
-                      //   ),
-                      //   SizedBox(
-                      //     height: 10,
-                      //   ),
-                      //   ElevatedButton(
-                      //           onPressed: () {
-                      //             // Add code to delete the item here
-                      //           },
-                      //           style: ElevatedButton.styleFrom(
-                      //             primary: Colors.red, // Set button background color to red
-                      //           ),
-                      //           child: Row(
-                      //             mainAxisAlignment: MainAxisAlignment.center,
-                      //             children: [
-                      //               Icon(
-                      //                 Icons.delete,
-                      //                 color: Colors.white,
-                      //               ),
-                      //               SizedBox(width: 5), // Add some spacing between icon and text
-                      //               Text("Delete", style: TextStyle(color: Colors.white)),
-                      //             ],
-                      //           ),
-                      //   ),
-                    SizedBox(height: 10), // Add some spacing between the buttons
+                     SizedBox(height: 10), // Add some spacing between the buttons
                     ])
                     );
                   }); 
@@ -233,3 +178,4 @@ class _PatientPageState extends State<PatientPage>{
     ); 
    }
 }
+

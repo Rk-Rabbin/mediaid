@@ -71,7 +71,6 @@ Future <DoctorModel?> getDoctor(User user, int id) async {
   if(res.statusCode == 200){
     var json = jsonDecode(res.body);
     var doctor = DoctorModel.fromJson(json);
-    print(doctor);
     return doctor;
   } else {
     print(uri);

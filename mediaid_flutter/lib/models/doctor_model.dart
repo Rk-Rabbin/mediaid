@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:mediaid_flutter/models/user_models.dart';
+
 class DoctorModel {
   int id;
   String name;
@@ -14,6 +16,7 @@ class DoctorModel {
   String end; 
   String fees; 
   String profilepic;
+  int users;
 
   DoctorModel(
     this.id,
@@ -29,6 +32,7 @@ class DoctorModel {
     this.end,
     this.fees,
     this.profilepic,
+    this.users
   );
 
   factory DoctorModel.fromJson(Map json) {
@@ -46,13 +50,13 @@ class DoctorModel {
       json["end"],
       json["fees"],
       json["profilepic"],
+      json["users"],
     );
   }
   
   Map<String, String> toJson() {
     return {
       "id": "$id",
-      // "author": "${author.id}",
       "name": name,
       "number": number,
       "gender": gender,
@@ -65,13 +69,14 @@ class DoctorModel {
       "end": end,
       "fees": fees,
       "profilepic": profilepic,
+      "users": "$users",
+
     };
   }
 
   Map<String, dynamic> toMap() {
     return {
       "id": "$id",
-      // "author": "${author.id}",
       "name": name,
       "number": number,
       "gender": gender,
@@ -84,6 +89,7 @@ class DoctorModel {
       "end": end,
       "fees": fees,
       "profilepic": profilepic,
+      "users": "$users",
     };
   }
 }
