@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:mediaid_flutter/Screens/Prescription.dart';
 import 'package:mediaid_flutter/Screens/Profile.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
+import 'package:mediaid_flutter/mychat.dart';
 import 'package:mediaid_flutter/pages/doctor_list.dart';
 import 'package:mediaid_flutter/pages/patient_list.dart';
 import 'package:mediaid_flutter/pages/prescription_list.dart';
@@ -21,7 +23,7 @@ import 'models/user_models.dart';
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   runApp(const MyApp());
@@ -34,9 +36,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) { 
+      create: (context) {
         return UserCubit(User());
-       },
+      },
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -44,54 +46,65 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-              // '/': (context) => const Home(), // Define the home route
-              '/login': (context) => const SignInPage(), // Define the login route
-              '/register': (context) => const SignUpPage(),
-              '/prescription_list': (context) => PrescriptionPage(),
-              '/patient_list': (context) => PatientPage(),
-              '/profile': (context) => Profile(),
-              '/insurance':(context) => InsurancePage(),
-              '/doctor_list':(context) => Doctors(),
+          // '/': (context) => const Home(), // Define the home route
+          '/login': (context) => const SignInPage(), // Define the login route
+          '/register': (context) => const SignUpPage(),
+          '/prescription_list': (context) => PrescriptionPage(),
+          '/patient_list': (context) => PatientPage(),
+          '/profile': (context) => Profile(),
+          '/insurance': (context) => InsurancePage(),
+          '/doctor_list': (context) => Doctors(),
         },
         home: FutureBuilder<Box>(
-          future: Hive.openBox(tokenBox),
-          builder: (context, snapshot){
-            if(snapshot.hasData){
-              var box = snapshot.data;
-              var token = box!.get("token");
-              if(token!=null){
-                return FutureBuilder<User?>(
-                  future: getUser(token),
-                  builder: (context, snapshot){
-                    if(snapshot.hasData){
-                      if(snapshot.data!=null){
-                        User user = snapshot.data!;
-                        user.token = token;
-                        context.read<UserCubit>().emit(user);
-                        return const Home();
-                      }else{
-                        return const SignInPage();
-                      }
-                    }else{
-                      return const SignInPage();                     
-                      // return Center(
-                      // child: CircularProgressIndicator(),
-                      // );
-                    }
-                });
-              }else{
+            future: Hive.openBox(tokenBox),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var box = snapshot.data;
+                var token = box!.get("token");
+                if (token != null) {
+                  return FutureBuilder<User?>(
+                      future: getUser(token),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data != null) {
+                            User user = snapshot.data!;
+                            user.token = token;
+                            context.read<UserCubit>().emit(user);
+                            return const Home();
+                          } else {
+                            return const SignInPage();
+                          }
+                        } else {
+                          return const SignInPage();
+                          // return Center(
+                          // child: CircularProgressIndicator(),
+                          // );
+                        }
+                      });
+                } else {
+                  return const SignInPage();
+                }
+              } else if (snapshot.hasError) {
+                return const SignInPage();
+              } else {
+                // return Center(
+                //   child: CircularProgressIndicator(),
+                // );
                 return const SignInPage();
               }
-            } else if(snapshot.hasError){
-              return const SignInPage();                     
-            } else{
-              // return Center(
-              //   child: CircularProgressIndicator(),
-              // );
-              return const SignInPage();                     
+            }),
+        home: Scaffold(
+          appBar: AppBar(),
 
-            }
-          }
+          // Add FloatingActionButton
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              // Define what should happen when the button is pressed
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => const mychat()));
+            },
+            child: const Icon(Icons.support_agent), // Icon for the button
+          ),
         ),
       ),
     );
