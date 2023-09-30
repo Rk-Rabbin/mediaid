@@ -43,6 +43,7 @@ dependencies:
   permission_handler: ^10.4.5
   url_launcher: ^6.0.9
   intl: ^0.18.1
+  flutter_tawk: ^0.1.0
 
   # flutter_bloc: ˆ8.1.3
 
