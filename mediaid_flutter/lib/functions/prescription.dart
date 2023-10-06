@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:mediaid_flutter/Screens/Prescription.dart';
+// import 'package:mediaid_flutter/Screens/Prescription.dart';
 import 'package:mediaid_flutter/functions/doctor.dart';
 import 'package:mediaid_flutter/functions/patient.dart';
 import 'package:mediaid_flutter/models/prescription_model.dart';

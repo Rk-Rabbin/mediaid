@@ -62,12 +62,14 @@ urlpatterns = [
     path('deleteUpdate/prescription/<pk>/', views.PrescriptionRetrieveUpdateDestroyAPIView.as_view()),
 
     # Appointment
-    path('appointmentsAPI/',views.AppointmentList.as_view()),
+    path('appointmentsListAPI/',views.AppointmentList.as_view()),
+    path('register/appointment/', views.CreateAppointmentAPI.as_view()),
+    path('deleteUpdate/appointment/<pk>/', views.AppointmentRetrieveUpdateDestroyAPIView.as_view()),
 
     # Doctor
     path('doctorsListAPI/',views.DoctorList.as_view()),
     path('register/doctor/', views.CreateDoctorAPI.as_view()),
-    path('deleteUpdate/doctor/<pk>/', views.DoctorRetrieveUpdateDestroyAPIView.as_view()),
+    path('deleteUpdate/doctor/<pk>/', views.AppointmentRetrieveUpdateDestroyAPIView.as_view()),
 
     # Patient
     path('patientsListAPI/',views.PatientList.as_view()),

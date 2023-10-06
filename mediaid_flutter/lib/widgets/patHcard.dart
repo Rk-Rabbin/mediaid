@@ -33,20 +33,6 @@ class patHCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PatProfile(
-                name: title,
-                image: image,
-                spec: subtitle,
-                // hospital: hospital,
-                // number: number,
-              ),
-            ),
-          );
-        },
         child: Container(
           height: 155,
           decoration: BoxDecoration(

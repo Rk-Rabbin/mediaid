@@ -1,113 +1,49 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:mediaid_flutter/Screens/Doctors.dart';
-import 'package:mediaid_flutter/constants.dart';
+import 'package:mediaid_flutter/Screens/Schedule.dart';
+import 'package:mediaid_flutter/functions/appointment.dart';
 import 'package:mediaid_flutter/functions/doctor.dart';
+import 'package:mediaid_flutter/models/appointment_model.dart';
 import 'package:mediaid_flutter/models/doctor_model.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
 import 'package:mediaid_flutter/widgets/text_button.dart';
-import 'package:permission_handler/permission_handler.dart';
-import '../Widgets/formFields.dart';
+import 'package:mediaid_flutter/widgets/textwidget.dart';
 import '../Widgets/regForms.dart';
 import 'package:flutter/cupertino.dart';
 import '../models/user_models.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:mediaid_flutter/utils.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'doctor_list.dart';
 
-class DoctorUpdateForm extends StatefulWidget {
-  final DoctorModel doctor;
-  const DoctorUpdateForm({
+class AppointmentUpdate extends StatefulWidget {
+  final AppointmentModel appointment;
+  const AppointmentUpdate({
     super.key,
-    required this.doctor
+    required this.appointment
   });
 
   @override
-  _DoctorUpdateFormState createState() => _DoctorUpdateFormState();
+  _AppointmentUpdateState createState() => _AppointmentUpdateState();
 }
 
-class _DoctorUpdateFormState extends State<DoctorUpdateForm> {
+class _AppointmentUpdateState extends State<AppointmentUpdate> {
 
   final _formKey = GlobalKey<FormState>();  
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _numberController = TextEditingController();
-  TextEditingController _genderController = TextEditingController();
-  TextEditingController _licenseController = TextEditingController();
-  TextEditingController _hospitalController = TextEditingController();
-  TextEditingController _specialityController = TextEditingController();
-  TextEditingController _qualificationController = TextEditingController();
-  TextEditingController _availabilityController = TextEditingController();
-  TextEditingController _startController = TextEditingController();
-  TextEditingController _endController = TextEditingController();
-  TextEditingController _feesController = TextEditingController();
+  TextEditingController _timeController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
   late User user;
-  File? _imageFile;
-  // File _imageFile = File(''); // Provide an initial empty File or your default image file path
-  late final DoctorModel doctor;
+  late final AppointmentModel appointment;
 
-  Future<File> downloadNetworkImage(String imageUrl) async {
-    final response = await http.get(Uri.parse(imageUrl));
-    final documentDirectory = await getApplicationDocumentsDirectory();
-    final file = File('${documentDirectory.path}/downloaded_image.jpg');
-
-    await file.writeAsBytes(response.bodyBytes);
-    return file;
-  }
-
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedImage = await ImagePicker().pickImage(source: source);
-
-    if (pickedImage != null) {
-      setState(() {
-        _imageFile = File(pickedImage.path);
-      });
-    }
-    else if (_imageFile == null) {
-    // Set _imageFile to doctor.profilepic if it's still null
-    setState(() async {
-    _imageFile = await downloadNetworkImage(doctor.profilepic);
-    });
-  }
-  }
-
-  Future<void> _setImage() async {
-  if (_imageFile == null) {
-    // Perform asynchronous work here
-    final File imageFile = await downloadNetworkImage(doctor.profilepic);
-
-    // Once the asynchronous work is complete, update the state using setState
-    setState(() {
-      _imageFile = imageFile;
-    });
-  }
-}
-
-
-   @override
+ @override
   void initState() {
     user = context.read<UserCubit>().state;
-    doctor = widget.doctor;
-    _nameController.text = doctor.name;
-    _numberController.text = doctor.number;
-    _genderController.text = doctor.gender;
-    _licenseController.text = doctor.licensenum;
-    _hospitalController.text = doctor.hospital;
-    _specialityController.text = doctor.speciality;
-    _qualificationController.text = doctor.qualification;
-    _availabilityController.text = doctor.availability;
-    _startController.text = doctor.start;
-    _endController.text = doctor.end;
-    _feesController.text = doctor.fees;
-    if (_imageFile == null) {
-      _setImage();
-    }
+    appointment = widget.appointment;
+    _timeController.text = appointment.expected_time;
+    _dateController.text = appointment.expected_date;
     // TODO: implement initState
     super.initState();
   }
@@ -121,7 +57,7 @@ class _DoctorUpdateFormState extends State<DoctorUpdateForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Doctor Profile Update'),
+      appBar: AppBar(title: Text('Appointment Reschedule'),
       backgroundColor:Color(0xff82bcc4),
       leading: IconButton(
     icon: Icon(Icons.home),
@@ -140,126 +76,52 @@ class _DoctorUpdateFormState extends State<DoctorUpdateForm> {
           const SizedBox(
               height: 15,
           ),
-          regForms(
-            controller: _nameController,
-            title: "Doctor's Name",
+          TextWidget(
+            text: appointment.doctor_name,
+            logo: Icons.person_outline,
+          ),
+          SizedBox(
+              height: 15,
+            ),
+          TextWidget(
+            text: appointment.patient_name,
             logo: Icons.person,
           ),
           SizedBox(
               height: 15,
             ),
-          regForms(
-            controller: _numberController,
-            title: "Phone Number",
-            logo: CupertinoIcons.number,
-          ),
-          SizedBox(
-              height: 15,
-            ),
-          regForms(
-            controller: _genderController,
-            title: "Gender",
-            logo: Icons.male,
-          ),
-          SizedBox(
-              height: 15,
-            ),
-          regForms(
-            controller: _licenseController,
-            title: "License Number",
-            logo: Icons.code,
-          ),
-          SizedBox(
-              height: 15,
-            ),
-          regForms(
-            controller: _hospitalController,
-            title: "Hospital Name",
+          TextWidget(
+            text: appointment.disease,
             logo: Icons.local_hospital,
           ),
           SizedBox(
               height: 15,
             ),
           regForms(
-            controller: _specialityController,
-            title: "Speciality",
-            logo: Icons.star,
+            controller: _dateController,
+            title: "Expected Date (yyyy-mm-dd)",
+            logo: Icons.calendar_month,
           ),
           SizedBox(
               height: 15,
             ),
           regForms(
-            controller: _qualificationController,
-            title: "Qualification",
-            logo: CupertinoIcons.book_solid,
+            controller: _timeController,
+            title: "Exoected Time (HH:MM)",
+            logo: Icons.watch_later,
           ),
           SizedBox(
               height: 15,
-            ),
-          regForms(
-            controller: _availabilityController,
-            title: "Availability",
-            logo: CupertinoIcons.calendar,
-          ),
-          SizedBox(
-              height: 15,
-            ),
-          regForms(
-            controller: _startController,
-            title: "Opening Time",
-            logo: CupertinoIcons.clock,
-          ),
-          SizedBox(
-              height: 15,
-            ),
-          regForms(
-            controller: _endController,
-            title: "Closing Time",
-            logo: CupertinoIcons.clock,
-          ),
-          SizedBox(
-              height: 15,
-            ),
-          regForms(
-            controller: _feesController,
-            title: "Fees",
-            logo: CupertinoIcons.money_dollar_circle_fill,
-          ),
-            SizedBox(
-              height: 15,
-            ),
-            Image.network(
-                          doctor.profilepic.toString(),
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
-            ElevatedButton(
-              onPressed: () => _pickImage(ImageSource.gallery),
-              child: Text('Pick from Gallery'),
             ),
 
           // Other text form fields for password, email, name, number, gender
           CustomTextButton(
               onTap: () async {
-                if(_nameController.text.isNotEmpty && _numberController.text.isNotEmpty &&
-                _genderController.text.isNotEmpty && _licenseController.text.isNotEmpty &&
-                 _hospitalController.text.isNotEmpty && _specialityController.text.isNotEmpty &&
-                 _qualificationController.text.isNotEmpty && _availabilityController.text.isNotEmpty &&
-                  _startController.text.isNotEmpty && _endController.text.isNotEmpty &&
-                  _feesController.text.isNotEmpty){
-                    doctor.name = _nameController.text;
-                    doctor.number = _numberController.text;
-                    doctor.gender = _genderController.text;
-                    doctor.licensenum = _licenseController.text;
-                    doctor.hospital = _hospitalController.text;
-                    doctor.speciality = _specialityController.text;
-                    doctor.qualification = _qualificationController.text;
-                    doctor.availability = _availabilityController.text;
-                    doctor.start = _startController.text;
-                    doctor.end = _endController.text;
-                    doctor.fees = _feesController.text;
-                    var a = await updateDoctor(user, doctor, _imageFile!);
+                if(_dateController.text.isNotEmpty && _timeController.text.isNotEmpty){
+                    appointment.expected_date = _dateController.text;
+                    appointment.expected_time = _timeController.text;
+                    // appointment.patient = appointment.patient;
+                    var a = await updateAppointment(user, appointment);
                     if(a){
                       setState(() {});
                       showDialog(
@@ -283,7 +145,7 @@ class _DoctorUpdateFormState extends State<DoctorUpdateForm> {
                               ),
                             ),
                             SizedBox(height: 20,),
-                            Text('Your account has been successfully updated',
+                            Text('Successfully Rescheduled',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                               fontSize: 17,
@@ -296,7 +158,7 @@ class _DoctorUpdateFormState extends State<DoctorUpdateForm> {
             onPressed: () {
               Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Doctors() ),
+                      MaterialPageRoute(builder: (context) => Schedules() ),
                     );
             },
             child: Text(
@@ -332,7 +194,7 @@ class _DoctorUpdateFormState extends State<DoctorUpdateForm> {
                             ),
                           ),
                           SizedBox(height: 20,),
-                          Text('Could not update your Doctor profile',
+                          Text('Could not reschedule',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                             fontSize: 17,
@@ -396,7 +258,7 @@ class _DoctorUpdateFormState extends State<DoctorUpdateForm> {
                 //   registerDoctor(widget.userId!);
                 // }
               },
-              title: 'Update Doctor',
+              title: 'Reschedule',
             ),
         ],
       ),

@@ -12,15 +12,19 @@ class docHCard extends StatelessWidget {
   final fees;
   final route;
   final id;
+  final start;
+  final end;
 
   const docHCard({
     Key? key,
     required this.image,
     this.title,
     this.subtitle,
-    required this.hospital,
-    required this.number,
-    required this.fees,
+    this.hospital,
+    this.number,
+    this.fees,
+    this.start,
+    this.end,
     this.route,
     required this.id,
 
@@ -39,8 +43,12 @@ class docHCard extends StatelessWidget {
                 name: title,
                 image: image,
                 spec: subtitle,
-                // hospital: hospital,
-                // number: number,
+                hospital: hospital,
+                number: number,
+                fees: fees,
+                id: id,
+                start: start,
+                end: end,
               ),
             ),
           );

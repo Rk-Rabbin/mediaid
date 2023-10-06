@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
-import 'package:mediaid_flutter/Screens/Prescription.dart';
 import 'package:mediaid_flutter/Screens/Profile.dart';
+import 'package:mediaid_flutter/Screens/Schedule.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/mychat.dart';
 import 'package:mediaid_flutter/pages/doctor_list.dart';
@@ -54,6 +54,8 @@ class MyApp extends StatelessWidget {
           '/profile': (context) => Profile(),
           '/insurance': (context) => InsurancePage(),
           '/doctor_list': (context) => Doctors(),
+          '/mychat':(context) => mychat(),
+          '/schedule':(context) => Schedules(),
         },
         home: FutureBuilder<Box>(
             future: Hive.openBox(tokenBox),
@@ -93,19 +95,19 @@ class MyApp extends StatelessWidget {
                 return const SignInPage();
               }
             }),
-        home: Scaffold(
-          appBar: AppBar(),
+        // home: Scaffold(
+        //   appBar: AppBar(),
 
-          // Add FloatingActionButton
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              // Define what should happen when the button is pressed
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => const mychat()));
-            },
-            child: const Icon(Icons.support_agent), // Icon for the button
-          ),
-        ),
+        //   // Add FloatingActionButton
+        //   floatingActionButton: FloatingActionButton(
+        //     onPressed: () {
+        //       // Define what should happen when the button is pressed
+        //       Navigator.push(context,
+        //           CupertinoPageRoute(builder: (context) => const mychat()));
+        //     },
+        //     child: const Icon(Icons.support_agent), // Icon for the button
+        //   ),
+        // ),
       ),
     );
   }

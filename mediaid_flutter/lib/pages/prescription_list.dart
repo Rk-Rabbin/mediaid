@@ -97,15 +97,15 @@ class _PrescriptionPageState extends State<PrescriptionPage>{
     return Scaffold(
       appBar: AppBar(title: Text("Prescription's List"),
       backgroundColor:Color(0xFF82BCC4),
-            leading: IconButton(
-    icon: Icon(Icons.home),
-    onPressed: () {
-      // Add your navigation logic here
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => Home()),
-      );
-    },
-  ),
+      leading: IconButton(
+        icon: Icon(Icons.home),
+        onPressed: () {
+          // Add your navigation logic here
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => Home()),
+          );
+        },
+      ),
       ),
       body: FutureBuilder<List<PrescriptionModel>>(
   future: getPrescriptions(user), // Call the getPrescriptions method

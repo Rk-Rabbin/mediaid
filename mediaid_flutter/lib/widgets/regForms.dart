@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class regForms extends StatelessWidget {
     final title;
     final IconData logo;
-  TextEditingController? controller;
+    TextEditingController? controller;
     final bool obsecure;
 
   regForms({Key? key,

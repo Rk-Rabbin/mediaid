@@ -89,6 +89,8 @@ class _DoctorsState extends State<Doctors> {
                             number: snapshot.data![i]['number'],
                             fees: snapshot.data![i]['fees'],
                             id: snapshot.data![i]['id'],
+                            start: snapshot.data![i]['start'],
+                            end: snapshot.data![i]['end'],
                           ),
                       if(snapshot.data![i]['users'].toString() == user.id.toString())
                         Center(

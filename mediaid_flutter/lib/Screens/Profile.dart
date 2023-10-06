@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mediaid_flutter/Screens/Home.dart';
 import 'package:mediaid_flutter/Widgets/diagnosis.dart';
 import 'package:mediaid_flutter/Widgets/diagnosisSmaller.dart';
 
@@ -11,6 +10,7 @@ import '../Widgets/buttons/backbutton.dart';
 import '../functions/doctor.dart';
 import '../models/user_cubit.dart';
 import '../models/user_models.dart';
+import '../pages/home/home.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -29,8 +29,16 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: const backbutton(),
           backgroundColor:Color.fromARGB(255, 41, 179, 229),
+          leading: IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () {
+                // Add your navigation logic here
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Home()),
+                );
+              },
+            ),
 
 ),
         body: Stack(children: <Widget>[

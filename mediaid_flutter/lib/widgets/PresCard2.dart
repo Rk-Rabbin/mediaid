@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart ';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 class PresCard2 extends StatelessWidget {
@@ -121,23 +122,22 @@ class PresCard2 extends StatelessWidget {
       ),
     );
   }
-  void _showImageDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Column(
-            children: [
-              Image(
-                image: AssetImage(
-                  image,
-                ),
-                height: 500,width: 600,
-              ),
-            ],
+void _showImageDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: SizedBox(
+          width: 300, // Adjust the width as needed
+          height: 300, // Adjust the height as needed
+          child: PhotoView(
+            imageProvider: NetworkImage(image), // Load the image from a URL
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2,
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 }

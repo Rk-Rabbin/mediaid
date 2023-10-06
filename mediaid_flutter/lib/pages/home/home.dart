@@ -6,6 +6,7 @@ import 'package:mediaid_flutter/api/auth/auth_api.dart';
 import 'package:mediaid_flutter/functions/doctor.dart';
 import 'package:mediaid_flutter/models/doctor_model.dart';
 import 'package:mediaid_flutter/models/user_models.dart';
+import 'package:mediaid_flutter/mychat.dart';
 import 'package:mediaid_flutter/pages/doctor_reg.dart';
 import 'package:mediaid_flutter/pages/doctor_list.dart';
 import 'package:mediaid_flutter/pages/insurance_reg.dart';
@@ -13,6 +14,7 @@ import 'package:mediaid_flutter/pages/login_page.dart';
 import 'package:mediaid_flutter/pages/patient_reg.dart';
 import 'package:mediaid_flutter/pages/search_result.dart';
 import 'package:mediaid_flutter/theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../models/user_cubit.dart';
 
 
@@ -30,6 +32,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Doctor doctorService = Doctor();
   TextEditingController searchController = TextEditingController();
+  int _currentIndex = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,36 @@ class _HomeState extends State<Home> {
     // final int userId = user.id?.toInt();
     return Scaffold(
       backgroundColor: Colors.white,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+            if (index == 1) {
+              // Navigate to the profile page when the "Profile" item is clicked
+              Navigator.pushNamed(context, '/profile');
+            }
+            else if(index == 2){
+              Navigator.pushNamed(context, '/mychat');
+            }
+          });
+        },
+        items: [
+          // Define your navigation items here
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.messenger),
+            label: 'Chat',
+          ),
+        ],
+      ),
       drawer: Drawer(
         child: ListView(
           children:[
@@ -104,23 +138,18 @@ class _HomeState extends State<Home> {
                 fontSize: 18
               ),),
             ),
-
             ListTile(
+              onTap: (){
+                Navigator.pushNamed(context, '/prescription_list');
+              },
               leading:Icon( Icons.contact_page_outlined),
               title: Text('Medical Records',style: TextStyle(
                   fontSize: 18
               ),),
             ),ListTile(
               onTap: (){
-                Navigator.pushNamed(context, '');
-              },
-              leading:Icon(Icons.history),
-              title: Text('History',style: TextStyle(
-                  fontSize: 18
-              ),),
-            ),ListTile(
-              onTap: (){
-                Navigator.pushNamed(context, '');
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => const mychat()));
               },
               leading:Icon(CupertinoIcons.text_bubble),
               title: Text('Messages',style: TextStyle(
@@ -128,7 +157,7 @@ class _HomeState extends State<Home> {
               ),),
             ),ListTile(
               onTap: (){
-                Navigator.pushNamed(context, '');
+                Navigator.pushNamed(context, '/schedule');
               },
               leading:Icon(CupertinoIcons.calendar_today),
               title: Text('Appointment',style: TextStyle(
@@ -136,7 +165,7 @@ class _HomeState extends State<Home> {
               ),),
             ),ListTile(
               onTap: (){
-                Navigator.pushNamed(context, '');
+                Navigator.pushNamed(context, '/insurance');
               },
               leading:Icon(CupertinoIcons.checkmark_shield),
               title: Text('Insurance',style: TextStyle(
@@ -290,14 +319,26 @@ class _HomeState extends State<Home> {
                                 color: Colors.cyan
                               ),
                               child: Center(
-                                child: Text(
-                                  'Learn More',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                    fontSize: 15
+                                child: GestureDetector(
+                                onTap: () async {
+                                  const url = 'http://127.0.0.1:8000/contactus/';
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  } else {
+                                    throw 'Could not launch $url';
+                                  }
+                                },
+                                child: Container(
+                                  child: Text(
+                                    "Learn More",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      fontSize: 15
+                                    ),
                                   ),
                                 ),
+                              ),
                               ),
                             ),
                           )

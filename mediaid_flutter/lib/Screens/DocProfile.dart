@@ -2,39 +2,117 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mediaid_flutter/Widgets/Timepick.dart';
 import 'package:mediaid_flutter/Widgets/buttons/CustActionButton.dart';
+import 'package:mediaid_flutter/pages/appointment_reg.dart';
 
 import '../models/appointment_model.dart';
 import '../Widgets/DatePick.dart';
 import '../Widgets/buttons/backbutton.dart';
 import 'package:flutter/physics.dart';
+import 'package:intl/intl.dart';
+
 
 class DocProfile extends StatefulWidget {
   final name;
   final String image;
   final spec;
-  const DocProfile({Key? key, this.name, required this.image, this.spec}) : super(key: key);
+  final hospital;
+  final number;
+  final fees;
+  final id;
+  final start;
+  final end;
+
+  const DocProfile({Key? key, this.name, required this.image, this.spec, this.hospital,
+  this.number, this.fees, this.id, this.start, this.end}) : super(key: key);
 
   @override
   State<DocProfile> createState() => _DocProfileState();
 }
 
 class _DocProfileState extends State<DocProfile> {
+  String selectedTime = ''; // Use a Set to store selected dates
   String selectedDate = '';
-  String selectedTime = '';
+
+
   void _handleDateSelected(String date) {
     setState(() {
-      selectedDate = date;
+      if (selectedDate == date) {
+        // If the same date is tapped again, unselect it
+        selectedDate = '';
+      } else {
+        // Only one date should be selected at a time, so clear the set before adding the new date
+        selectedDate = date;
+        // Additional code if needed when a new date is selected
+      }
     });
   }
 
-  void _handleTimeSelected(String time) {
-    setState(() {
+
+
+// Add this variable to store the selected time
+
+void _handleTimeSelected(String time) {
+  setState(() {
+    if (selectedTime == time) {
+      // If the same time is tapped again, unselect it
+      selectedTime = '';
+    } else {
+      // Unselect the previously selected time slot
       selectedTime = time;
+    }
+  });
+}
+
+
+List<Map<String, String>> generateDates() {
+  final List<Map<String, String>> dateAndDayList = [];
+  final now = DateTime.now();
+  final formatterDate = DateFormat('d');
+  final formatterDay = DateFormat('E');
+
+  for (int i = 0; i < 7; i++) {
+    final date = now.add(Duration(days: i));
+    final formattedDate = formatterDate.format(date);
+    final formattedDay = formatterDay.format(date);
+    dateAndDayList.add({
+      'date': formattedDate,
+      'day': formattedDay,
     });
   }
+
+  return dateAndDayList;
+}
+
+
+String getDayFromDate(String dateStr) {
+  final date = DateFormat('d').parse(dateStr);
+  return DateFormat('E').format(date); // This will return the day of the week (e.g., 'Mon', 'Tue', etc.)
+}
+
+List<String> generateTimeSlots(String start, String end) {
+  final List<String> timeSlots = [];
+
+  var startTime = TimeOfDay.fromDateTime(DateTime.parse("2023-08-18 $start"));
+  final endTime = TimeOfDay.fromDateTime(DateTime.parse("2023-08-18 $end"));
+
+  while (startTime.hour < endTime.hour ||
+      (startTime.hour == endTime.hour && startTime.minute <= endTime.minute)) {
+    timeSlots.add(startTime.format(context));
+    final nextTime = DateTime(2023, 8, 18, startTime.hour, startTime.minute)
+        .add(Duration(minutes: 30));
+    startTime = TimeOfDay.fromDateTime(nextTime);
+  }
+
+  return timeSlots;
+}
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    List<String> timeSlots = generateTimeSlots(widget.start, widget.end);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -78,9 +156,12 @@ class _DocProfileState extends State<DocProfile> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(18),
                             child: Image(
-                              image: AssetImage(
-                                widget.image,
-                              ),
+                              image: widget.image is String && widget.image.startsWith('http')
+                                      ? NetworkImage(widget.image)
+                                      : AssetImage("assets/head_sun_flower.png") as ImageProvider<Object>,
+                              // image: NetworkImage(
+                              //   widget.image,
+                              // ),
                               height: 115,
                               width: 115,
                             ),
@@ -120,7 +201,7 @@ class _DocProfileState extends State<DocProfile> {
                               child: Padding(
                                 padding: const EdgeInsets.all(3.0),
                                 child: Row(
-                                  children: const [
+                                  children:[
                                     Icon(
                                       Icons.star,
                                       color: Color(0xff38CC86),
@@ -130,7 +211,7 @@ class _DocProfileState extends State<DocProfile> {
                                       width: 5,
                                     ),
                                     Text(
-                                      '4.7',
+                                      widget.number,
                                       style: TextStyle(
                                           color: Color(0xff38CC86),
                                           fontWeight: FontWeight.w600,
@@ -144,21 +225,28 @@ class _DocProfileState extends State<DocProfile> {
                               height: 5,
                             ),
                             Row(
-                              children: const [
-                                Icon(
-                                  CupertinoIcons.location_solid,
-                                  size: 18,
-                                  color: Colors.black26,
-                                ),
-                                Text(
-                                  '800m away',
-                                  style: TextStyle(
-                                      color: Colors.black26,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14),
-                                )
-                              ],
-                            )
+                    children: [
+                      Icon(
+                        CupertinoIcons.location_solid,
+                        size: 18,
+                        color: Colors.black26,
+                      ),
+                      Container(
+                        width: 150, // Set a maximum width or adjust this value as needed
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text(
+                            widget.hospital,
+                            style: TextStyle(
+                              color: Colors.black26,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                           ],
                         )
                       ],
@@ -175,7 +263,7 @@ class _DocProfileState extends State<DocProfile> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
                     child: Text(
-                      'Dr. Stefi Hezel completed her graduation from Sher-E Bangla Medical College in 1995. She dedicated her training in the field of Radiology and Imaging and accomplished ',
+                      'Dr. ${widget.name}, renowned in ${widget.spec} field, practices at ${widget.hospital}, providing exceptional care for ${widget.spec} disese patients.',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                           fontSize: 15,
@@ -184,133 +272,101 @@ class _DocProfileState extends State<DocProfile> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 15, 20, 5),
-                    child: Container(
-                      height: 90,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        children:  [
-                          DatePick(
-                            date: '21',
-                            day: 'Mon',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '23',
-                            day: 'Tue',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '24',
-                            day: 'Wed',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '25',
-                            day: 'Thu',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '26',
-                            day: 'Fri',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '28',
-                            day: 'Sat',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '29',
-                            day: 'Sun',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '1',
-                            day: 'Mon',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '2',
-                            day: 'Tue',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '3',
-                            day: 'Wed',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '4',
-                            day: 'Thu',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                          DatePick(
-                            date: '5',
-                            day: 'Fri',
-                            onDateSelected: _handleDateSelected,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+  padding: const EdgeInsets.fromLTRB(20, 15, 20, 5),
+  child: Container(
+    height: 90,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      physics: BouncingScrollPhysics(),
+      itemCount: generateDates().length,
+      itemBuilder: (context, index) {
+        final dateAndDay = generateDates()[index];
+        final date = dateAndDay['date'] ?? ''; // Provide a default value if it's nullable
+        final day = dateAndDay['day'] ?? ''; // Provide a default value if it's nullable
+        final isSelected = selectedDate == date;
+        final available = true;
+
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.0), // Adjust the padding as needed
+          child: DatePick(
+            date: date,
+            day: day,
+            available: available,
+            isSelected: isSelected,
+            onDateSelected: _handleDateSelected,
+          ),
+        );
+      },
+    ),
+  ),
+),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Divider(
                       thickness: 1,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: Wrap(children: [
-                      Timepick(
-                        time: '09.00 AM',
-                        available: false,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                      Timepick(
-                        time: '10.00 AM',
-                        available: true,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                      Timepick(
-                        time: '11.00 AM',
-                        available: false,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                      Timepick(
-                        time: '12.00 AM',
-                        available: false,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                      Timepick(
-                        time: '01.00 AM',
-                        available: true,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                      Timepick(
-                        time: '02.00 AM',
-                        available: true,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                      Timepick(
-                        time: '03.00 AM',
-                        available: true,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                      Timepick(
-                        time: '03.00 AM',
-                        available: true,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                      Timepick(
-                        time: '04.00 AM',
-                        available: false,
-                        onDateSelected: _handleTimeSelected,
-                      ),
-                    ]),
-                  ),
+                Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust the horizontal spacing as needed
+  child: Wrap(
+    children: List<Widget>.generate(timeSlots.length, (index) {
+      final time = timeSlots[index];
+      final isSelected = selectedTime == time;
+      final available = true;
+      final parts = time.split(':');
+      var hours = int.parse(parts[0].trim());
+      final minutes = parts[1].replaceAll('AM', '').replaceAll('PM', '').trim();
+
+      // Check if it's "PM" and the hour is less than 12, then add 12 to the hour
+      if (time.contains('PM') && hours < 12) {
+        hours += 12;
+      }
+      // Format the hours and minutes as a 24-hour time string
+      final formattedTime = '$hours:$minutes';
+
+      return Padding(
+        padding: const EdgeInsets.all(8.0), // Adjust the padding as needed
+        child: Timepick(
+          time: formattedTime,
+          available: available,
+          onTimeSelected: _handleTimeSelected,
+          isSelected: isSelected,
+        ),
+      );
+    }),
+  ),
+),
+                //   Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 8.0), // Adjust the horizontal spacing as needed
+                //   child: Wrap(
+                //     children: List<Widget>.generate(timeSlots.length, (index) {
+                //       final time = timeSlots[index];
+                //       final isSelected = selectedTime == time;
+                //       final available = true;
+                      
+                //       selectedTime = time;
+                //       final parts = time.split(':');
+                //       var hours = int.parse(parts[0].trim());
+                //       final minutes = parts[1].replaceAll('AM', '').replaceAll('PM', '').trim();
+
+                //       // Check if it's "PM" and the hour is less than 12, then add 12 to the hour
+                //       if (time.contains('PM') && hours < 12) {
+                //         hours += 12;
+                //     }
+                //     // Format the hours and minutes as a 24-hour time string
+                //     selectedTime = '$hours:$minutes'; // You can set this based on your availability logic
+                //       return Padding(
+                //         padding: const EdgeInsets.all(8.0), // Adjust the padding as needed
+                //         child: Timepick(
+                //           time: time,
+                //           available: available,
+                //           onTimeSelected: _handleTimeSelected,
+                //           isSelected: isSelected,
+                //         ),
+                //       );
+                //     }),
+                //   ),
+                // ),
                 ],
               ),
             ),
@@ -337,7 +393,7 @@ class _DocProfileState extends State<DocProfile> {
                       padding: const EdgeInsets.all(15.0),
                       child: GestureDetector(
                         onTap: (){
-                          Navigator.pushNamed(context, '/msg');
+                          Navigator.pushNamed(context, '/mychat');
                         },
                         child: const Icon(
                           CupertinoIcons.chat_bubble_text,
@@ -353,18 +409,69 @@ class _DocProfileState extends State<DocProfile> {
                   flex: 7,
                   child: GestureDetector(
                     onTap: () {
-                      if (selectedDate.isNotEmpty&& selectedTime.isNotEmpty) {
-                        //final appointment = Appointment('Dr. Stefi Hezel',DateTime.parse("$selectedDate $selectedTime") );
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, '/schedule'
-                          //arguments: appointment
+                      if (selectedTime.isNotEmpty && selectedDate.isNotEmpty) {
+                        DateTime now = DateTime.now();
+                        selectedDate = now.year.toString()+"-"+now.month.toString()+"-"+selectedDate;
+                        print(selectedDate);
+                        print(selectedTime);
+                        // DateTime now = DateTime.now();
+                        // selectedDate = now.year.toString()+"-"+now.month.toString()+"-"+selectedDate;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AppointmentPage(
+                              doctorName: widget.name,
+                              doctorId: widget.id,
+                              selectedDate: selectedDate,
+                              selectedTime: selectedTime, // Use the formatted time you need
+                            ),
+                          ),
                         );
-                        print("Selected date: $selectedDate\nSelected time: $selectedTime");
-                      } else {
-                        print("No date/time selected");
+                      } else if(selectedTime=='' || selectedDate==''){
+                        // print("No date/time selected");
+                        showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Row(
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  color: Colors.red, // You can choose the color you want
+                                  size: 30,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Invalid Info',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            content: Text(
+                              'The information you provided is invalid. Please check and try again.',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                                child: Text(
+                                  'OK',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.blue, // You can choose the color you want
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                       }
-                      selectedDate='';
-                      selectedTime='';
                     },
                     child: Container(
                       height:60,

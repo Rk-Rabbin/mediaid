@@ -93,18 +93,18 @@ class _MedicalRecordsState extends State<MedicalRecords> {
                   color: Colors.black54),
             ),
           ),
-          PresCard2(
-            image: 'assets/pres.png',
-            title: 'Dr. Murcus Horizon',
-            category: 'Chardiologist',
-            details: 'Cardiac Arrest',
-          ),
-          PresCard2(
-            image: 'assets/eco.png',
-            title: 'Dr. Murcus Horizon',
-            category: 'Chardiologist',
-            details: 'Echocardiogram',
-          ),
+          // PresCard2(
+          //   image: 'assets/pres.png',
+          //   title: 'Dr. Murcus Horizon',
+          //   category: 'Chardiologist',
+          //   details: 'Cardiac Arrest',
+          // ),
+          // PresCard2(
+          //   image: 'assets/eco.png',
+          //   title: 'Dr. Murcus Horizon',
+          //   category: 'Chardiologist',
+          //   details: 'Echocardiogram',
+          // ),
         ],
       ),
     );
