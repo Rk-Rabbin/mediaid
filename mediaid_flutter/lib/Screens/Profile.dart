@@ -123,31 +123,6 @@ class _ProfileState extends State<Profile> {
                   SizedBox(height: 30),
                   ListTile(
                     onTap: (){
-                      Navigator.pushNamed(context, '/health');
-                    },
-                    leading: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xffCEECEC),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(7.5),
-                          child: Icon(
-                            CupertinoIcons.heart,
-                            color: Color(0xff32c1e0),
-                          ),
-                        )),
-                    title: Text(
-                      'My Health',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    trailing: Icon(CupertinoIcons.forward),
-                  ),
-                  Divider(
-                    thickness: 0.8,
-                  ),
-                  ListTile(
-                    onTap: (){
                       Navigator.pushNamed(context, '/schedule');
                     },
                     leading: Container(
@@ -173,30 +148,8 @@ class _ProfileState extends State<Profile> {
                   ),
                   ListTile(
                     onTap: (){
-                      Navigator.pushNamed(context, '/presc');
+                      Navigator.pushNamed(context, '/prescription_list');
                     },
-                    leading: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xffCEECEC),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(7.5),
-                          child: Icon(
-                            Icons.sticky_note_2,
-                            color: Color(0xff32c1e0),
-                          ),
-                        )),
-                    title: Text(
-                      'Add Prescription',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    trailing: Icon(CupertinoIcons.forward),
-                  ),
-                  Divider(
-                    thickness: 0.8,
-                  ),
-                  ListTile(
                     leading: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,

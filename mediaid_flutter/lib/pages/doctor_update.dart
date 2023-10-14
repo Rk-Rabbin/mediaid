@@ -20,7 +20,6 @@ import 'dart:io';
 import 'package:mediaid_flutter/utils.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'doctor_list.dart';
 
 class DoctorUpdateForm extends StatefulWidget {
   final DoctorModel doctor;

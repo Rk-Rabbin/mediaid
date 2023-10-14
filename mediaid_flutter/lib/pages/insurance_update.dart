@@ -1,33 +1,15 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:mediaid_flutter/Screens/Insurance.dart';
-import 'package:mediaid_flutter/constants.dart';
-import 'package:mediaid_flutter/functions/doctor.dart';
 import 'package:mediaid_flutter/functions/insurance.dart';
-import 'package:mediaid_flutter/models/doctor_model.dart';
 import 'package:mediaid_flutter/models/insurance_model.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
-import 'package:mediaid_flutter/pages/patient_list.dart';
 import 'package:mediaid_flutter/widgets/text_button.dart';
-import 'package:permission_handler/permission_handler.dart';
-import '../Widgets/formFields.dart';
 import '../Widgets/regForms.dart';
 import 'package:flutter/cupertino.dart';
-import '../functions/patient.dart';
-import '../models/patient_model.dart';
 import '../models/user_models.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:mediaid_flutter/utils.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:intl/intl.dart';
 
-
-import 'doctor_list.dart';
 
 class InsuranceUpdateForm extends StatefulWidget {
   // final int? userId;

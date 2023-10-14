@@ -920,20 +920,59 @@ def healthhistory(request):
 @login_required
 def chatbot(request):
     usr = request.user
-    if api_key is not None and request.method == 'POST':
+    chatbot_response = None  # Initialize chatbot_response variable
+    user_input = None  # Initialize user_input variable
+
+    if request.method == 'POST':
         user_input = request.POST.get('userMessage')
         prompt = user_input
-        response = openai.Completion.create(
-            engine = 'text-davinci-003',
-            prompt = prompt,
-            max_tokens = 256,
-            temperature = 0.5,
-        )
-        print(response)
-        chatbot_response = response["choices"][0]["text"]
-        return render(request, 'mediaid/chat.html',{'usr':usr,'response':chatbot_response, 'user_input':user_input,'active':'btn-info'})
-    else:
-        return render(request, 'mediaid/chat.html',{'usr':usr,'active':'btn-info'})
+
+        try:
+            # Make the API request to OpenAI
+            response = openai.Completion.create(
+                engine='text-davinci-003',
+                prompt=prompt,
+                max_tokens=256,
+                temperature=0.5,
+            )
+
+            # Check the HTTP status code in the response
+            if response.status_code == 200:
+                chatbot_response = response.choices[0].text  # Store chatbot response
+
+        except Exception as e:
+            # Handle any exceptions that may occur during the API request
+            error_message = f"An error occurred: {str(e)}"
+            return render(request, 'mediaid/chat.html', {
+                'usr': usr,
+                'error_message': error_message,
+                'active': 'btn-info'
+            })
+
+    # Render the chat.html template with chatbot_response and user_input
+    return render(request, 'mediaid/chat.html', {
+        'usr': usr,
+        'response': chatbot_response,
+        'user_input': user_input,
+        'active': 'btn-info'
+    })
+
+# def chatbot(request):
+#     usr = request.user
+#     if api_key is not None and request.method == 'POST':
+#         user_input = request.POST.get('userMessage')
+#         prompt = user_input
+#         response = openai.Completion.create(
+#             engine = 'text-davinci-003',
+#             prompt = prompt,
+#             max_tokens = 256,
+#             temperature = 0.5,
+#         )
+#         print(response)
+#         chatbot_response = response["choices"][0]["text"]
+#         return render(request, 'mediaid/chat.html',{'usr':usr,'response':chatbot_response, 'user_input':user_input,'active':'btn-info'})
+#     else:
+#         return render(request, 'mediaid/chat.html',{'usr':usr,'active':'btn-info'})
 
 
 

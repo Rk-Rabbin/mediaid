@@ -85,14 +85,21 @@
        </ul>
       </div>
       <div class="col-sm-9 offset-sm-1">
-                <div id="chatbot">
+        <div id="chatbot">
+            {% if user_input %}
+            <p class="usertext"><span>{{usr.username}}: {{user_input|safe}}</span></p>
+            {% endif %}
+            <p class="bottext"><span>Chatbot: {% if response %}{{response|safe}}{% else %}Hi there{% endif %}</span></p>
+        </div>
+        
+                {% comment %} <div id="chatbot">
                     {% if user_input %}
                     <p class="usertext"><span>{{usr.username}}: {{user_input|safe}}
                     {% endif %}</span></p>
                     <p class="bottext"><span>Chatbot: {% if response %}{{response|safe}}
                         {% else %}Hi there
                     {% endif %}</span></p>
-                </div>
+                </div> {% endcomment %}
             <form method="post">
                 {% csrf_token %}
                 <div id="userInput">

@@ -1,19 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
 import 'package:mediaid_flutter/Screens/Profile.dart';
 import 'package:mediaid_flutter/Screens/Schedule.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/mychat.dart';
-import 'package:mediaid_flutter/pages/doctor_list.dart';
 import 'package:mediaid_flutter/pages/patient_list.dart';
 import 'package:mediaid_flutter/pages/prescription_list.dart';
 import 'package:mediaid_flutter/pages/register_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mediaid_flutter/api/auth/auth_api.dart';
-import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
+import 'package:mediaid_flutter/services/chatprovider.dart';
 
 import 'Screens/Doctors.dart';
 import 'Screens/Insurance.dart';
@@ -21,12 +19,22 @@ import 'Screens/Insurance.dart';
 import 'constants.dart';
 import 'models/user_models.dart';
 import 'pages/login_page.dart';
-import 'pages/register_page.dart';
+import 'package:provider/provider.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  runApp(const MyApp());
+  runApp(
+    // const MyApp()
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ChatProvider()), // Add your ChatProvider here
+        // Other providers if any
+      ],
+      child: MyApp(),
+    ),
+    );
 }
 
 class MyApp extends StatelessWidget {

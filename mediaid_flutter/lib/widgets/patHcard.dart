@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mediaid_flutter/Screens/DocProfile.dart';
-import 'package:mediaid_flutter/Screens/PatProfile.dart';
 
 class patHCard extends StatelessWidget {
   final String image;

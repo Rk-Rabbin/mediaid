@@ -2,26 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mediaid_flutter/Screens/Medbot.dart';
 import 'package:mediaid_flutter/api/auth/auth_api.dart';
 import 'package:mediaid_flutter/functions/doctor.dart';
-import 'package:mediaid_flutter/models/doctor_model.dart';
 import 'package:mediaid_flutter/models/user_models.dart';
 import 'package:mediaid_flutter/mychat.dart';
 import 'package:mediaid_flutter/pages/doctor_reg.dart';
-import 'package:mediaid_flutter/pages/doctor_list.dart';
 import 'package:mediaid_flutter/pages/insurance_reg.dart';
 import 'package:mediaid_flutter/pages/login_page.dart';
 import 'package:mediaid_flutter/pages/patient_reg.dart';
+import 'package:mediaid_flutter/pages/regops.dart';
 import 'package:mediaid_flutter/pages/search_result.dart';
-import 'package:mediaid_flutter/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/user_cubit.dart';
-
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:mediaid_flutter/widgets/docHomeCard.dart';
 import 'package:mediaid_flutter/widgets/buttons/homebuttons.dart';
+
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -104,37 +102,11 @@ class _HomeState extends State<Home> {
               onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DoctorRegistrationForm() ),
+                      MaterialPageRoute(builder: (context) => RegistrationPage() ),
                     );
                   },
               leading: Icon(CupertinoIcons.person_badge_plus),
-              title: Text('Doctor Registration',style: TextStyle(
-                fontSize: 18
-              ),),
-            ),
-
-            ListTile(
-              onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PatientRegistrationForm() ),
-                    );
-                  },
-              leading: Icon(CupertinoIcons.person_badge_plus),
-              title: Text("Patient Registration",style: TextStyle(
-                fontSize: 18
-              ),),
-            ),
-
-            ListTile(
-              onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => InsuranceRegistrationForm() ),
-                    );
-                  },
-              leading: Icon(CupertinoIcons.person_badge_plus),
-              title: Text("Insurance Registration",style: TextStyle(
+              title: Text('Registration',style: TextStyle(
                 fontSize: 18
               ),),
             ),
@@ -146,7 +118,20 @@ class _HomeState extends State<Home> {
               title: Text('Medical Records',style: TextStyle(
                   fontSize: 18
               ),),
-            ),ListTile(
+            ),
+            ListTile(
+            onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Medbot() ),
+                    );
+                  },
+            leading: Icon(Icons.attractions_rounded),
+            title: Text(
+              'MedBot Ai',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),ListTile(
               onTap: (){
               Navigator.push(context,
                   CupertinoPageRoute(builder: (context) => const mychat()));
