@@ -35,7 +35,12 @@ urlpatterns = [
     path('appointment/<id>',views.Appointment_View, name='appointment_id'),    
     path('appointmentlist/',views.Appointment_List, name='appointmentlist'),    
     path('chatbot/',views.chatbot, name='chatbot'), 
-    path('idivpres/<id>',views.indivprescription, name='idivpres'),    
+    path('idivpres/<id>',views.indivprescription, name='idivpres'),  
+
+    # ssl
+    path('sslc/status/',views.sslc_status, name='sslc_status'), 
+    path('sslc/complete/<val_id>/<trans_id>',views.sslc_complete, name='sslc_complete'), 
+  
    
     
 
@@ -75,6 +80,11 @@ urlpatterns = [
     path('patientsListAPI/',views.PatientList.as_view()),
     path('register/patient/', views.CreatePatientAPI.as_view()),
     path('deleteUpdate/patient/<pk>/', views.PatientRetrieveUpdateDestroyAPIView.as_view()),
+
+    # Comission
+    path('comissionsListAPI/',views.ComissionList.as_view()),
+    path('register/comission/', views.CreateComissionAPI.as_view()),
+    path('deleteUpdate/comission/<pk>/', views.ComissionRetrieveUpdateDestroyAPIView.as_view()),
 
 
 

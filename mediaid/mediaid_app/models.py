@@ -9,6 +9,12 @@ Gender = (
     ('female','female'),
     ('Others','Othes'))
 
+Payment = (
+    ('On-Site','On-Site'),
+    ('Online','Online'),
+    ('online','online'),
+    ('on-site','on-site'),)
+
 class InsuranceProvider(models.Model):
     users = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=40)
@@ -31,6 +37,7 @@ class Doctor(models.Model):
     start = models.TimeField()
     end = models.TimeField()
     fees = models.CharField(max_length=5)
+    percentage = models.CharField(max_length=20)
     profilepic = models.FileField(blank=True, null=True)
 
 
@@ -71,9 +78,14 @@ class Appointment(models.Model):
     disease = models.TextField(blank=True)
     expected_date = models.DateField()
     expected_time = models.TimeField()
+    payment = models.CharField(choices=Payment, default='On-Site', max_length=10)
     requested_at = models.DateField(auto_now_add=True)
     accepted = models.BooleanField(default=False)
 
-
+class Comission(models.Model):
+    doctor = models.OneToOneField(Doctor, on_delete=models.CASCADE)
+    patient_num = models.PositiveIntegerField(default=0, blank=True)
+    total_earnings = models.PositiveIntegerField(blank=True)
+    percentage = models.CharField(max_length=20)
 
 

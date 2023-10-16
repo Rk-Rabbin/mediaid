@@ -49,12 +49,10 @@
             <br><label for="fees">Fees</label>
             <input type="text" id="fees" name="fees" placeholder="Fees" style="border-radius:10px;height:45px; width:400px" required><br>
 
+            <br><label for="comission">Comission</label>
+            <input type="text" id="comission" name="comission" placeholder="Comission %" style="border-radius:10px;height:45px; width:400px" required><br>
+
             <br><input type="file" id="propic" name="propic" required>
-            {% comment %} {% for fm in form %}
-            <div class="form-group">
-            {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small><br>
-            </div>
-            {% endfor %} {% endcomment %}
 
          <br><input type="submit" style="display: inline-block;padding: 8px 30px;background-color: #4A8693;color:black;border-radius: 45px;
          -webkit-transition: all 0.3s;transition: all 0.3s;border: none; margin-top:50px; margin-left:150px" value="Register"> <br>

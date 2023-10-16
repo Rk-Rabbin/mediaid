@@ -382,7 +382,8 @@
                             <span>Problem: {{ app.disease }}</span><br>
                             <span>Requested Date: {{ app.expected_date }}</span><br>
                             <span>Requested Time: {{ app.expected_time }}</span><br>
-                        </div>
+                            <span>Payment: {{ app.payment }}</span><br>
+                          </div>
                         <hr class="w-100">
                         {% if not app.accepted %}
                         <form method="POST" action="{% url 'manageappointment' %}">

@@ -70,16 +70,16 @@
                    <br><label for="time">Time:</label>
                    <input type="time" id="time" name="time" style="border-radius:10px;height:45px; width:400px" required><br>
 
-                   {% comment %} <br><label for="gender">Gender:</label><br>
-                   <select name="gender" id="gender" style="font-size:0px">
-                       <option value="Male">Male</option>
-                       <option value="Female">Female</option>
-                       <option value="Others">Others</option>
-                   </select><br> {% endcomment %}
        
                    <br><label for="disease">Disease</label>
                    <textarea id="disease" name="disease" rows="2" cols="50" placeholder="Disease" style="border-radius:10px; width:400px"></textarea>
-       
+
+                   <br>
+                   <label for="paymentmethod">Payment Method:</label> <br>
+                   <select id="paymentmethod" name="paymentmethod" style="border-radius: 10px; width: 400px">
+                       <option value="onsite">OnSite</option>
+                       <option value="online">Online</option>
+                   </select> <br>
 
                 <br><input type="submit" style="display: inline-block;padding: 8px 30px;background-color: #4A8693;color:black;border-radius: 45px;
                 -webkit-transition: all 0.3s;transition: all 0.3s;border: none; margin-top:50px; margin-left:150px" value="Submit"> <br>

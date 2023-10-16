@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import InsuranceProvider, Doctor, Patient, Prescription, Appointment, User
+from .models import InsuranceProvider, Doctor, Patient, Prescription, Appointment, User, Comission
 from dj_rest_auth.serializers import LoginSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import UserDetailsSerializer
@@ -44,4 +44,9 @@ class PrescriptionSerializer(serializers.ModelSerializer):
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
+        fields = '__all__'
+
+class ComissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comission
         fields = '__all__'   

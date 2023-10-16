@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import User, Doctor, Patient, Prescription, InsuranceProvider, Appointment
+from .models import User, Doctor, Patient, Prescription, InsuranceProvider, Appointment, Comission
 from .forms import *
 import os, openai
 from PIL import Image
@@ -23,7 +23,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 import json
 import io
-from .serializers import InsuranceSerializer, DoctorSerializer, PatientSerializer, PrescriptionSerializer, AppointmentSerializer
+from .serializers import InsuranceSerializer, DoctorSerializer, PatientSerializer, PrescriptionSerializer, AppointmentSerializer, ComissionSerializer
 from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
@@ -32,9 +32,10 @@ from dotenv import load_dotenv
 from django.views.decorators.csrf  import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-# from rest_framework import views, response, status, viewset, permissions, authentication
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+from sslcommerz_python.payment import SSLCSession
+from decimal import Decimal
 load_dotenv()
 
 api_key = os.getenv("OPENAI_KEY", None)
@@ -160,6 +161,7 @@ class DocRegistration(View):
             start = request.POST['start']
             end = request.POST['end']
             fees = request.POST['fees']
+            percentage = request.POST['comission'] 
             propic = request.FILES['propic']
             try:
                 inr = Doctor.objects.get(users_id=uid)
@@ -170,8 +172,10 @@ class DocRegistration(View):
                 return render(request, 'mediaid/doctorreg.html', {'message':messages})
             else:
                 reg = Doctor(users_id=uid ,name=name, number=number, gender=gender, hospital=hospital, qualification=qualification, 
-                speciality=speciality, availability=availability, start=start, end=end, fees=fees, profilepic=propic)
+                speciality=speciality, availability=availability, start=start, end=end, fees=fees, percentage=percentage, profilepic=propic)
                 reg.save()
+                com = Comission(doctor = reg, patient_num = 0, total_earnings = 0, percentage = percentage)
+                com.save()
                 messages.success(request, 'Congratulations!! Successfully registered as a doctor')
                 return render(request, 'mediaid/doctorreg.html', {'message':messages})
 
@@ -310,13 +314,15 @@ class AppointmentView(View):
         disease = request.POST.get('disease')
         date = request.POST.get('date')
         time = request.POST.get('time')
+        payment = request.POST.get('paymentmethod')
         time = datetime.strptime(time, '%H:%M').time()
         doc = Doctor.objects.all()
         try:
             d = Doctor.objects.get(id=did)
-            if(d.name==name):
+            if(d.name==dname):
                 d = d
             else:
+                print("didnot")
                 d = None
         except Doctor.DoesNotExist:
             messages.warning(request, "Doctor not found")
@@ -330,20 +336,51 @@ class AppointmentView(View):
             return render(request, 'mediaid/appointment1.html',{'doc':doc})
         if(d!=None):
             if((time>d.start and time<d.end) or time==d.start):
-                appointment = Appointment.objects.create(
-                    doctor = d,
-                    patient = p,
-                    doctor_name = dname,
-                    patient_name = name,
-                    email = email,
-                    phone = pnum,
-                    disease = disease,
-                    expected_date = date,
-                    expected_time = time 
-                )
-                appointment.save()
-                messages.success(request, "Appointment request submitted")
-                return render(request, 'mediaid/appointment1.html',{'doc':doc})
+                if(payment == "onsite"):
+                    appointment = Appointment.objects.create(
+                        doctor = d,
+                        patient = p,
+                        doctor_name = dname,
+                        patient_name = name,
+                        email = email,
+                        phone = pnum,
+                        disease = disease,
+                        expected_date = date,
+                        expected_time = time,
+                        payment = payment 
+                    )
+                    appointment.save()
+                    messages.success(request, "Appointment request submitted")
+                    return render(request, 'mediaid/appointment1.html',{'doc':doc})
+                else:
+                    store_id = settings.STORE_ID
+                    store_pass = settings.STORE_PASS
+
+                    mypayment = SSLCSession(sslc_is_sandbox=True, sslc_store_id=store_id, sslc_store_pass=store_pass)
+
+                    status_url = request.build_absolute_uri(reverse('sslc_status'))
+
+                    mypayment.set_urls(success_url=status_url, fail_url=status_url, cancel_url=status_url, ipn_url=status_url)
+                    mypayment.set_product_integration(total_amount=Decimal(d.fees), currency='BDT', product_category='appointment', product_name='appointment', num_of_item=1, shipping_method='None', product_profile='None')
+                    mypayment.set_customer_info(name=name, email=email, address1='demo address', address2='demo address 2', city='Dhaka', postcode='1207', country='Bangladesh', phone=pnum)
+                    mypayment.set_shipping_info(shipping_to=name, address='demo address', city='Dhaka', postcode='1209', country='Bangladesh')
+                    response_data = mypayment.init_payment()
+                    print("=============================")
+                    print(response_data)
+                    print("=============================")
+                    appointment = Appointment.objects.create(
+                        doctor = d,
+                        patient = p,
+                        doctor_name = dname,
+                        patient_name = name,
+                        email = email,
+                        phone = pnum,
+                        disease = disease,
+                        expected_date = date,
+                        expected_time = time,
+                        payment = payment 
+                    )
+                    appointment.save()
             else:
                 messages.warning(request, "Choose an appropriate time")
                 return render(request, 'mediaid/appointment1.html',{'doc':doc, 'pat':p})
@@ -352,8 +389,15 @@ class AppointmentView(View):
             return render(request, 'mediaid/appointment1.html',{'doc':doc, 'pat':p})
 
 
+@csrf_exempt
+def sslc_status(request):
+    if request.method == 'post' or request.method == 'POST':
+        payment_data = request.POST
+        print(payment_data)
 
 
+def sslc_complete(request, val_id, trans_id):
+    pass
 
 
 
@@ -373,15 +417,6 @@ def Appointment_View(request, id):
         time = request.POST.get('time')
         time = datetime.strptime(time, '%H:%M').time()
         doc = Doctor.objects.all()
-        # try:
-        #     d = Doctor.objects.get(id=did)
-        #     if(d.name==name):
-        #         d = d
-        #     else:
-        #         d = None
-        # except Doctor.DoesNotExist:
-        #     messages.warning(request, "Doctor not found")
-        #     return render(request, 'mediaid/appointment1.html',{'doc':doc})
         try:
             usr = request.user
             uid = usr.id
@@ -510,6 +545,10 @@ class ManageAppointment(View):
         messages.add_message(request, messages.SUCCESS, f"Appointment of {app.patient.name} is accepted")
         usr = request.user
         doc = Doctor.objects.get(users_id=usr.id)
+        com = Comission.objects.get(doctor=doc)
+        com.patient_num = com.patient_num+1
+        com.total_earnings = com.total_earnings+int(doc.fees)
+        com.save()
         try:
             appo = Appointment.objects.filter(doctor=doc.id) & Appointment.objects.filter(accepted=False)
         except:
@@ -1175,6 +1214,19 @@ class CreateAppointmentAPI(CreateAPIView):
 class AppointmentRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
+    lookup_field = 'pk'
+
+#Comission API
+class ComissionList(ListAPIView):
+    queryset = Comission.objects.all()
+    serializer_class = ComissionSerializer
+
+class CreateComissionAPI(CreateAPIView):
+    serializer_class = ComissionSerializer
+
+class ComissionRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Comission.objects.all()
+    serializer_class = ComissionSerializer
     lookup_field = 'pk'
 
 
