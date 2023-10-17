@@ -423,7 +423,8 @@ List<String> generateTimeSlots(String start, String end) {
                               doctorName: widget.name,
                               doctorId: widget.id,
                               selectedDate: selectedDate,
-                              selectedTime: selectedTime, // Use the formatted time you need
+                              selectedTime: selectedTime,
+                              fees: widget.fees, // Use the formatted time you need
                             ),
                           ),
                         );

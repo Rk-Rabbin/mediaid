@@ -122,6 +122,8 @@ class _SearchState extends State<Search> {
                   number: filteredDoctors[i]['number'],
                   fees: filteredDoctors[i]['fees'],
                   id: filteredDoctors[i]['id'],
+                  start: filteredDoctors[i]['start'],
+                  end: filteredDoctors[i]['end'],
                 ),
                 if (filteredDoctors[i]['users'].toString() == user.id.toString())
                   Center(

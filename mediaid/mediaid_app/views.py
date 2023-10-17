@@ -3,7 +3,8 @@ from .forms import RegistrationForm
 from django.views import View
 import pytesseract
 from PIL import Image
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.urls import reverse
 from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.contrib.auth.decorators import login_required
@@ -34,7 +35,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from sslcommerz_python.payment import SSLCSession
+from sslcommerz_lib import SSLCOMMERZ 
 from decimal import Decimal
 load_dotenv()
 
@@ -319,11 +320,11 @@ class AppointmentView(View):
         doc = Doctor.objects.all()
         try:
             d = Doctor.objects.get(id=did)
-            if(d.name==dname):
-                d = d
-            else:
-                print("didnot")
-                d = None
+            # if(d.name==dname):
+            #     d = d
+            # else:
+            #     print("didnot")
+            #     d = None
         except Doctor.DoesNotExist:
             messages.warning(request, "Doctor not found")
             return render(request, 'mediaid/appointment1.html',{'doc':doc})
@@ -353,34 +354,58 @@ class AppointmentView(View):
                     messages.success(request, "Appointment request submitted")
                     return render(request, 'mediaid/appointment1.html',{'doc':doc})
                 else:
-                    store_id = settings.STORE_ID
-                    store_pass = settings.STORE_PASS
-
-                    mypayment = SSLCSession(sslc_is_sandbox=True, sslc_store_id=store_id, sslc_store_pass=store_pass)
-
+                    store_id = settings.SSLCOMMERZ_STORE_ID
+                    store_pass = settings.SSLCOMMERZ_STORE_PASSWORD
                     status_url = request.build_absolute_uri(reverse('sslc_status'))
 
-                    mypayment.set_urls(success_url=status_url, fail_url=status_url, cancel_url=status_url, ipn_url=status_url)
-                    mypayment.set_product_integration(total_amount=Decimal(d.fees), currency='BDT', product_category='appointment', product_name='appointment', num_of_item=1, shipping_method='None', product_profile='None')
-                    mypayment.set_customer_info(name=name, email=email, address1='demo address', address2='demo address 2', city='Dhaka', postcode='1207', country='Bangladesh', phone=pnum)
-                    mypayment.set_shipping_info(shipping_to=name, address='demo address', city='Dhaka', postcode='1209', country='Bangladesh')
-                    response_data = mypayment.init_payment()
-                    print("=============================")
-                    print(response_data)
-                    print("=============================")
-                    appointment = Appointment.objects.create(
-                        doctor = d,
-                        patient = p,
-                        doctor_name = dname,
-                        patient_name = name,
-                        email = email,
-                        phone = pnum,
-                        disease = disease,
-                        expected_date = date,
-                        expected_time = time,
-                        payment = payment 
-                    )
-                    appointment.save()
+
+                    ssl_settings = { 'store_id': store_id, 'store_pass': store_pass, 'issandbox': True }
+                    sslcommez = SSLCOMMERZ(ssl_settings)
+                    post_body = {}
+                    post_body['total_amount'] = d.fees
+                    post_body['currency'] = "BDT"
+                    post_body['tran_id'] = "12345"
+                    post_body['success_url'] = status_url
+                    post_body['fail_url'] = status_url
+                    post_body['cancel_url'] = status_url
+                    post_body['emi_option'] = 0
+                    post_body['cus_name'] = name
+                    post_body['cus_email'] = email
+                    post_body['cus_phone'] = pnum
+                    post_body['cus_add1'] = "customer address"
+                    post_body['cus_city'] = "Dhaka"
+                    post_body['cus_country'] = "Bangladesh"
+                    post_body['shipping_method'] = "NO"
+                    post_body['multi_card_name'] = ""
+                    post_body['num_of_item'] = 1
+                    post_body['product_name'] = "Appointment"
+                    post_body['product_category'] = "Test Category"
+                    post_body['product_profile'] = "general"
+                    response = sslcommez.createSession(post_body)
+
+                    if response['status'] == 'SUCCESS':
+                        appointment = Appointment.objects.create(
+                            doctor = d,
+                            patient = p,
+                            doctor_name = dname,
+                            patient_name = name,
+                            email = email,
+                            phone = pnum,
+                            disease = disease,
+                            expected_date = date,
+                            expected_time = time,
+                            payment = payment 
+                        )
+                        appointment.save()
+                        com = Comission.objects.get(doctor=d)
+                        com.patient_num = com.patient_num+1
+                        com.total_earnings = com.total_earnings+int(doc.fees)
+                        com.save()
+                        messages.success(request, "Appointment request submitted")
+                        return redirect(response['GatewayPageURL'])
+                    else:
+                        messages.warning(request, "Payment Unsuccessfull")
+                        return render(request, 'mediaid/appointment1.html',{'doc':doc})
             else:
                 messages.warning(request, "Choose an appropriate time")
                 return render(request, 'mediaid/appointment1.html',{'doc':doc, 'pat':p})
@@ -393,11 +418,24 @@ class AppointmentView(View):
 def sslc_status(request):
     if request.method == 'post' or request.method == 'POST':
         payment_data = request.POST
-        print(payment_data)
+        status = payment_data['status']
+        if status == 'VALID':
+            val_id = payment_data['val_id']
+            trans_id = payment_data['tran_id']
+            return(HttpResponseRedirect(reverse('sslc_complete', kwargs={'val_id':val_id, 'tran_id':trans_id})))
+        else:
+            usr = request.user
+            doc = Doctor.objects.all()
+            messages.warning(request, "Payment Unsuccessfull")
+            return render(request, 'mediaid/appointment1.html',{'doc':doc})
 
 
-def sslc_complete(request, val_id, trans_id):
-    pass
+
+def sslc_complete(request, val_id, tran_id):
+    usr = request.user
+    doc = Doctor.objects.all()
+    messages.warning(request, "Payment Successfull")
+    return render(request, 'mediaid/appointment1.html',{'doc':doc})
 
 
 
@@ -543,12 +581,14 @@ class ManageAppointment(View):
         email.content_subtype = "html"
         email.send()
         messages.add_message(request, messages.SUCCESS, f"Appointment of {app.patient.name} is accepted")
-        usr = request.user
-        doc = Doctor.objects.get(users_id=usr.id)
-        com = Comission.objects.get(doctor=doc)
-        com.patient_num = com.patient_num+1
-        com.total_earnings = com.total_earnings+int(doc.fees)
-        com.save()
+
+        if app.payment == 'onsite':
+            usr = request.user
+            doc = Doctor.objects.get(users_id=usr.id)
+            com = Comission.objects.get(doctor=doc)
+            com.patient_num = com.patient_num+1
+            com.total_earnings = com.total_earnings+int(doc.fees)
+            com.save()
         try:
             appo = Appointment.objects.filter(doctor=doc.id) & Appointment.objects.filter(accepted=False)
         except:
@@ -1227,7 +1267,16 @@ class CreateComissionAPI(CreateAPIView):
 class ComissionRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Comission.objects.all()
     serializer_class = ComissionSerializer
-    lookup_field = 'pk'
+    lookup_field = 'doctor'
+
+    def get_object(self):
+        # Customize the behavior to retrieve the object by the 'doctor' field
+        doctor_value = self.kwargs.get(self.lookup_field)
+        obj = self.queryset.filter(doctor=doctor_value).first()
+        if obj is None:
+            # Handle the case where the object is not found
+            raise Http404("Comission does not exist for the specified doctor.")
+        return obj
 
 
 class GoogleLogin(SocialLoginView): # if you want to use Implicit Grant, use this

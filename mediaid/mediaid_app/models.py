@@ -13,7 +13,9 @@ Payment = (
     ('On-Site','On-Site'),
     ('Online','Online'),
     ('online','online'),
-    ('on-site','on-site'),)
+    ('on-site','on-site'),
+    ('onsite','onsite'),
+    ('Onsite','Onsite'))
 
 class InsuranceProvider(models.Model):
     users = models.OneToOneField(User, on_delete=models.CASCADE)

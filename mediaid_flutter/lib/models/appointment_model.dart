@@ -8,6 +8,7 @@ class AppointmentModel {
   String expected_date;
   String expected_time;
   String requested_at;
+  String payment;
   bool accepted;
   int doctor;
   int patient; // Assuming you have a UserModel
@@ -22,6 +23,7 @@ class AppointmentModel {
     this.expected_date,
     this.expected_time,
     this.requested_at,
+    this.payment,
     this.accepted,
     this.doctor,
     this.patient,
@@ -38,6 +40,7 @@ factory AppointmentModel.fromJson(Map<String, dynamic> json) {
     json["expected_date"],
     json["expected_time"],
     json["requested_at"],
+    json["payment"],
     json["accepted"],
     json["doctor"],
     json["patient"],
@@ -56,6 +59,7 @@ Map<String, dynamic> toJson() {
       "expected_date": expected_date,
       "expected_time": expected_time,
       "requested_at": requested_at,
+      "payment": payment,
       "accepted": accepted,
       "doctor": doctor,
       "patient": patient,
@@ -73,6 +77,7 @@ Map<String, dynamic> toJson() {
       "expected_date": expected_date,
       "expected_time": expected_time,
       "requested_at": requested_at,
+      "payment": payment,
       "accepted": accepted,
       "doctor": doctor,
       "patient": patient,

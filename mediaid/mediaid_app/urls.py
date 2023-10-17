@@ -39,7 +39,7 @@ urlpatterns = [
 
     # ssl
     path('sslc/status/',views.sslc_status, name='sslc_status'), 
-    path('sslc/complete/<val_id>/<trans_id>',views.sslc_complete, name='sslc_complete'), 
+    path('sslc/complete/<val_id>/<tran_id>',views.sslc_complete, name='sslc_complete'), 
   
    
     
@@ -74,7 +74,7 @@ urlpatterns = [
     # Doctor
     path('doctorsListAPI/',views.DoctorList.as_view()),
     path('register/doctor/', views.CreateDoctorAPI.as_view()),
-    path('deleteUpdate/doctor/<pk>/', views.AppointmentRetrieveUpdateDestroyAPIView.as_view()),
+    path('deleteUpdate/doctor/<pk>/', views.DoctorRetrieveUpdateDestroyAPIView.as_view()),
 
     # Patient
     path('patientsListAPI/',views.PatientList.as_view()),
@@ -84,7 +84,7 @@ urlpatterns = [
     # Comission
     path('comissionsListAPI/',views.ComissionList.as_view()),
     path('register/comission/', views.CreateComissionAPI.as_view()),
-    path('deleteUpdate/comission/<pk>/', views.ComissionRetrieveUpdateDestroyAPIView.as_view()),
+    path('deleteUpdate/comission/<doctor>/', views.ComissionRetrieveUpdateDestroyAPIView.as_view()),
 
 
 

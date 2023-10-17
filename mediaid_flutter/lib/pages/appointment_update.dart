@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
-import 'package:mediaid_flutter/Screens/Doctors.dart';
 import 'package:mediaid_flutter/Screens/Schedule.dart';
 import 'package:mediaid_flutter/functions/appointment.dart';
-import 'package:mediaid_flutter/functions/doctor.dart';
 import 'package:mediaid_flutter/models/appointment_model.dart';
-import 'package:mediaid_flutter/models/doctor_model.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
 import 'package:mediaid_flutter/widgets/text_button.dart';
@@ -14,9 +10,6 @@ import 'package:mediaid_flutter/widgets/textwidget.dart';
 import '../Widgets/regForms.dart';
 import 'package:flutter/cupertino.dart';
 import '../models/user_models.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 
 
 class AppointmentUpdate extends StatefulWidget {

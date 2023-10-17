@@ -3,19 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mediaid_flutter/Screens/Profile.dart';
 import 'package:mediaid_flutter/Screens/Schedule.dart';
+import 'package:mediaid_flutter/models/sslcommerz_model.dart';
 import 'package:mediaid_flutter/models/user_cubit.dart';
 import 'package:mediaid_flutter/mychat.dart';
+import 'package:mediaid_flutter/pages/errorpage.dart';
 import 'package:mediaid_flutter/pages/patient_list.dart';
 import 'package:mediaid_flutter/pages/prescription_list.dart';
 import 'package:mediaid_flutter/pages/register_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mediaid_flutter/api/auth/auth_api.dart';
 import 'package:mediaid_flutter/pages/home/home.dart';
+import 'package:mediaid_flutter/pages/sslcommerz_response_page.dart';
 import 'package:mediaid_flutter/services/chatprovider.dart';
+
 
 import 'Screens/Doctors.dart';
 import 'Screens/Insurance.dart';
-// import 'Screens/Home.dart';
 import 'constants.dart';
 import 'models/user_models.dart';
 import 'pages/login_page.dart';
@@ -64,6 +67,16 @@ class MyApp extends StatelessWidget {
           '/doctor_list': (context) => Doctors(),
           '/mychat':(context) => mychat(),
           '/schedule':(context) => Schedules(),
+          '/sslcommerz_response': (context) {
+            final arguments = ModalRoute.of(context)?.settings.arguments;
+
+            if (arguments is SSLCommerzResponseModel) {
+              return SSLCommerzResponsePage(arguments);
+            } else {
+              // Handle the case where arguments are of an incorrect type.
+              return ErrorPage(errorMessage: 'Could not process your request');
+            }
+          },
         },
         home: FutureBuilder<Box>(
             future: Hive.openBox(tokenBox),
@@ -103,19 +116,6 @@ class MyApp extends StatelessWidget {
                 return const SignInPage();
               }
             }),
-        // home: Scaffold(
-        //   appBar: AppBar(),
-
-        //   // Add FloatingActionButton
-        //   floatingActionButton: FloatingActionButton(
-        //     onPressed: () {
-        //       // Define what should happen when the button is pressed
-        //       Navigator.push(context,
-        //           CupertinoPageRoute(builder: (context) => const mychat()));
-        //     },
-        //     child: const Icon(Icons.support_agent), // Icon for the button
-        //   ),
-        // ),
       ),
     );
   }

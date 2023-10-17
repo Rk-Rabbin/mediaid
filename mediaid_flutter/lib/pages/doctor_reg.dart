@@ -39,6 +39,7 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
   TextEditingController _startController = TextEditingController();
   TextEditingController _endController = TextEditingController();
   TextEditingController _feesController = TextEditingController();
+  TextEditingController _percentageController = TextEditingController();
   late User user;
   File? _imageFile;
 
@@ -164,6 +165,14 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
             title: "Fees",
             logo: CupertinoIcons.money_dollar_circle_fill,
           ),
+          SizedBox(
+              height: 15,
+            ),
+          regForms(
+            controller: _percentageController,
+            title: "Comission %",
+            logo: CupertinoIcons.percent,
+          ),
 
             SizedBox(
               height: 15,
@@ -185,12 +194,12 @@ class _DoctorRegistrationFormState extends State<DoctorRegistrationForm> {
                  _hospitalController.text.isNotEmpty && _specialityController.text.isNotEmpty &&
                  _qualificationController.text.isNotEmpty && _availabilityController.text.isNotEmpty &&
                   _startController.text.isNotEmpty && _endController.text.isNotEmpty &&
-                  _feesController.text.isNotEmpty){
+                  _feesController.text.isNotEmpty && _percentageController.text.isNotEmpty){
                   var a = await createDoctor(user, _nameController.text, _numberController.text,
                   _genderController.text, _licenseController.text, _hospitalController.text,
                   _specialityController.text,_qualificationController.text,
                   _availabilityController.text, _startController.text, _endController.text,
-                  _feesController.text, _imageFile!);
+                  _feesController.text, _percentageController.text, _imageFile!);
 
                   if(a){
                     showDialog(

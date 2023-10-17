@@ -8,7 +8,7 @@ import '../models/doctor_model.dart';
 
 
 createDoctor(User user, String name, String number, String gender, String licensenum, String hospital, String speciality, String qualification, String availability,
-String start, String end, String fees, File imagefile) async {
+String start, String end, String fees, String percentage, File imagefile) async {
   var uri = Uri.parse("$baseUrl/register/doctor/");
   final request = http.MultipartRequest('POST', uri);
   final headers = {
@@ -28,6 +28,7 @@ String start, String end, String fees, File imagefile) async {
   request.fields['start'] = start;
   request.fields['end'] = end;
   request.fields['fees'] = fees;
+  request.fields['percentage'] = percentage;
   request.fields['licensenum'] = licensenum; 
   request.fields['hospital'] = hospital;
   request.fields['speciality'] = speciality;
@@ -95,6 +96,7 @@ Future<bool> updateDoctor(User user, DoctorModel doctor, File imageFile) async {
     ..fields['start'] = doctor.start
     ..fields['end'] = doctor.end
     ..fields['fees'] = doctor.fees
+    ..fields['percentage'] = doctor.percentage
     ..fields['licensenum'] = doctor.licensenum
     ..fields['hospital'] = doctor.hospital
     ..fields['speciality'] = doctor.speciality
@@ -135,23 +137,3 @@ Future<List> getAllDoctor(User user) async {
     }
   }
 }
-
-// Future<List<DoctorModel>> getDoctors(User user) async {
-//   List<DoctorModel> doctors = [];
-//   var uri = Uri.parse("$baseUrl/doctorsListAPI");
-
-//   var res = await http.get(uri, headers: {
-//     'Authorization': ' Token ${user.token}',
-//   });
-//   // print(res.body);
-//   // print(json);
-//   if (res.statusCode == 200) {
-//     var jsons = jsonDecode(res.body);
-//     for (var json in jsons) {
-//       doctors.add(DoctorModel.fromJson(json));
-//     }
-//   }
-//   print(res.statusCode);
-//   print(doctors);
-//   return doctors;
-// }
