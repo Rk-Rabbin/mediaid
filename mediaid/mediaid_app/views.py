@@ -399,7 +399,7 @@ class AppointmentView(View):
                         appointment.save()
                         com = Comission.objects.get(doctor=d)
                         com.patient_num = com.patient_num+1
-                        com.total_earnings = com.total_earnings+int(doc.fees)
+                        com.total_earnings = com.total_earnings+int(d.fees)
                         com.save()
                         messages.success(request, "Appointment request submitted")
                         return redirect(response['GatewayPageURL'])
