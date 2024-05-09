@@ -29,7 +29,6 @@ from rest_framework.generics import ListAPIView, CreateAPIView, UpdateAPIView, D
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
-from dotenv import load_dotenv
 from django.views.decorators.csrf  import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -37,9 +36,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from sslcommerz_lib import SSLCOMMERZ 
 from decimal import Decimal
-load_dotenv()
 
-api_key = os.getenv("OPENAI_KEY", None)
+
+api_key = os.environ.get("OPENAI_KEY")
 openai.api_key = api_key
 
 
