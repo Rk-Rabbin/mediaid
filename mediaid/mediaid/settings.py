@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z(!axyu%b(4zzll7s3^!q&sj8*xy*^zx)i4)25#ayvl7##@8^z'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'mediaid_app',
     'social_django',
     'rest_framework',
+    'dotenv',
 
     #Rest Auth
     'rest_framework.authtoken',
@@ -98,8 +100,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mediaid_db',
-        'USER': 'mediaid',
-        'PASSWORD': 'mypassword',
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('PASSWORD'),
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -189,9 +191,9 @@ REST_AUTH_REGISTER_SERIALIZERS={
     "REGISTER_SERIALIZER":"mediaid_app.serializers.NewRegisterSerializer"
 }
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '859073199213-ap1b72d0d92pv58n8dpc4lscnqjm9j20.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
-SSLCOMMERZ_STORE_ID = 'media652d582acd8b4'
-SSLCOMMERZ_STORE_PASSWORD = 'media652d582acd8b4@ssl'
+SSLCOMMERZ_STORE_ID = os.environ.get('SSLCOMMERZ_STORE_ID')
+SSLCOMMERZ_STORE_PASSWORD = os.environ.get('SSLCOMMERZ_STORE_PASSWORD')
 SSLCOMMERZ_IS_SANDBOX = True
