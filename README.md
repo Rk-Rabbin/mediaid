@@ -188,7 +188,7 @@ flutter run
 
 ## Academic Context
 
-**Institution:** [Your University Name]
+**Institution:** North South University, Bangladesh
 **Course:** CSE 499A — Final Year Capstone Project
 **Year:** 2023
 
